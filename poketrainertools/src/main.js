@@ -1,0 +1,95 @@
+import './style.css'
+import javascriptLogo from './javascript.svg'
+import viteLogo from '/vite.svg'
+import { initTheme, toggleTheme } from './mode-toggle.js'
+
+// Initialize theme
+initTheme();
+
+const renderNavbar = () => {
+  const isDark = document.documentElement.classList.contains('dark');
+  document.querySelector('#navbar').innerHTML = `
+    <nav class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+      <div class="flex gap-4 items-center">
+        <a href="#/">Home</a>
+        <div class="dropdown">
+          <button class="flex items-center gap-1 hover:text-blue-500 transition-colors">
+            Tools
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#/encounter" class="dropdown-item">Encounter Calculator</a>
+            <a href="#/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
+            <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
+          </div>
+        </div>
+      </div>
+      <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" ${isDark ? 'checked' : ''} />
+          <div class="slider">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
+          </div>
+        </label>
+      </div>
+    </nav>
+  `;
+
+  document.querySelector('#checkbox').addEventListener('change', (e) => {
+    toggleTheme();
+  });
+};
+
+const renderPage = () => {
+  const hash = window.location.hash || '#/';
+  const app = document.querySelector('#app');
+
+  if (hash === '#/' || hash === '') {
+    app.innerHTML = `
+      <div class="flex flex-col items-center">
+        <div class="flex justify-center gap-4 mb-8">
+        </div>
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight">Poke Trainer Tools</h1>
+        <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Welcome to your ultimate companion for Pokemon training. Explore our tools to optimize your experience!</p>
+      </div>
+    `;
+  } else if (hash === '#/encounter') {
+    app.innerHTML = `
+      <div class="text-left max-w-2xl mx-auto">
+        <h1 class="mb-6 text-center">Encounter Calculator</h1>
+        <p class="mb-4 text-center">Calculate the probability of encountering specific Pokemon in various regions and conditions.</p>
+        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
+          Encounter Calculator Coming Soon
+        </div>
+      </div>
+    `;
+  } else if (hash === '#/catch-rate') {
+    app.innerHTML = `
+      <div class="text-left max-w-2xl mx-auto">
+        <h1 class="mb-6 text-center">Catch Rate Calculator</h1>
+        <p class="mb-4 text-center">Estimate your chances of catching a Pokemon based on HP, status effects, and Poke Ball type.</p>
+        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
+          Catch Rate Calculator Coming Soon
+        </div>
+      </div>
+    `;
+  } else if (hash === '#/shiny-odds') {
+    app.innerHTML = `
+      <div class="text-left max-w-2xl mx-auto">
+        <h1 class="mb-6 text-center">Shiny Odds Calculator</h1>
+        <p class="mb-4 text-center">Determine the odds of finding a shiny Pokemon with different methods like Masuda, SOS streaks, or Shiny Charm.</p>
+        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
+          Shiny Odds Calculator Coming Soon
+        </div>
+      </div>
+    `;
+  } else {
+    app.innerHTML = `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+  }
+};
+
+renderNavbar();
+renderPage();
+
+window.addEventListener('hashchange', renderPage);
