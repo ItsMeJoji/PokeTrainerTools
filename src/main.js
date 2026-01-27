@@ -1,6 +1,7 @@
 import './assets/styles/style.css'
 import { initTheme, toggleTheme } from './utils/mode-toggle.js'
 import { initEncounterCalc } from './features/encounter-calc.js'
+import { initCatchRateCalc } from './features/catch-rate-calc.js'
 
 // Initialize theme
 initTheme();
@@ -56,15 +57,7 @@ const renderPage = () => {
       // Encounter Calc handles its own initial innerHTML but we'll wrap it
       return `<div id="encounter-calc-container"></div>`;
     } else if (hash === '#/catch-rate') {
-      return `
-        <div class="text-left max-w-2xl mx-auto">
-          <h1 class="mb-6 text-center">Catch Rate Calculator</h1>
-          <p class="mb-4 text-center">Estimate your chances of catching a Pokemon based on HP, status effects, and Poke Ball type.</p>
-          <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
-            Catch Rate Calculator Coming Soon
-          </div>
-        </div>
-      `;
+      return `<div id="catch-rate-calc-container"></div>`;
     } else if (hash === '#/shiny-odds') {
       return `
         <div class="text-left max-w-2xl mx-auto">
@@ -88,6 +81,8 @@ const renderPage = () => {
 
   if (hash === '#/encounter') {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
+  } else if (hash === '#/catch-rate') {
+    initCatchRateCalc(document.querySelector('#catch-rate-calc-container'));
   }
 };
 
