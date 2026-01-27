@@ -6,7 +6,7 @@ import grassSprite from '../assets/images/grass-sprite.png';
  */
 export function initEncounterCalc(appContainer) {
   appContainer.innerHTML = `
-    <div class="encounter-page text-center max-w-2xl mx-auto py-12">
+    <div class="encounter-page text-center">
       <h1 class="mb-6 text-4xl font-extrabold tracking-tight">Encounter Calculator</h1>
       <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate the probability of encountering specific Pokemon in various regions and conditions.</p>
       
@@ -20,7 +20,7 @@ export function initEncounterCalc(appContainer) {
           </button>
       </div>
       
-      <div class="grass-scene relative flex flex-col items-center justify-center p-20 min-h-[300px]">
+      <div class="grass-scene relative flex flex-col items-center justify-center p-8 sm:p-20 min-h-[250px] sm:min-h-[300px]">
         <!-- Grass Sprites -->
         <div class="grass-wrapper relative w-full h-full flex items-center justify-center">
           <!-- Side Left (Raised) -->

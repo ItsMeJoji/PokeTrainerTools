@@ -44,39 +44,50 @@ const renderPage = () => {
   const hash = window.location.hash || '#/';
   const app = document.querySelector('#app');
 
-  if (hash === '#/' || hash === '') {
-    app.innerHTML = `
-      <div class="flex flex-col items-center">
-        <div class="flex justify-center gap-4 mb-8">
+  const content = (() => {
+    if (hash === '#/' || hash === '') {
+      return `
+        <div class="flex flex-col items-center">
+          <h1 class="mb-4 text-4xl font-extrabold tracking-tight">Poke Trainer Tools</h1>
+          <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Welcome to your ultimate companion for Pokemon training. Explore our tools to optimize your experience!</p>
         </div>
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight">Poke Trainer Tools</h1>
-        <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Welcome to your ultimate companion for Pokemon training. Explore our tools to optimize your experience!</p>
-      </div>
-    `;
-  } else if (hash === '#/encounter') {
-    initEncounterCalc(app);
-  } else if (hash === '#/catch-rate') {
-    app.innerHTML = `
-      <div class="text-left max-w-2xl mx-auto">
-        <h1 class="mb-6 text-center">Catch Rate Calculator</h1>
-        <p class="mb-4 text-center">Estimate your chances of catching a Pokemon based on HP, status effects, and Poke Ball type.</p>
-        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
-          Catch Rate Calculator Coming Soon
+      `;
+    } else if (hash === '#/encounter') {
+      // Encounter Calc handles its own initial innerHTML but we'll wrap it
+      return `<div id="encounter-calc-container"></div>`;
+    } else if (hash === '#/catch-rate') {
+      return `
+        <div class="text-left max-w-2xl mx-auto">
+          <h1 class="mb-6 text-center">Catch Rate Calculator</h1>
+          <p class="mb-4 text-center">Estimate your chances of catching a Pokemon based on HP, status effects, and Poke Ball type.</p>
+          <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
+            Catch Rate Calculator Coming Soon
+          </div>
         </div>
-      </div>
-    `;
-  } else if (hash === '#/shiny-odds') {
-    app.innerHTML = `
-      <div class="text-left max-w-2xl mx-auto">
-        <h1 class="mb-6 text-center">Shiny Odds Calculator</h1>
-        <p class="mb-4 text-center">Determine the odds of finding a shiny Pokemon with different methods like Masuda, SOS streaks, or Shiny Charm.</p>
-        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
-          Shiny Odds Calculator Coming Soon
+      `;
+    } else if (hash === '#/shiny-odds') {
+      return `
+        <div class="text-left max-w-2xl mx-auto">
+          <h1 class="mb-6 text-center">Shiny Odds Calculator</h1>
+          <p class="mb-4 text-center">Determine the odds of finding a shiny Pokemon with different methods like Masuda, SOS streaks, or Shiny Charm.</p>
+          <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
+            Shiny Odds Calculator Coming Soon
+          </div>
         </div>
-      </div>
-    `;
-  } else {
-    app.innerHTML = `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+      `;
+    } else {
+      return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+    }
+  })();
+
+  app.innerHTML = `
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl">
+      ${content}
+    </div>
+  `;
+
+  if (hash === '#/encounter') {
+    initEncounterCalc(document.querySelector('#encounter-calc-container'));
   }
 };
 
