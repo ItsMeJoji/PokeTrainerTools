@@ -1,7 +1,6 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { initTheme, toggleTheme } from './mode-toggle.js'
+import './assets/styles/style.css'
+import { initTheme, toggleTheme } from './utils/mode-toggle.js'
+import { initEncounterCalc } from './features/encounter-calc.js'
 
 // Initialize theme
 initTheme();
@@ -55,15 +54,7 @@ const renderPage = () => {
       </div>
     `;
   } else if (hash === '#/encounter') {
-    app.innerHTML = `
-      <div class="text-left max-w-2xl mx-auto">
-        <h1 class="mb-6 text-center">Encounter Calculator</h1>
-        <p class="mb-4 text-center">Calculate the probability of encountering specific Pokemon in various regions and conditions.</p>
-        <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
-          Encounter Calculator Coming Soon
-        </div>
-      </div>
-    `;
+    initEncounterCalc(app);
   } else if (hash === '#/catch-rate') {
     app.innerHTML = `
       <div class="text-left max-w-2xl mx-auto">

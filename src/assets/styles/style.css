@@ -179,7 +179,7 @@ button:focus-visible {
 }
 
 .slider {
-  background-color: #ccc;
+  background-color: #f1f1f1;
   bottom: 0;
   cursor: pointer;
   left: 0;
@@ -188,6 +188,7 @@ button:focus-visible {
   top: 0;
   transition: .4s;
   border-radius: 34px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -220,6 +221,139 @@ input:checked+.slider:before {
 .slider .moon {
   z-index: 1;
   user-select: none;
+}
+
+/* Encounter Page Grass Animations */
+.grass-scene {
+  overflow: hidden;
+}
+
+.grass-wrapper {
+  position: relative;
+  height: 150px;
+  width: 300px;
+}
+
+.grass-sprite {
+  position: absolute;
+  width: 80px;
+  image-rendering: pixelated;
+  transition: opacity 1s ease-out;
+}
+
+.grass-sprite.center-left {
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-100%);
+}
+
+.grass-sprite.center-right {
+  left: 50%;
+  bottom: 0;
+  transform: translateX(0);
+}
+
+.grass-sprite.side-left {
+  left: 50%;
+  bottom: 15px;
+  /* Slightly raised */
+  transform: translateX(-180%);
+}
+
+.grass-sprite.side-right {
+  left: 50%;
+  bottom: 15px;
+  /* Slightly raised */
+  transform: translateX(80%);
+}
+
+/* Animations */
+@keyframes rustle {
+  0% {
+    transform: translateX(var(--base-tx)) rotate(0);
+  }
+
+  25% {
+    transform: translateX(calc(var(--base-tx) - 2px)) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateX(calc(var(--base-tx) + 2px)) rotate(2deg);
+  }
+
+  75% {
+    transform: translateX(calc(var(--base-tx) - 2px)) rotate(-2deg);
+  }
+
+  100% {
+    transform: translateX(var(--base-tx)) rotate(0);
+  }
+}
+
+.grass-sprite.center-left {
+  --base-tx: -100%;
+}
+
+.grass-sprite.center-right {
+  --base-tx: 0%;
+}
+
+.grass-sprite.side-left {
+  --base-tx: -180%;
+}
+
+.grass-sprite.side-right {
+  --base-tx: 80%;
+}
+
+.anim-rustle {
+  animation: rustle 0.2s infinite;
+}
+
+@keyframes partLeft {
+  0% {
+    transform: translateX(var(--base-tx));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(calc(var(--base-tx) - 100px));
+    opacity: 0;
+  }
+}
+
+@keyframes partRight {
+  0% {
+    transform: translateX(var(--base-tx));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(calc(var(--base-tx) + 100px));
+    opacity: 0;
+  }
+}
+
+.anim-part-left {
+  animation: partLeft 1s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.anim-part-right {
+  animation: partRight 1s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.anim-fade-in {
+  animation: fadeIn 1s forwards;
 }
 
 @media (prefers-color-scheme: light) {
