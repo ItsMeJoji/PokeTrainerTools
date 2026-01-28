@@ -39,6 +39,7 @@ body {
   flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #navbar a {
@@ -230,58 +231,66 @@ input:checked+.slider:before {
 /* Encounter Page Grass Animations */
 .grass-scene {
   overflow: hidden;
+  width: 100vw;
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
 }
 
 .grass-wrapper {
   position: relative;
-  height: 120px;
-  width: 240px;
+  height: 200px;
+  width: 100%;
+  left: 0;
+  transform: none;
 }
 
 @media (min-width: 640px) {
   .grass-wrapper {
-    height: 150px;
-    width: 300px;
+    height: 300px;
   }
 }
 
 .grass-sprite {
   position: absolute;
-  width: 60px;
+  width: 140px;
   image-rendering: pixelated;
   transition: opacity 1s ease-out;
 }
 
 @media (min-width: 640px) {
   .grass-sprite {
-    width: 80px;
+    width: 220px;
   }
 }
 
 .grass-sprite.center-left {
   left: 50%;
   bottom: 0;
-  transform: translateX(-100%);
+  transform: translateX(-90%);
 }
 
 .grass-sprite.center-right {
   left: 50%;
   bottom: 0;
-  transform: translateX(0);
+  transform: translateX(-10%);
 }
 
 .grass-sprite.side-left {
   left: 50%;
-  bottom: 15px;
-  /* Slightly raised */
-  transform: translateX(-180%);
+  bottom: 30px;
+  transform: translateX(-160%);
+  z-index: 5;
 }
 
 .grass-sprite.side-right {
   left: 50%;
-  bottom: 15px;
-  /* Slightly raised */
-  transform: translateX(80%);
+  bottom: 30px;
+  transform: translateX(60%);
+  z-index: 5;
 }
 
 /* Animations */
@@ -291,15 +300,15 @@ input:checked+.slider:before {
   }
 
   25% {
-    transform: translateX(calc(var(--base-tx) - 2px)) rotate(-2deg);
+    transform: translateX(calc(var(--base-tx) - 4px)) rotate(-2deg);
   }
 
   50% {
-    transform: translateX(calc(var(--base-tx) + 2px)) rotate(2deg);
+    transform: translateX(calc(var(--base-tx) + 4px)) rotate(2deg);
   }
 
   75% {
-    transform: translateX(calc(var(--base-tx) - 2px)) rotate(-2deg);
+    transform: translateX(calc(var(--base-tx) - 4px)) rotate(-2deg);
   }
 
   100% {
@@ -308,19 +317,19 @@ input:checked+.slider:before {
 }
 
 .grass-sprite.center-left {
-  --base-tx: -100%;
+  --base-tx: -90%;
 }
 
 .grass-sprite.center-right {
-  --base-tx: 0%;
+  --base-tx: -10%;
 }
 
 .grass-sprite.side-left {
-  --base-tx: -180%;
+  --base-tx: -160%;
 }
 
 .grass-sprite.side-right {
-  --base-tx: 80%;
+  --base-tx: 60%;
 }
 
 .anim-rustle {
@@ -518,4 +527,58 @@ input:checked+.slider:before {
 /* Reuse the same fade-in from encounter-calc if needed, or specific one */
 .anim-pokeball-reset {
   animation: fadeIn 1s forwards;
+}
+
+/* Sparkle Animation for Shiny Toggle */
+@keyframes sparkleFly {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 0;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #ffd700;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 0 4px #fff;
+}
+
+.anim-sparkle {
+  animation: sparkleFly 0.6s ease-out forwards;
+}
+
+/* Pokemon Emergence Animation */
+@keyframes pokemonEmerge {
+  0% {
+    transform: translateY(20px) scale(0);
+    opacity: 0;
+  }
+
+  60% {
+    transform: translateY(-40px) scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-50px) scale(1);
+    opacity: 1;
+  }
+}
+
+.anim-pokemon-emerge {
+  animation: pokemonEmerge 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.3s;
 }

@@ -49,7 +49,7 @@ const renderPage = () => {
     if (hash === '#/' || hash === '') {
       return `
         <div class="flex flex-col items-center">
-          <h1 class="mb-4 text-4xl font-extrabold tracking-tight">Poke Trainer Tools</h1>
+          <h1 class="mb-4 text-4xl font-extrabold tracking-tight">Poké Trainer Tools</h1>
           <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Welcome to your ultimate companion for Pokemon training. Explore our tools to optimize your experience!</p>
         </div>
       `;
@@ -61,7 +61,7 @@ const renderPage = () => {
     } else if (hash === '#/shiny-odds') {
       return `
         <div class="text-left max-w-2xl mx-auto">
-          <h1 class="mb-6 text-center">Shiny Odds Calculator</h1>
+          <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg text-center">Shiny Odds Calculator</h1>
           <p class="mb-4 text-center">Determine the odds of finding a shiny Pokemon with different methods like Masuda, SOS streaks, or Shiny Charm.</p>
           <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
             Shiny Odds Calculator Coming Soon

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "pokeapi-js-wrapper": "^1.2.8",
     "tailwindcss": "^4.1.18"
   }
 }
