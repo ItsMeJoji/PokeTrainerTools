@@ -202,9 +202,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             const isTimeSpecific = hasMorning || hasDay || hasNight;
 
                             if (!isTimeSpecific) {
-                                methodDisplayNames.push('Walk - 🌅');
-                                methodDisplayNames.push('Walk - ☀️');
-                                methodDisplayNames.push('Walk - 🌙');
+                                methodDisplayNames.push('Walk');
                             } else {
                                 if (hasMorning) methodDisplayNames.push('Walk - 🌅');
                                 if (hasDay) methodDisplayNames.push('Walk - ☀️');

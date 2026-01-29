@@ -29,6 +29,7 @@ export function initCatchRateCalc(appContainer) {
           <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
              <img id="mystery-pokemon" src="${unknownSprite}" class="w-16 h-16 sm:w-24 sm:h-24 opacity-0 transform scale-100" alt="Unknown Pokemon" />
           </div>
+          <p id="mystery-pokemon-name" class="text-sm text-center font-bold text-black dark:text-white">Coming Soon!</p>
 
           <div class="pokeball-half pokeball-top z-10">
             <img src="${pokeballSprite}" class="pokeball-sprite" alt="pokeball top" />
