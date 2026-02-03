@@ -126,7 +126,18 @@ export async function initCatchRateCalc(appContainer) {
       <!-- Result Display -->
       <div id="catch-result" class="catch-result hidden mb-4 opacity-0 transition-opacity duration-1000">
         <h2 id="catch-percentage" class="text-3xl font-extrabold text-red-600 dark:text-red-400 mb-1">0%</h2>
-        <p id="catch-message" class="text-gray-600 dark:text-gray-400 font-medium"></p>
+        <p id="catch-message" class="text-gray-600 dark:text-gray-400 font-medium mb-4"></p>
+        
+        <!-- Calculation Breakdown Collapsible -->
+        <details id="calculation-breakdown" class="text-left bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-100 dark:border-gray-600 overflow-hidden transition-all duration-300">
+          <summary class="px-4 py-3 font-bold text-sm text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600/50 flex items-center justify-between select-none">
+            Calculation Breakdown
+            <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </summary>
+          <div id="breakdown-content" class="p-4 space-y-3 text-xs sm:text-sm font-mono text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-600">
+            <!-- Breakdown content injected here -->
+          </div>
+        </details>
       </div>
       
       <p class="mt-8 text-xs text-gray-400 italic">* Gen 1-2 and 5-9 calculations coming soon. Only Gen 3 & 4 logic is active. Note the logic is still a work in progress to match Bulbapedia's calculations.</p>
@@ -151,6 +162,8 @@ export async function initCatchRateCalc(appContainer) {
   const mysteryPokemon = document.getElementById('mystery-pokemon');
   const ballTopImg = document.getElementById('pokeball-top-img');
   const ballBottomImg = document.getElementById('pokeball-bottom-img');
+  const breakdownContent = document.getElementById('breakdown-content');
+  const calculationBreakdown = document.getElementById('calculation-breakdown');
 
   let currentPokemonList = [];
   let ballList = [];
@@ -233,6 +246,9 @@ export async function initCatchRateCalc(appContainer) {
     }
 
     pokemonSearchContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+    // Show Loading state
+    setupSearchableDropdown('pokemon-dropdown', [], () => { }, "Loading Pokemon...");
 
     try {
       currentPokemonList = await getPokemonUpToGeneration(gen);
@@ -344,6 +360,23 @@ export async function initCatchRateCalc(appContainer) {
         "Probability of Capture (p)": result.catchPercentage + "%"
       }
     });
+
+    // Populate UI breakdown
+    breakdownContent.innerHTML = `
+      <div class="grid grid-cols-2 gap-2 pb-2 border-b border-gray-100 dark:border-gray-600">
+        <span class="font-bold">Pokemon:</span> <span class="text-right">${selectedPokemon.displayName}</span>
+        <span class="font-bold">Base Catch Rate:</span> <span class="text-right">${selectedPokemon.captureRate}</span>
+        <span class="font-bold">HP:</span> <span class="text-right">${Math.round(currentHP)} / ${maxHP}</span>
+        <span class="font-bold">Status Modifier:</span> <span class="text-right">x${statusBonus}</span>
+        <span class="font-bold">Ball Modifier:</span> <span class="text-right">x${ballBonus}</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <span class="font-bold">Catch Rate (a):</span> <span class="text-right">${result.a}</span>
+        <span class="font-bold">Shake Prob (b):</span> <span class="text-right">${result.b}</span>
+        <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage}%</span>
+      </div>
+    `;
+    calculationBreakdown.open = false; // Start collapsed
     const shakes = bName === 'master-ball' ? 4 : simulateShakes(result.b);
 
     startBtn.classList.add('hidden');
@@ -415,6 +448,8 @@ export async function initCatchRateCalc(appContainer) {
     hpSlider.classList.remove('opacity-50');
     check1hp.checked = false;
     statusSelect.value = "1";
+    calculationBreakdown.open = false;
+    breakdownContent.innerHTML = "";
 
     // Reset searchable dropdowns
     setupSearchableDropdown('pokemon-dropdown', [], () => { }, "Select a Pokemon");

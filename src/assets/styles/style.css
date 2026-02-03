@@ -394,8 +394,22 @@ input:checked+.slider:before {
 /* Catch Results */
 .catch-result {
   position: relative;
-  top: -150px;
+  top: -100px;
 }
+
+/* Calculation Breakdown Styling */
+#calculation-breakdown[open] summary svg {
+  transform: rotate(180deg);
+}
+
+#calculation-breakdown summary::-webkit-details-marker {
+  display: none;
+}
+
+#calculation-breakdown summary {
+  list-style: none;
+}
+
 
 /* Pokeball Animations */
 .pokeball-scene {
