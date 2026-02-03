@@ -391,6 +391,12 @@ input:checked+.slider:before {
   }
 }
 
+/* Catch Results */
+.catch-result {
+  position: relative;
+  top: -150px;
+}
+
 /* Pokeball Animations */
 .pokeball-scene {
   overflow: hidden;
@@ -400,6 +406,7 @@ input:checked+.slider:before {
   position: relative;
   height: 120px;
   width: 120px;
+  top: -50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -432,6 +439,7 @@ input:checked+.slider:before {
 }
 
 .pokeball-bottom {
+  top: -0.5px;
   clip-path: inset(50% 0 0 0);
 }
 
@@ -463,26 +471,12 @@ input:checked+.slider:before {
 
 @keyframes pokeballSplitTop {
   0% {
-    transform: rotate(0deg) translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 
-  /* Initial jitter as it starts to break */
-  5%,
-  15%,
-  25% {
-    transform: rotate(2deg) translateY(-2px);
-  }
-
-  10%,
-  20%,
-  30% {
-    transform: rotate(-1deg) translateY(0);
-  }
-
-  /* Opening wide and fading */
   100% {
-    transform: rotate(110deg) translateY(-80px) translateX(-20px);
+    transform: translateY(-100px);
     opacity: 0;
   }
 }
