@@ -14,29 +14,28 @@
 export function calculateGen34(baseRate, currentHP, maxHP, ballBonus, statusBonus) {
 
     //Console Log for Debugging
-    // console.log("Catch Rate: " + baseRate);
-    // console.log("Current HP: " + currentHP);
-    // console.log("Max HP: " + maxHP);
-    // console.log("Ball Bonus: " + ballBonus);
-    // console.log("Status Bonus: " + statusBonus);
+    console.log("Catch Rate: " + baseRate);
+    console.log("Current HP: " + currentHP);
+    console.log("Max HP: " + maxHP);
+    console.log("Ball Bonus: " + ballBonus);
+    console.log("Status Bonus: " + statusBonus);
 
-    // 1. Calculate modified catch rate 'a'
-    // a = (((3 * HPmax) - (2 * HPcurrent)) / (3 * HPmax)) * Rate * BonusBall * BonusStatus
-    let a = (((3 * maxHP) - (2 * currentHP)) / (3 * maxHP)) * baseRate * ballBonus * statusBonus;
+    // Calculate modified catch rate 'a'
+    //a = ((((3 * HPmax) - (2 * HPcurrent)) * Rate * BonusBall * BonusStatus) / (3 * HPmax)) 
+    const cappedRate = Math.min(baseRate, 255);
+    const a = Math.max(1, Math.floor(Math.floor(((3 * maxHP - 2 * currentHP) * Math.floor(cappedRate * ballBonus * statusBonus)) / (3 * maxHP))));
+
     // Cap 'a' at 255
     if (a >= 255) {
         return { a: a, b: 65535, catchPercentage: 100 };
     }
 
-    // 2. Calculate shake probability 'b'
+    // Calculate shake probability 'b'
     // b = 1048560 / sqrt(sqrt(16711680 / a))
-    // We keep high precision throughout per user request
-    const inner = 16711680 / a;
-    const sqrt1 = Math.sqrt(inner);
-    const sqrt2 = Math.sqrt(sqrt1);
-    const b = 1048560 / sqrt2;
+    const b = Math.floor(1048560 / Math.floor(Math.sqrt(Math.floor(Math.sqrt(16711680 / a)))));
 
-    // 3. Probablity of capture p = (b / 65536)^4
+    // Calculate probability of capture 
+    // p = (b / 65536)^4
     const pPerShake = b / 65536;
     const catchProbability = Math.pow(pPerShake, 4);
     const catchPercentage = Math.pow(pPerShake, 4) * 100;

@@ -394,7 +394,7 @@ input:checked+.slider:before {
 /* Catch Results */
 .catch-result {
   position: relative;
-  top: -100px;
+  top: -125px;
 }
 
 /* Calculation Breakdown Styling */
@@ -448,13 +448,13 @@ input:checked+.slider:before {
 }
 
 .pokeball-top {
-  clip-path: inset(0 0 50% 0);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 75% 58%, 50% 60%, 25% 58%, 0% 50%);
   transform-origin: right center;
 }
 
 .pokeball-bottom {
   top: -0.5px;
-  clip-path: inset(50% 0 0 0);
+  clip-path: polygon(0% 50%, 25% 58%, 50% 60%, 75% 58%, 100% 50%, 100% 100%, 0% 100%);
 }
 
 @keyframes pokeballShake {
@@ -577,12 +577,12 @@ input:checked+.slider:before {
   }
 
   60% {
-    transform: translateY(-40px) scale(1.1);
+    transform: translateY(0px) scale(1.1);
     opacity: 1;
   }
 
   100% {
-    transform: translateY(-50px) scale(1);
+    transform: translateY(-10px) scale(1.5);
     opacity: 1;
   }
 }

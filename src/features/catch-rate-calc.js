@@ -285,12 +285,12 @@ export async function initCatchRateCalc(appContainer) {
 
   function updateContextualInputs(ballName, pokemon) {
     contextInputs.innerHTML = '';
-
+    const gen = parseInt(genSelect.value);
     if (ballName === 'timer-ball') {
       contextInputs.classList.remove('hidden');
       contextInputs.innerHTML = `
           <div>
-            <label for="timer-turns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Turns Passed</label>
+            <label for="timer-turns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current Turn</label>
             <input id="timer-turns" type="number" min="1" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
           </div>
         `;
@@ -329,7 +329,94 @@ export async function initCatchRateCalc(appContainer) {
             </div>
           </div>
         `;
-    } else {
+    } else if (ballName === 'dive-ball') {
+      contextInputs.classList.remove('hidden');
+      if (gen === 3 || gen === 6) {
+        contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="diving-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="diving-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Diving?</label>
+          </div>
+        `;
+      } else if (gen >= 4 && gen <= 8) {
+        contextInputs.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2">
+              <input id="fishing-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+              <label for="fishing-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Fishing?</label>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input id="surfing-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+              <label for="surfing-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Surfing?</label>
+            </div>
+          </div>
+        `;
+      } else if (gen === 9) {
+        contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="on-water-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="on-water-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">On Water?</label>
+          </div>
+        `;
+      } else {
+        contextInputs.classList.add('hidden');
+      }
+    }
+    else if (ballName === 'dusk-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="dusk-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="dusk-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">In a Cave or During the Night?</label>
+          </div>
+        `;
+    }
+    else if (ballName === 'park-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="park-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="park-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">In Pal Park?</label>
+          </div>
+        `;
+    }
+    else if (ballName === 'quick-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="quick-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="quick-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">First Turn of Battle?</label>
+          </div>
+        `;
+    }
+    else if (ballName === 'repeat-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="repeat-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="repeat-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Pokemon Caught Before?</label>
+          </div>
+        `;
+    }
+    else if (ballName === 'nest-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div>
+            <label for="nest-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wild Pokemon's Level</label>
+            <input id="nest-level" type="number" min="1" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+        `;
+    }
+    else if (ballName === 'safari-ball' && gen === 8) {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="safari-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="safari-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Are you in Sword/Shield?</label>
+          </div>
+        `;
+    }
+    else {
       contextInputs.classList.add('hidden');
     }
   }
@@ -350,23 +437,51 @@ export async function initCatchRateCalc(appContainer) {
   });
 
   const performCatch = async () => {
+    const gen = parseInt(genSelect.value);
     const hpPercent = check1hp.checked ? 0.5 : parseInt(hpSlider.value);
     const statusBonus = parseFloat(statusSelect.value);
 
     // Contextual values
+
+    // Level Ball
     const pokemonLevelDiff = document.getElementById('pokemon-level-diff')?.value || '<=1x';
+    // Lure Ball
     const fishing = document.getElementById('fishing-indicator')?.checked || false;
+    // Love Ball
     const oppositeGender = document.getElementById('opposite-gender')?.checked || false;
     const samePokemon = document.getElementById('same-pokemon')?.checked || false;
-
-    // Fetch extra data if needed (Heavy/Fast ball)
+    // Dive Ball
+    const diving = document.getElementById('diving-indicator')?.checked || false;  // RSEORAS
+    const fishingOrSurfing = document.getElementById('fishing-indicator')?.checked || document.getElementById('surfing-indicator')?.checked || false; //Gens 4 - 8
+    const onWater = document.getElementById('on-water-indicator')?.checked || false; // SV
+    // Dusk Ball
+    const dusk = document.getElementById('dusk-indicator')?.checked || false;
+    // Park Ball
+    const park = document.getElementById('park-indicator')?.checked || false;
+    // Quick Ball
+    const quick = document.getElementById('quick-indicator')?.checked || false;
+    // Timer Ball
+    const timer = parseInt(document.getElementById('timer-turns')?.value - 1 || 0);
+    // Repeat Ball
+    const repeat = document.getElementById('repeat-indicator')?.checked || false;
+    // Nest Ball
+    const nest = parseInt(document.getElementById('nest-level')?.value || 0);
+    // Safari Ball
+    const safari = document.getElementById('safari-indicator')?.checked || false;
+    // Heavy/Fast/Net Ball - Info pulled from PokeAPI
     let pokemonWeight = 0;
     let baseSpeed = 0;
-
-    if (selectedBall.name === 'heavy-ball' || selectedBall.name === 'fast-ball') {
+    let typeMatch = 0;
+    if (selectedBall.name === 'heavy-ball' || selectedBall.name === 'fast-ball' || selectedBall.name === 'net-ball') {
       const pDetails = await getPokemonDetails(selectedPokemon.name);
       pokemonWeight = pDetails.weight;
       baseSpeed = pDetails.stats.find(s => s.stat.name === 'speed')?.base_stat || 0;
+      typeMatch = pDetails.types.some(t => t.type.name === 'water' || t.type.name === 'bug');
+
+      //Debug
+      console.log('Pokemon Weight: ' + pokemonWeight);
+      console.log('Base Speed: ' + baseSpeed);
+      console.log('Type Match: ' + typeMatch);
     }
 
 
@@ -375,21 +490,117 @@ export async function initCatchRateCalc(appContainer) {
     let apricornBonus = 1;
     const bName = selectedBall.name;
     let heavyBall = false;
-
     switch (bName) {
       case 'master-ball': ballBonus = 255; break;
       case 'ultra-ball': ballBonus = 2; break;
-      case 'great-ball': case 'safari-ball': case 'park-ball': ballBonus = 1.5; break;
-      case 'net-ball': ballBonus = 3; break;
-      case 'dive-ball': ballBonus = 3.5; break;
-      case 'repeat-ball': ballBonus = 3; break;
-      case 'timer-ball':
-        const turns = parseInt(document.getElementById('timer-turns')?.value || 1);
-        ballBonus = Math.min(4, 1 + (turns * 1229 / 4096));
+      case 'great-ball': ballBonus = 1.5; break;
+      case 'safari-ball':
+        if (gen === 1) {
+          ballBonus = 2;
+        }
+        else if (gen < 9 && !safari) {
+          ballBonus = 1.5;
+        }
+        else {
+          ballBonus = 1;
+        }
         break;
-      case 'nest-ball': ballBonus = 3; break;
-      case 'dusk-ball': ballBonus = 3.5; break;
-      case 'quick-ball': ballBonus = 4; break;
+      case 'sport-ball':
+        if (gen < 8) {
+          ballBonus = 1.5;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'net-ball':
+        if (gen < 7 && typeMatch) {
+          ballBonus = 3;
+        }
+        else if (gen >= 7 && typeMatch) {
+          ballBonus = 3.5;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'dive-ball':
+        if ((gen === 3 || gen === 6) && diving) {
+          ballBonus = 3.5;
+        } else if (gen >= 4 && fishingOrSurfing) {
+          ballBonus = 3.5;
+        }
+        else if (gen === 9 && onWater) {
+          ballBonus = 3.5;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'repeat-ball':
+        if (gen < 5 && repeat) {
+          ballBonus = 3;
+        }
+        else if (gen >= 5 && repeat) {
+          ballBonus = 3.5;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'timer-ball':
+        if (gen < 5) {
+          ballBonus = Math.min(4, (timer + 10) / 10);
+        }
+        else if (gen >= 5) {
+          ballBonus = Math.min(4, 1 + (timer * 1229 / 4096));
+        }
+        break;
+      case 'nest-ball':
+        console.log("Nest: " + nest);
+        if (gen < 5) {
+          ballBonus = Math.max(1, (40 - nest) / 10);
+        }
+        else if (gen === 5) {
+          ballBonus = Math.max(1, (41 - nest) / 10);
+        }
+        else if (gen >= 6 && nest < 30) {
+          ballBonus = Math.max(1, (41 - nest) / 10);
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'dusk-ball':
+        if (gen < 7 && dusk) {
+          ballBonus = 3.5;
+        }
+        else if (gen >= 7 && dusk) {
+          ballBonus = 3;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'park-ball':
+        if (park) {
+          ballBonus = 255;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
+      case 'quick-ball':
+        if (gen === 4 && quick) {
+          ballBonus = 4;
+        }
+        else if (gen >= 5 && quick) {
+          ballBonus = 5;
+        }
+        else {
+          ballBonus = 1;
+        }
+        break;
       // Apricorn Balls 
       case 'level-ball':
       case 'lure-ball':
@@ -412,7 +623,7 @@ export async function initCatchRateCalc(appContainer) {
             apricornBonus = fishing ? 3 : 1;
             break;
           case 'moon-ball':
-            const moonEvolutionFamily = ['nidoran-female', 'nidorina', 'nidoran-male', 'nidorino', 'clefairy', 'cleffa', 'igglybuff', 'jigglypuff', 'skitty'];
+            const moonEvolutionFamily = ['nidoran-f', 'nidorina', 'nidoran-m', 'nidorino', 'clefairy', 'cleffa', 'igglybuff', 'jigglypuff', 'skitty'];
             apricornBonus = moonEvolutionFamily.includes(selectedPokemon.name) ? 4 : 1;
             break;
           case 'friend-ball':
@@ -437,7 +648,7 @@ export async function initCatchRateCalc(appContainer) {
     }
     const maxHP = 100;
     const currentHP = check1hp.checked ? 1 : Math.max(1, (hpPercent / 100) * maxHP);
-
+    console.log("Pokemon: ", selectedPokemon.name);
     let result;
     if (bName === 'master-ball') {
       result = { a: 255, b: 65535, catchPercentage: 100 };
