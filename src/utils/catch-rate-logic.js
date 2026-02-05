@@ -12,11 +12,17 @@
  * @returns {Object} Calculated values { a, b, catchPercentage }.
  */
 export function calculateGen34(baseRate, currentHP, maxHP, ballBonus, statusBonus) {
-    // 1. Calculate modified catch rate 'a'
-    // a = ((3 * HPmax - 2 * HPcurrent) * Rate * BonusBall) / (3 * HPmax) * BonusStatus
-    let a = ((3 * maxHP - 2 * currentHP) * baseRate * ballBonus) / (3 * maxHP);
-    a = a * statusBonus;
 
+    //Console Log for Debugging
+    // console.log("Catch Rate: " + baseRate);
+    // console.log("Current HP: " + currentHP);
+    // console.log("Max HP: " + maxHP);
+    // console.log("Ball Bonus: " + ballBonus);
+    // console.log("Status Bonus: " + statusBonus);
+
+    // 1. Calculate modified catch rate 'a'
+    // a = (((3 * HPmax) - (2 * HPcurrent)) / (3 * HPmax)) * Rate * BonusBall * BonusStatus
+    let a = (((3 * maxHP) - (2 * currentHP)) / (3 * maxHP)) * baseRate * ballBonus * statusBonus;
     // Cap 'a' at 255
     if (a >= 255) {
         return { a: a, b: 65535, catchPercentage: 100 };

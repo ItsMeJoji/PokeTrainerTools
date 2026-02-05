@@ -7,6 +7,7 @@ import unknownSprite from '../assets/images/unknown-sprite.png';
 
 import { getPokemonUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
 import { calculateGen34, simulateShakes } from '../utils/catch-rate-logic.js';
+import P from '../utils/pokeapi.js';
 
 export async function initCatchRateCalc(appContainer) {
   appContainer.innerHTML = `
@@ -261,7 +262,7 @@ export async function initCatchRateCalc(appContainer) {
         selectedBall = b;
         ballTopImg.src = b.sprite;
         ballBottomImg.src = b.sprite;
-        updateContextualInputs(b.name);
+        updateContextualInputs(b.name, selectedPokemon);
       }, "Select Poké Ball");
 
       // Default select first available ball (usually Poke Ball)
@@ -272,7 +273,7 @@ export async function initCatchRateCalc(appContainer) {
         ballSelectedSpan.innerHTML = `<img src="${pokeBall.sprite}" class="w-5 h-5 mr-2">${pokeBall.displayName}`;
         ballTopImg.src = pokeBall.sprite;
         ballBottomImg.src = pokeBall.sprite;
-        updateContextualInputs(pokeBall.name);
+        updateContextualInputs(pokeBall.name, selectedPokemon);
       }
 
     } catch (err) {
@@ -282,13 +283,50 @@ export async function initCatchRateCalc(appContainer) {
     }
   });
 
-  function updateContextualInputs(ballName) {
+  function updateContextualInputs(ballName, pokemon) {
+    contextInputs.innerHTML = '';
+
     if (ballName === 'timer-ball') {
       contextInputs.classList.remove('hidden');
       contextInputs.innerHTML = `
           <div>
             <label for="timer-turns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Turns Passed</label>
             <input id="timer-turns" type="number" min="1" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+        `;
+    } else if (ballName === 'level-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div>
+            <label for="pokemon-level-diff" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level Difference</label>
+            <select id="pokemon-level-diff" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <option value="<=1x"><= 1x</option>
+              <option value="2x">2x</option>
+              <option value=">2x <4x">> 2x < 4x</option>
+              <option value=">=4x">>= 4x</option>
+            </select>
+          </div>
+        `;
+    } else if (ballName === 'lure-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input id="fishing-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="fishing-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Fishing?</label>
+          </div>
+        `;
+    } else if (ballName === 'love-ball') {
+      contextInputs.classList.remove('hidden');
+      contextInputs.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2">
+              <input id="opposite-gender" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+              <label for="opposite-gender" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Opposite Gender?</label>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input id="same-pokemon" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+              <label for="same-pokemon" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Same Pokemon?</label>
+            </div>
           </div>
         `;
     } else {
@@ -311,12 +349,32 @@ export async function initCatchRateCalc(appContainer) {
     }
   });
 
-  const performCatch = () => {
+  const performCatch = async () => {
     const hpPercent = check1hp.checked ? 0.5 : parseInt(hpSlider.value);
     const statusBonus = parseFloat(statusSelect.value);
 
+    // Contextual values
+    const pokemonLevelDiff = document.getElementById('pokemon-level-diff')?.value || '<=1x';
+    const fishing = document.getElementById('fishing-indicator')?.checked || false;
+    const oppositeGender = document.getElementById('opposite-gender')?.checked || false;
+    const samePokemon = document.getElementById('same-pokemon')?.checked || false;
+
+    // Fetch extra data if needed (Heavy/Fast ball)
+    let pokemonWeight = 0;
+    let baseSpeed = 0;
+
+    if (selectedBall.name === 'heavy-ball' || selectedBall.name === 'fast-ball') {
+      const pDetails = await getPokemonDetails(selectedPokemon.name);
+      pokemonWeight = pDetails.weight;
+      baseSpeed = pDetails.stats.find(s => s.stat.name === 'speed')?.base_stat || 0;
+    }
+
+
+
     let ballBonus = 1;
+    let apricornBonus = 1;
     const bName = selectedBall.name;
+    let heavyBall = false;
 
     switch (bName) {
       case 'master-ball': ballBonus = 255; break;
@@ -332,27 +390,86 @@ export async function initCatchRateCalc(appContainer) {
       case 'nest-ball': ballBonus = 3; break;
       case 'dusk-ball': ballBonus = 3.5; break;
       case 'quick-ball': ballBonus = 4; break;
+      // Apricorn Balls 
+      case 'level-ball':
+      case 'lure-ball':
+      case 'moon-ball':
+      case 'friend-ball':
+      case 'love-ball':
+      case 'heavy-ball':
+      case 'fast-ball':
+        ballBonus = 1;
+        switch (bName) {
+          case 'level-ball':
+            switch (pokemonLevelDiff) {
+              case '<=1x': apricornBonus = 1; break;
+              case '2x': apricornBonus = 2; break;
+              case '>2x <4x': apricornBonus = 4; break;
+              case '>=4x': apricornBonus = 8; break;
+            }
+            break;
+          case 'lure-ball':
+            apricornBonus = fishing ? 3 : 1;
+            break;
+          case 'moon-ball':
+            const moonEvolutionFamily = ['nidoran-female', 'nidorina', 'nidoran-male', 'nidorino', 'clefairy', 'cleffa', 'igglybuff', 'jigglypuff', 'skitty'];
+            apricornBonus = moonEvolutionFamily.includes(selectedPokemon.name) ? 4 : 1;
+            break;
+          case 'friend-ball':
+            apricornBonus = 1;
+            break;
+          case 'love-ball':
+            apricornBonus = (oppositeGender && samePokemon) ? 8 : 1;
+            break;
+          case 'heavy-ball':
+            heavyBall = true;
+            if (pokemonWeight < 2048) apricornBonus = -20;
+            else if (pokemonWeight < 3072) apricornBonus = 20;
+            else if (pokemonWeight < 4096) apricornBonus = 30;
+            else apricornBonus = 40;
+            break;
+          case 'fast-ball':
+            apricornBonus = baseSpeed >= 100 ? 4 : 1;
+            break;
+        }
+        break;
       default: ballBonus = 1;
     }
-
     const maxHP = 100;
     const currentHP = check1hp.checked ? 1 : Math.max(1, (hpPercent / 100) * maxHP);
 
     let result;
     if (bName === 'master-ball') {
       result = { a: 255, b: 65535, catchPercentage: 100 };
-    } else {
+    }
+    else if (apricornBonus != 1 || heavyBall) {
+      if (heavyBall) {
+        result = calculateGen34(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus);
+      }
+      else {
+        result = calculateGen34(selectedPokemon.captureRate * apricornBonus, currentHP, maxHP, ballBonus, statusBonus);
+      }
+    }
+    else {
       result = calculateGen34(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus);
     }
 
     console.log("Catch Calculation Breakdown:", {
       parameters: {
         pokemon: selectedPokemon.displayName,
+        ball: bName,
         baseCatchRate: selectedPokemon.captureRate,
         maxHP: maxHP,
         currentHP: currentHP,
         statusModifier: statusBonus,
-        ballModifier: ballBonus
+        ballModifier: ballBonus,
+        apricornBonus: apricornBonus,
+        heavyBall: heavyBall,
+        pokemonWeight: pokemonWeight,
+        oppositeGender: oppositeGender,
+        samePokemon: samePokemon,
+        baseSpeed: baseSpeed,
+        fishing: fishing,
       },
       results: {
         "Modified Catch Rate (a)": result.a,
@@ -362,13 +479,21 @@ export async function initCatchRateCalc(appContainer) {
     });
 
     // Populate UI breakdown
+    let apricornInfo = '';
+    if (heavyBall) {
+      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-blue-600 dark:text-blue-400">${apricornBonus > 0 ? '+' : ''}${apricornBonus} (Added to Base Catch Rate)</span>`;
+    } else if (apricornBonus !== 1) {
+      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-blue-600 dark:text-blue-400">x${apricornBonus} (Multiplied to Base Catch Rate)</span>`;
+    }
+
     breakdownContent.innerHTML = `
       <div class="grid grid-cols-2 gap-2 pb-2 border-b border-gray-100 dark:border-gray-600">
         <span class="font-bold">Pokemon:</span> <span class="text-right">${selectedPokemon.displayName}</span>
         <span class="font-bold">Base Catch Rate:</span> <span class="text-right">${selectedPokemon.captureRate}</span>
         <span class="font-bold">HP:</span> <span class="text-right">${Math.round(currentHP)} / ${maxHP}</span>
         <span class="font-bold">Status Modifier:</span> <span class="text-right">x${statusBonus}</span>
-        <span class="font-bold">Ball Modifier:</span> <span class="text-right">x${ballBonus}</span>
+        <span class="font-bold">Ball Modifier:</span> <span class="text-right">x${Number.isInteger(ballBonus) ? ballBonus : ballBonus.toFixed(2)}</span>
+        ${apricornInfo}
       </div>
       <div class="grid grid-cols-2 gap-2 pt-1">
         <span class="font-bold">Catch Rate (a):</span> <span class="text-right">${result.a}</span>
@@ -483,4 +608,20 @@ export async function initCatchRateCalc(appContainer) {
       }, 1000);
     }, 300);
   });
+}
+
+/**
+ * Helper to fetch detailed Pokemon data for weight and speed.
+ */
+async function getPokemonDetails(name) {
+  try {
+    // Import P is not possible here without moving it or passing it, 
+    // but pokeapi.js exports P as default.
+    // Wait, catch-rate-calc.js doesn't import P. It imports getPokemonUpToGeneration.
+    // I'll add an export to pokemon-data.js for the Pokedex instance or a wrapper.
+    return await P.getPokemonByName(name);
+  } catch (error) {
+    console.error('Error fetching pokemon details:', error);
+    return { weight: 0, stats: [] };
+  }
 }
