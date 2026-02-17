@@ -416,6 +416,139 @@ input:checked+.slider:before {
   overflow: hidden;
 }
 
+/* Tool Preview Overlays */
+.tool-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.tool-overlay img {
+  width: auto;
+  height: 180px;
+  /* Explicitly large */
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  z-index: 10;
+  display: block;
+  margin: auto;
+}
+
+.star-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.blue-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  background-color: #4379ec;
+  clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes shiny-sparkle-periodic {
+
+  0%,
+  20%,
+  100% {
+    transform: translate(-50%, -50%) scale(0) rotate(0);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  15% {
+    transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px))) scale(1.5) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shiny-sparkle-oneshot {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px))) scale(1.5) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.anim-shiny-sparkle-periodic {
+  animation: shiny-sparkle-periodic 4s infinite ease-out;
+}
+
+.anim-shiny-sparkle-oneshot {
+  animation: shiny-sparkle-oneshot 0.6s ease-out forwards;
+}
+
+/* Periodic Animations for Homepage */
+@keyframes rustle-periodic {
+
+  0%,
+  15%,
+  100% {
+    transform: rotate(0);
+  }
+
+  2%,
+  6%,
+  10% {
+    transform: rotate(-10deg);
+  }
+
+  4%,
+  8%,
+  12% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes pokeball-shake-periodic {
+
+  0%,
+  20%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+
+  2%,
+  10%,
+  18% {
+    transform: translateX(-10px) rotate(-25deg);
+  }
+
+  6%,
+  14% {
+    transform: translateX(10px) rotate(25deg);
+  }
+}
+
+.anim-rustle-periodic {
+  animation: rustle-periodic 5s infinite ease-in-out;
+}
+
+.anim-pokeball-shake-periodic {
+  animation: pokeball-shake-periodic 6s infinite ease-in-out;
+}
+
 .pokeball-wrapper {
   position: relative;
   height: 120px;
@@ -589,4 +722,118 @@ input:checked+.slider:before {
 
 .anim-pokemon-emerge {
   animation: pokemonEmerge 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.3s;
+}
+
+/* Homepage Tool Cards */
+.tool-previews {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 4rem;
+  text-align: left;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+:root.dark .tool-card {
+  background: #1f2937;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .tool-card {
+    flex-direction: row;
+    min-height: 250px;
+  }
+
+  .tool-card:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+}
+
+.tool-image {
+  flex: 1;
+  min-height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.tool-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2));
+}
+
+.tool-content {
+  flex: 1.5;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tool-content h3 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+:root.dark .tool-content h3 {
+  color: #f9fafb;
+}
+
+.tool-content p {
+  color: #4b5563;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+:root.dark .tool-content p {
+  color: #9ca3af;
+}
+
+.tool-cta {
+  align-self: flex-start;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.tool-cta:hover {
+  background: #dc2626;
+  text-decoration: none;
+  color: white;
+}
+
+/* Specific Tool Gradients */
+.bg-encounter {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.bg-catch {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.bg-shiny {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }

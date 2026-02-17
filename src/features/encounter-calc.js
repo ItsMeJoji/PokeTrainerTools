@@ -338,29 +338,24 @@ export async function initEncounterCalc(appContainer) {
 
     // Trigger sparkles if becoming shiny
     if (!isShiny) {
-      // Create sparkles
+      // Create blue star sparkles (oneshot)
       for (let i = 0; i < 4; i++) {
         const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle', 'anim-sparkle');
+        sparkle.classList.add('blue-star', 'anim-shiny-sparkle-oneshot');
 
-        // Randomize directions slightly
+        // Directional expansion
         const directions = [
-          { x: -30, y: -30 }, // Top Left
-          { x: 30, y: -30 },  // Top Right
-          { x: -30, y: 30 },  // Bottom Left
-          { x: 30, y: 30 }    // Bottom Right
+          { x: -40, y: -40 }, // Top Left
+          { x: 40, y: -40 },  // Top Right
+          { x: -40, y: 40 },  // Bottom Left
+          { x: 40, y: 40 }    // Bottom Right
         ];
 
-        sparkle.style.setProperty('--tx', `${directions[i].x + (Math.random() * 10 - 5)}px`);
-        sparkle.style.setProperty('--ty', `${directions[i].y + (Math.random() * 10 - 5)}px`);
+        sparkle.style.setProperty('--tx', `${directions[i].x}px`);
+        sparkle.style.setProperty('--ty', `${directions[i].y}px`);
 
-        // Center the sparkle on the image
-        const rect = img.getBoundingClientRect();
-        const cardRect = card.getBoundingClientRect();
-
-        // Position relative to card
-        sparkle.style.left = `50%`;
-        sparkle.style.top = `40%`; // Approx center of image area
+        // Add a slight delay for variety
+        sparkle.style.animationDelay = `${i * 0.05}s`;
 
         card.appendChild(sparkle);
 
