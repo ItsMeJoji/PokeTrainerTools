@@ -2,6 +2,7 @@ import './assets/styles/style.css'
 import { initTheme, toggleTheme } from './utils/mode-toggle.js'
 import { initEncounterCalc } from './features/encounter-calc.js'
 import { initCatchRateCalc } from './features/catch-rate-calc.js'
+import { initShinyOddsCalc } from './features/shiny-odds-calc.js'
 
 // Initialize theme
 initTheme();
@@ -59,15 +60,7 @@ const renderPage = () => {
     } else if (hash === '#/catch-rate') {
       return `<div id="catch-rate-calc-container"></div>`;
     } else if (hash === '#/shiny-odds') {
-      return `
-        <div class="text-left max-w-2xl mx-auto">
-          <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg text-center">Shiny Odds Calculator</h1>
-          <p class="mb-4 text-center">Determine the odds of finding a shiny Pokemon with different methods like Masuda, SOS streaks, or Shiny Charm.</p>
-          <div class="p-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-center text-gray-400">
-            Shiny Odds Calculator Coming Soon
-          </div>
-        </div>
-      `;
+      return `<div id="shiny-odds-calc-container"></div>`;
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -83,6 +76,8 @@ const renderPage = () => {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
   } else if (hash === '#/catch-rate') {
     initCatchRateCalc(document.querySelector('#catch-rate-calc-container'));
+  } else if (hash === '#/shiny-odds') {
+    initShinyOddsCalc(document.querySelector('#shiny-odds-calc-container'));
   }
 };
 

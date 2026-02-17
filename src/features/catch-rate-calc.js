@@ -6,7 +6,7 @@ import pokeballSprite from '../assets/images/pokeball.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
 
 import { getPokemonUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
-import { calculateGen34, simulateShakes } from '../utils/catch-rate-logic.js';
+import { calculateGen34, calculateGen5, simulateShakes } from '../utils/catch-rate-logic.js';
 import P from '../utils/pokeapi.js';
 
 export async function initCatchRateCalc(appContainer) {
@@ -23,7 +23,7 @@ export async function initCatchRateCalc(appContainer) {
             <label for="gen-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Generation</label>
             <select id="gen-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="">Choose Generation</option>
-              ${[3, 4].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
+              ${[3, 4, 5].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
             </select>
           </div>
 
@@ -86,6 +86,11 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         </div>
 
+        <!-- Global Contextual Inputs (Hidden by default) -->
+        <div id="global-context-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
+             <!-- Dynamically injected global inputs -->
+        </div>
+
         <!-- Contextual Inputs (Hidden by default) -->
         <div id="contextual-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
              <!-- Dynamically injected inputs -->
@@ -141,7 +146,7 @@ export async function initCatchRateCalc(appContainer) {
         </details>
       </div>
       
-      <p class="mt-8 text-xs text-gray-400 italic">* Gen 1-2 and 5-9 calculations coming soon. Only Gen 3 & 4 logic is active. Note the logic is still a work in progress to match Bulbapedia's calculations.</p>
+      <p class="mt-8 text-xs text-gray-400 italic">* Gen 1-2 and 6-9 calculations coming soon. Gen 3-5 logic is active. Note the logic is still a work in progress to match Bulbapedia's calculations.</p>
     </div>
   `;
 
@@ -155,6 +160,7 @@ export async function initCatchRateCalc(appContainer) {
   const hpValueDisplay = document.getElementById('hp-value');
   const check1hp = document.getElementById('check-1hp');
   const statusSelect = document.getElementById('status-select');
+  const globalContextInputs = document.getElementById('global-context-inputs');
   const contextInputs = document.getElementById('contextual-inputs');
   const catchResult = document.getElementById('catch-result');
   const catchPercentage = document.getElementById('catch-percentage');
@@ -243,10 +249,41 @@ export async function initCatchRateCalc(appContainer) {
       setupSearchableDropdown('ball-dropdown', [], () => { }, "Select a Generation first");
       selectedPokemon = null;
       selectedBall = null;
+      globalContextInputs.classList.add('hidden');
+      globalContextInputs.innerHTML = '';
       return;
     }
 
     pokemonSearchContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+    // Manage Gen 5 Global Inputs
+    if (gen === 5) {
+      globalContextInputs.classList.remove('hidden');
+      globalContextInputs.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="pokedex-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pokémon Caught</label>
+              <input id="pokedex-count" type="number" min="0" max="649" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+            <div>
+              <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capture Power</label>
+              <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <option value="0">No Power</option>
+                <option value="1">Capture Power 1</option>
+                <option value="2">Capture Power 2</option>
+                <option value="3">Capture Power 3, S, or MAX</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <input id="thick-grass-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
+            <label for="thick-grass-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Thick Grass?</label>
+          </div>
+      `;
+    } else {
+      globalContextInputs.classList.add('hidden');
+      globalContextInputs.innerHTML = '';
+    }
 
     // Show Loading state
     setupSearchableDropdown('pokemon-dropdown', [], () => { }, "Loading Pokemon...");
@@ -286,17 +323,17 @@ export async function initCatchRateCalc(appContainer) {
   function updateContextualInputs(ballName, pokemon) {
     contextInputs.innerHTML = '';
     const gen = parseInt(genSelect.value);
+    let html = '';
+
     if (ballName === 'timer-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div>
             <label for="timer-turns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current Turn</label>
             <input id="timer-turns" type="number" min="1" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
           </div>
         `;
     } else if (ballName === 'level-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div>
             <label for="pokemon-level-diff" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level Difference</label>
             <select id="pokemon-level-diff" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -308,16 +345,14 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         `;
     } else if (ballName === 'lure-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="fishing-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="fishing-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Fishing?</label>
           </div>
         `;
     } else if (ballName === 'love-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="space-y-2">
             <div class="flex items-center space-x-2">
               <input id="opposite-gender" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
@@ -330,16 +365,15 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         `;
     } else if (ballName === 'dive-ball') {
-      contextInputs.classList.remove('hidden');
       if (gen === 3 || gen === 6) {
-        contextInputs.innerHTML = `
+        html += `
           <div class="flex items-center space-x-2">
             <input id="diving-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="diving-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Diving?</label>
           </div>
         `;
       } else if (gen >= 4 && gen <= 8) {
-        contextInputs.innerHTML = `
+        html += `
           <div class="space-y-2">
             <div class="flex items-center space-x-2">
               <input id="fishing-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
@@ -352,19 +386,16 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         `;
       } else if (gen === 9) {
-        contextInputs.innerHTML = `
+        html += `
           <div class="flex items-center space-x-2">
             <input id="on-water-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="on-water-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">On Water?</label>
           </div>
         `;
-      } else {
-        contextInputs.classList.add('hidden');
       }
     }
     else if (ballName === 'dusk-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="dusk-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="dusk-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">In a Cave or During the Night?</label>
@@ -372,8 +403,7 @@ export async function initCatchRateCalc(appContainer) {
         `;
     }
     else if (ballName === 'park-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="park-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="park-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">In Pal Park?</label>
@@ -381,8 +411,7 @@ export async function initCatchRateCalc(appContainer) {
         `;
     }
     else if (ballName === 'quick-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="quick-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="quick-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">First Turn of Battle?</label>
@@ -390,8 +419,7 @@ export async function initCatchRateCalc(appContainer) {
         `;
     }
     else if (ballName === 'repeat-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="repeat-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="repeat-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Pokemon Caught Before?</label>
@@ -399,8 +427,7 @@ export async function initCatchRateCalc(appContainer) {
         `;
     }
     else if (ballName === 'nest-ball') {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div>
             <label for="nest-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wild Pokemon's Level</label>
             <input id="nest-level" type="number" min="1" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -408,15 +435,18 @@ export async function initCatchRateCalc(appContainer) {
         `;
     }
     else if (ballName === 'safari-ball' && gen === 8) {
-      contextInputs.classList.remove('hidden');
-      contextInputs.innerHTML = `
+      html += `
           <div class="flex items-center space-x-2">
             <input id="safari-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
             <label for="safari-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Are you in Sword/Shield?</label>
           </div>
         `;
     }
-    else {
+
+    contextInputs.innerHTML = html;
+    if (html) {
+      contextInputs.classList.remove('hidden');
+    } else {
       contextInputs.classList.add('hidden');
     }
   }
@@ -653,6 +683,13 @@ export async function initCatchRateCalc(appContainer) {
     if (bName === 'master-ball') {
       result = { a: 255, b: 65535, catchPercentage: 100 };
     }
+    else if (gen === 5) {
+      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
+      const entralinkModifier = document.getElementById('capture-power')?.value || "0";
+      const grassModifier = document.getElementById('thick-grass-indicator')?.checked || false;
+
+      result = calculateGen5(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, entralinkModifier);
+    }
     else if (apricornBonus != 1 || heavyBall) {
       if (heavyBall) {
         result = calculateGen34(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus);
@@ -685,7 +722,8 @@ export async function initCatchRateCalc(appContainer) {
       results: {
         "Modified Catch Rate (a)": result.a,
         "Shake Probability (b)": result.b,
-        "Probability of Capture (p)": result.catchPercentage + "%"
+        "Probability of Capture (p)": result.catchPercentage + "%",
+        "Critical Capture (c)": result.critCapture
       }
     });
 
@@ -697,6 +735,11 @@ export async function initCatchRateCalc(appContainer) {
       apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-blue-600 dark:text-blue-400">x${apricornBonus} (Multiplied to Base Catch Rate)</span>`;
     }
 
+    let critInfo = '';
+    if (gen >= 5 && result.critCapture !== undefined) {
+      critInfo = `<p id="crit-capture" class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-2 mb-2">Critical Capture Chance: ${parseFloat(result.critCapture * 100).toFixed(2)}%</p>`;
+    }
+
     breakdownContent.innerHTML = `
       <div class="grid grid-cols-2 gap-2 pb-2 border-b border-gray-100 dark:border-gray-600">
         <span class="font-bold">Pokemon:</span> <span class="text-right">${selectedPokemon.displayName}</span>
@@ -706,12 +749,26 @@ export async function initCatchRateCalc(appContainer) {
         <span class="font-bold">Ball Modifier:</span> <span class="text-right">x${Number.isInteger(ballBonus) ? ballBonus : ballBonus.toFixed(2)}</span>
         ${apricornInfo}
       </div>
-      <div class="grid grid-cols-2 gap-2 pt-1">
+      <div class="grid grid-cols-2 gap-2 pt-1 pb-2 border-b border-gray-100 dark:border-gray-600 border-dashed">
         <span class="font-bold">Catch Rate (a):</span> <span class="text-right">${result.a}</span>
         <span class="font-bold">Shake Prob (b):</span> <span class="text-right">${result.b}</span>
+      </div>
+      ${gen >= 5 && result.critCapture !== undefined ? `
+      <div class="grid grid-cols-2 gap-2 pt-1 border-b border-gray-100 dark:border-gray-600 pb-2 mb-2">
+        <span class="font-bold text-blue-600">Crit Capture Chance:</span> <span class="text-right text-blue-600">${parseFloat(result.critCapture * 100).toFixed(4)}%</span>
+      </div>
+      ` : ''}
+      <div class="grid grid-cols-2 gap-2 pt-1">
         <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage}%</span>
       </div>
     `;
+
+    // Insert Critical Catch message before message
+    const existingCrit = document.getElementById('crit-capture');
+    if (existingCrit) existingCrit.remove();
+    if (critInfo) {
+      catchPercentage.insertAdjacentHTML('afterend', critInfo);
+    }
     calculationBreakdown.open = false; // Start collapsed
     const shakes = bName === 'master-ball' ? 4 : simulateShakes(result.b);
 
@@ -790,6 +847,8 @@ export async function initCatchRateCalc(appContainer) {
     // Reset searchable dropdowns
     setupSearchableDropdown('pokemon-dropdown', [], () => { }, "Select a Pokemon");
     pokemonSearchContainer.classList.add('opacity-50', 'pointer-events-none');
+    globalContextInputs.classList.add('hidden');
+    globalContextInputs.innerHTML = '';
 
     // Default Ball/Pokemon select visual reset
     const ballSpan = document.querySelector('#ball-dropdown .selected-item span');

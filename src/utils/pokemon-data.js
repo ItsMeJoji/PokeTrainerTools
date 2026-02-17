@@ -115,6 +115,17 @@ export async function getPokeBalls(genNumber) {
                 };
             })
             .filter(b => b.generation <= genNumber)
+            .filter(b => {
+                if (genNumber === 5) {
+                    const excludedBalls = [
+                        'level-ball', 'lure-ball', 'moon-ball', 'friend-ball',
+                        'love-ball', 'heavy-ball', 'fast-ball', 'sport-ball',
+                        'safari-ball', 'park-ball', 'dream-ball'
+                    ];
+                    return !excludedBalls.includes(b.name);
+                }
+                return true;
+            })
             .sort((a, b) => a.displayName.localeCompare(b.displayName));
         return pokeBalls;
     } catch (error) {

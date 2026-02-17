@@ -8,12 +8,12 @@ import { getVersions, getLocationsForVersion, getEncounters } from '../utils/pok
  */
 export async function initEncounterCalc(appContainer) {
   appContainer.innerHTML = `
-    <div class="encounter-page text-center">
+    <div class="encounter-page text-center max-w-2xl mx-auto px-4">
       <h1 class="mb-6 text-4xl text-black px-8 py-3 dark:text-white font-extrabold text-shadow-lg">Encounter Calculator</h1>
       <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate the probability of encountering specific Pokemon in various regions and conditions. *</p>
       
       <!-- Selections Container -->
-      <div id="selection-container" class="mb-8 max-w-xs mx-auto space-y-4 transition-opacity duration-300">
+      <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
         <!-- Game Selection -->
         <div>
           <label for="game-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Select Game</label>
