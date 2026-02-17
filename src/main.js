@@ -134,8 +134,32 @@ const renderPage = () => {
   })();
 
   app.innerHTML = `
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl min-h-[80vh]">
       ${content}
+    </div>
+    
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+      <footer class="mt-8 py-12 border-t border-gray-200 dark:border-gray-800 w-full text-center">
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mb-6">
+          <p class="text-gray-600 dark:text-gray-400 font-medium text-lg">Created by <strong class="text-black dark:text-white">ItsMeJoji</strong></p>
+          <div class="flex gap-4">
+            <a href="https://youtube.com/@itsmejoji" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-md hover:scale-110 transition-all border border-gray-200 dark:border-gray-700" title="YouTube">
+              <i class="fab fa-youtube text-xl"></i>
+            </a>
+            <a href="https://x.com/itsmejoji_" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-md hover:scale-110 transition-all border border-gray-200 dark:border-gray-700" title="Twitter">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="https://twitch.tv/itsmejoji" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-md hover:scale-110 transition-all border border-gray-200 dark:border-gray-700" title="Twitch">
+              <i class="fab fa-twitch text-xl"></i>
+            </a>
+          </div>
+        </div>
+        <p class="text-gray-500 dark:text-gray-500 text-sm mb-6 max-w-2xl mx-auto leading-relaxed italic">This is a fan-made project built for Pokémon trainers and enthusiasts. We are not affiliated with the official Pokémon brand.</p>
+        <div class="text-xs text-gray-400 dark:text-gray-600 space-y-1 opacity-75">
+          <p>© 1995 - ${new Date().getFullYear()} Nintendo, GAME FREAK, and Creatures, Inc.</p>
+          <p>Pokémon and Pokémon character names are trademarks of Nintendo, GAME FREAK, and Creatures, Inc.</p>
+        </div>
+      </footer>
     </div>
   `;
 
