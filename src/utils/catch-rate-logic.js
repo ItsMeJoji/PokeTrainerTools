@@ -241,18 +241,12 @@ export function calculateGen67(baseRate, currentHP, maxHP, ballBonus, statusBonu
 
 // Calculate the catch rate for Generation 8
 
-export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, difficultyModifier, yourPokemonLevel, wildPokemonLevel, catchCharm) {
+export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, raidEncounter, yourPokemonLevel, wildPokemonLevel, catchCharm, eventRaid = false, gigantamaxRaid = false, raidHost = false) {
 
-    //Console Log for Debugging
-    console.log("Catch Rate: " + baseRate);
-    console.log("Current HP: " + currentHP);
-    console.log("Max HP: " + maxHP);
-    console.log("Ball Bonus: " + ballBonus);
-    console.log("Status Bonus: " + statusBonus);
-    console.log("Grass Modifier: " + grassModifier);
-    console.log("Dex Count: " + dexCount);
-    console.log("Level Modifier: " + yourPokemonLevel);
-    console.log("Difficulty Modifier: " + difficultyModifier);
+    // Console Log for Debugging
+    console.log("Gen 8 Calc - Base Rate: " + baseRate);
+    console.log("Raid Encounter: " + raidEncounter + " (Host: " + raidHost + ", G-Max: " + gigantamaxRaid + ", Event: " + eventRaid + ")");
+
 
     // Calculate Dex bonus
     let dexBonus;
@@ -272,13 +266,54 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
 
     // Calculate Difficulty Modifier
     let difficultyBonus;
-    if (difficultyModifier === false) {
-        difficultyBonus = 1;
-    } else if (yourPokemonLevel < wildPokemonLevel) {
+    if (!raidEncounter && yourPokemonLevel < wildPokemonLevel) {
         difficultyBonus = 410 / 4096;
     } else {
         difficultyBonus = 1;
     }
+
+    // Handle Raid Encounter Logic
+    if (raidEncounter) {
+        // Research indicates Raid Battles assume 1 HP and No Status for calculation logic
+        currentHP = 0;
+        maxHP = 100; // Normalized for calculation
+        statusBonus = 1;
+
+        if (raidHost) {
+            if (!eventRaid) {
+                // Non-event raids (Standard or G-Max) are guaranteed 100% for host
+                return { a: 255, b: 65535, catchPercentage: 100 };
+            } else {
+                // Event raids for hosts use a fixed base rate (approx 20)
+                baseRate = 45;
+            }
+        } else {
+            // Guest logic
+            if (gigantamaxRaid) {
+                // Research indicates that for guest players in Gigantamax raids,
+                // the effective catch rate is normalized regardless of the species' base rate.
+                // We map the species' base catch rate to the effective catch rate from the provided table.
+                const gmaxLookup = {
+                    3: 4354 / 4096,   // Melmetal, Urshifu
+                    25: 524 / 4096,  // Snorlax
+                    45: 291 / 4096,  // Default for most G-Max
+                    60: 217 / 4096,  // Kingler, Garbodor
+                    75: 176 / 4096,  // Drednaw, Centiskorch
+                    90: 143 / 4096,  // Copperajah
+                    100: 131 / 4096, // Alcremie
+                    120: 111 / 4096, // Sandaconda
+                    190: 70 / 4096, // Pikachu
+                    255: 53 / 4096  // Meowth
+                };
+                difficultyBonus = gmaxLookup[baseRate] || 291 / 4096;
+            } else {
+                // Guests in standard raids use the species' base rate
+                // (baseRate remains unchanged)
+                difficultyBonus = 2;
+            }
+        }
+    }
+
 
     // Calculate Pokedex Modifier
     let pokedexModifier;
@@ -309,9 +344,6 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
         charmModifier = 1;
     }
 
-    console.log("Dex Bonus: " + dexBonus);
-    console.log("Low-Level Bonus: " + levelBonus);
-
     // Calculate modified catch rate 'a'
     const cappedRate = Math.min(baseRate, 255);
     const a = Math.min(255, rndDown(rnd(rndDown(rnd(rnd((3 * maxHP - 2 * currentHP) * dexBonus) * cappedRate * ballBonus) / (3 * maxHP)) * statusBonus * levelBonus * difficultyBonus)))
@@ -321,7 +353,7 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
         return { a: a, b: 65535, catchPercentage: 100 };
     }
 
-    // Calculate shake probability 'b'
+    // Calculate shake probability 'b' (No Crit Captures in raids)
     const b = a === 0 ? 0 : Math.floor(rnd(65536 / rnd(Math.pow(rnd(255 / a), 3 / 16))));
 
     // Calculate probability of capture 
@@ -329,9 +361,12 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
     const catchProbability = Math.pow(pPerShake, 4);
     const catchPercentage = Math.pow(pPerShake, 4) * 100;
 
-    // Calculate the chance for a Critical Capture
-    const critChance = Math.floor(rnd(rnd(a * pokedexModifier * charmModifier) / 6));
-    const critCapture = Math.min(1, critChance / 256);
+    // Calculate the chance for a Critical Capture (Disabled for Raids)
+    let critCapture = 0;
+    if (!raidEncounter) {
+        const critChance = Math.floor(rnd(rnd(a * pokedexModifier * charmModifier) / 6));
+        critCapture = Math.min(1, critChance / 256);
+    }
 
     return {
         a: a,

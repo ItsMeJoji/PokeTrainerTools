@@ -15,87 +15,99 @@ export async function initCatchRateCalc(appContainer) {
       <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Catch Rate Calculator</h1>
       <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Determine your chances of a successful catch based on HP, status, and various Pokeballs.</p>
       
-      <!-- Selections Container -->
-      <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-          <!-- Generation Selection -->
-          <div>
-            <label for="gen-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Generation</label>
-            <select id="gen-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <option value="">Choose Generation</option>
-              ${[3, 4, 5, 6, 7, 8, 9].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
-            </select>
+      <details id="selection-details" class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300" open>
+        <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+          <div class="flex items-center space-x-3">
+            <span class="w-1.5 h-6 bg-red-600 rounded-full"></span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">Calculator Menu</span>
           </div>
+          <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        
+        <!-- Selections Container -->
+        <div id="selection-container" class="space-y-6 p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+            <!-- Generation Selection -->
+            <div>
+              <label for="gen-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Generation</label>
+              <select id="gen-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <option value="">Choose Generation</option>
+                ${[3, 4, 5, 6, 7, 8, 9].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
+              </select>
+            </div>
 
-          <!-- Pokemon Selection (Custom Searchable) -->
-          <div id="pokemon-search-container" class="opacity-50 pointer-events-none transition-opacity duration-300">
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Pokemon</label>
-            <div id="pokemon-dropdown" class="searchable-dropdown relative">
-                <div class="selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
-                    <span class="placeholder text-gray-400">Select a Pokemon</span>
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-                <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                    <div class="p-2 border-b border-gray-100 dark:border-gray-600">
-                        <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Pokemon...">
-                    </div>
-                    <div class="items-list py-1"></div>
-                </div>
+            <!-- Pokemon Selection (Custom Searchable) -->
+            <div id="pokemon-search-container" class="opacity-50 pointer-events-none transition-opacity duration-300">
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Pokemon</label>
+              <div id="pokemon-dropdown" class="searchable-dropdown relative">
+                  <div class="selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
+                      <span class="placeholder text-gray-400">Select a Pokemon</span>
+                      <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                  </div>
+                  <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                      <div class="p-2 border-b border-gray-100 dark:border-gray-600">
+                          <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Pokemon...">
+                      </div>
+                      <div class="items-list py-1"></div>
+                  </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- HP Controls -->
-        <div class="space-y-4">
-          <div class="flex justify-between items-center">
-            <label for="hp-slider" class="text-sm font-medium text-gray-900 dark:text-white">HP Percentage: <span id="hp-value" class="font-bold text-red-600">100</span>%</label>
-            <div class="flex items-center">
-              <input id="check-1hp" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-              <label for="check-1hp" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Exactly 1 HP</label>
+          <!-- HP Controls -->
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <label for="hp-slider" class="text-sm font-medium text-gray-900 dark:text-white">HP Percentage: <span id="hp-value" class="font-bold text-red-600">100</span>%</label>
+              <div class="flex items-center">
+                <input id="check-1hp" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="check-1hp" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Exactly 1 HP</label>
+              </div>
+            </div>
+            <input id="hp-slider" type="range" min="1" max="100" value="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600 dark:bg-gray-700">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+            <!-- Status Selection -->
+            <div>
+              <label for="status-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Condition</label>
+              <select id="status-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <option value="1">None</option>
+                <option value="2">Sleep / Freeze</option>
+                <option value="1.5">Paralysis / Poison / Burn</option>
+              </select>
+            </div>
+
+            <!-- Poké Ball Selection (Custom Searchable) -->
+            <div id="ball-search-container">
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Poké Ball</label>
+              <div id="ball-dropdown" class="searchable-dropdown relative w-full">
+                <div class="selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between gap-2">
+                    <span class="selected-text flex items-center overflow-hidden"><img src="${pokeballSprite}" class="w-5 h-5 mr-2 flex-shrink-0">Poke Ball</span>
+                    <svg class="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                  <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                      <div class="p-2 border-b border-gray-100 dark:border-gray-600">
+                          <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Poké Balls...">
+                      </div>
+                      <div class="items-list py-1"></div>
+                  </div>
+              </div>
             </div>
           </div>
-          <input id="hp-slider" type="range" min="1" max="100" value="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600 dark:bg-gray-700">
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-          <!-- Status Selection -->
-          <div>
-            <label for="status-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Condition</label>
-            <select id="status-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <option value="1">None</option>
-              <option value="2">Sleep / Freeze</option>
-              <option value="1.5">Paralysis / Poison / Burn</option>
-            </select>
+          <!-- Global Contextual Inputs (Hidden by default) -->
+          <div id="global-context-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
+               <!-- Dynamically injected global inputs -->
           </div>
 
-          <!-- Poké Ball Selection (Custom Searchable) -->
-          <div id="ball-search-container">
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Poké Ball</label>
-            <div id="ball-dropdown" class="searchable-dropdown relative">
-                <div class="selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
-                    <span class="selected-text flex items-center"><img src="${pokeballSprite}" class="w-5 h-5 mr-2">Poke Ball</span>
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-                <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                    <div class="p-2 border-b border-gray-100 dark:border-gray-600">
-                        <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Poké Balls...">
-                    </div>
-                    <div class="items-list py-1"></div>
-                </div>
-            </div>
+          <!-- Contextual Inputs (Hidden by default) -->
+          <div id="contextual-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
+               <!-- Dynamically injected inputs -->
           </div>
         </div>
-
-        <!-- Global Contextual Inputs (Hidden by default) -->
-        <div id="global-context-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
-             <!-- Dynamically injected global inputs -->
-        </div>
-
-        <!-- Contextual Inputs (Hidden by default) -->
-        <div id="contextual-inputs" class="hidden grid grid-cols-1 gap-4 text-left p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
-             <!-- Dynamically injected inputs -->
-        </div>
-      </div>
+      </details>
       
       <!-- Action Button -->
       <div class="flex items-center justify-center space-x-4 h-12 mb-8">
@@ -169,6 +181,8 @@ export async function initCatchRateCalc(appContainer) {
   const ballBottomImg = document.getElementById('pokeball-bottom-img');
   const breakdownContent = document.getElementById('breakdown-content');
   const calculationBreakdown = document.getElementById('calculation-breakdown');
+  const selectionDetails = document.getElementById('selection-details');
+  const selectionContainer = document.getElementById('selection-container');
 
   let currentPokemonList = [];
   let ballList = [];
@@ -215,9 +229,9 @@ export async function initCatchRateCalc(appContainer) {
       const value = itemEl.dataset.value;
       const item = items.find(i => (i.id || i.name) == value);
 
-      selectedDisplay.querySelector('span').className = "selected-text flex items-center";
+      selectedDisplay.querySelector('span').className = "selected-text flex items-center overflow-hidden";
       selectedDisplay.querySelector('span').innerHTML = `
-            ${item.sprite ? `<img src="${item.sprite}" class="w-5 h-5 mr-2">` : ''}
+            ${item.sprite ? `<img src="${item.sprite}" class="w-5 h-5 mr-2 flex-shrink-0">` : ''}
             ${item.displayName}
         `;
       listContainer.classList.add('hidden');
@@ -319,8 +333,22 @@ export async function initCatchRateCalc(appContainer) {
       }
 
       globalContextInputs.innerHTML = `
+          ${gen === 8 ? `
+          <!-- Gen 8 Version Toggle -->
+          <div class="flex flex-col items-center space-y-4 w-full pb-6 border-b border-gray-100 dark:border-gray-600">
+              <div class="flex items-center space-x-3">
+                  <span class="w-1.5 h-6 bg-red-600 rounded-full"></span>
+                  <span class="text-lg font-bold text-gray-900 dark:text-white">Select Game Version</span>
+              </div>
+              <div id="gen8-version-toggle" class="flex items-center bg-gray-100 dark:bg-gray-700 p-1.5 rounded-2xl w-72 h-12 select-none border border-gray-200 dark:border-gray-600/50 gap-2">
+                  <button type="button" data-version="swsh" class="version-toggle-btn flex-1 h-full flex items-center justify-center text-sm font-bold rounded-xl transition-all duration-300 bg-white dark:bg-gray-600 shadow-md text-red-600 dark:text-red-400">SW / SH</button>
+                  <button type="button" data-version="bdsp" class="version-toggle-btn flex-1 h-full flex items-center justify-center text-sm font-bold rounded-xl transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-300">BD / SP</button>
+              </div>
+          </div>
+          ` : ''}
+
           <!-- Primary Inputs Row -->
-          <div class="flex flex-wrap justify-center items-end gap-6 w-full">
+          <div class="flex flex-wrap justify-center items-end gap-6 w-full mt-2">
             <div class="w-full sm:w-48">
               <label for="pokedex-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pokémon Caught</label>
               <input id="pokedex-count" type="number" min="0" max="${maxPokedex}" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
@@ -342,34 +370,110 @@ export async function initCatchRateCalc(appContainer) {
           </div>
 
           <!-- Centered Checkboxes Row -->
-          ${gen === 8 || gen === 9 ? `
+          ${gen === 9 ? `
           <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full pt-4 border-t border-gray-100 dark:border-gray-600">
             <div class="flex items-center space-x-2 select-none">
               <input id="catching-charm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
               <label for="catching-charm" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Catching Charm?</label>
             </div>
-            ${gen === 8 ? `
-            <div class="flex items-center space-x-2 select-none">
-              <input id="gym-badge-8" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
-              <label for="gym-badge-8" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">8 Gym Badges?</label>
-            </div>
-            ` : `
             <div class="flex items-center space-x-2 select-none">
               <input id="caught-unawares" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
               <label for="caught-unawares" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Caught Unawares?</label>
             </div>
-            `}
             <div class="flex items-center space-x-2 select-none">
               <input id="raid-encounter" type="checkbox" disabled class="w-4 h-4 text-gray-400 bg-gray-100 border-gray-300 rounded cursor-not-allowed opacity-50">
               <label for="raid-encounter" class="text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed italic">Raid Encounter?</label>
             </div>
           </div>
-          ` : ''}
+          ` : (gen === 8 ? `
+          <div class="flex flex-col items-center space-y-4 w-full pt-4 border-t border-gray-100 dark:border-gray-600">
+            <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full">
+              <div class="flex items-center space-x-2 select-none">
+                <input id="catching-charm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="catching-charm" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Catching Charm?</label>
+              </div>
+              <div class="flex items-center space-x-2 select-none">
+                <input id="gym-badge-8" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="gym-badge-8" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">8 Gym Badges?</label>
+              </div>
+              <div class="flex items-center space-x-2 select-none">
+                <input id="raid-encounter" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="raid-encounter" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Raid Encounter?</label>
+              </div>
+            </div>
+
+            <!-- Raid Options (Hidden by default) -->
+            <div id="raid-options-container" class="hidden flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-800/30">
+              <div class="flex items-center space-x-2 select-none">
+                <input id="event-raid" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="event-raid" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Event Raid?</label>
+              </div>
+              <div class="flex items-center space-x-2 select-none">
+                <input id="gigantamax-raid" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="gigantamax-raid" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Gigantamax Raid?</label>
+              </div>
+              <div class="flex items-center space-x-2 select-none">
+                <input id="raid-host" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+                <label for="raid-host" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Raid Host?</label>
+              </div>
+            </div>
+          </div>
+          ` : '')}
       `;
     } else {
       globalContextInputs.classList.add('hidden');
       globalContextInputs.innerHTML = '';
     }
+
+    // --- Gen 8 Specific Event Delegation ---
+    globalContextInputs.onclick = (e) => {
+      const toggleBtn = e.target.closest('.version-toggle-btn');
+      if (toggleBtn) {
+        const version = toggleBtn.dataset.version;
+        const container = document.getElementById('gen8-version-toggle');
+        const btns = container.querySelectorAll('.version-toggle-btn');
+
+        btns.forEach(btn => {
+          btn.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-red-600', 'dark:text-red-400');
+          btn.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-red-500', 'dark:hover:text-red-300');
+        });
+
+        toggleBtn.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:text-red-500', 'dark:hover:text-red-300');
+        toggleBtn.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-red-600', 'dark:text-red-400');
+
+        // Update Raid Toggle state
+        const raidCheckbox = document.getElementById('raid-encounter');
+        const raidLabel = document.querySelector('label[for="raid-encounter"]');
+        const raidOptions = document.getElementById('raid-options-container');
+
+        if (version === 'swsh') {
+          raidCheckbox.disabled = false;
+          raidCheckbox.classList.remove('cursor-not-allowed', 'opacity-50', 'text-gray-400');
+          raidCheckbox.classList.add('text-red-600', 'cursor-pointer');
+          raidLabel.classList.remove('text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'italic');
+          raidLabel.classList.add('text-gray-900', 'dark:text-white', 'cursor-pointer');
+        } else {
+          raidCheckbox.disabled = true;
+          raidCheckbox.checked = false;
+          raidCheckbox.classList.add('cursor-not-allowed', 'opacity-50', 'text-gray-400');
+          raidCheckbox.classList.remove('text-red-600', 'cursor-pointer');
+          raidLabel.classList.add('text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'italic');
+          raidLabel.classList.remove('text-gray-900', 'dark:text-white', 'cursor-pointer');
+          raidOptions.classList.add('hidden');
+        }
+      }
+    };
+
+    globalContextInputs.onchange = (e) => {
+      if (e.target.id === 'raid-encounter') {
+        const raidOptions = document.getElementById('raid-options-container');
+        if (e.target.checked) {
+          raidOptions.classList.remove('hidden');
+        } else {
+          raidOptions.classList.add('hidden');
+        }
+      }
+    };
 
     // Show Loading state
     setupSearchableDropdown('pokemon-dropdown', [], () => { }, 'Loading Pokemon<span class="anim-loading-dots"></span>');
@@ -393,7 +497,8 @@ export async function initCatchRateCalc(appContainer) {
       if (pokeBall) {
         selectedBall = pokeBall;
         const ballSelectedSpan = document.querySelector('#ball-dropdown .selected-item span');
-        ballSelectedSpan.innerHTML = `<img src="${pokeBall.sprite}" class="w-5 h-5 mr-2">${pokeBall.displayName}`;
+        ballSelectedSpan.className = "selected-text flex items-center overflow-hidden";
+        ballSelectedSpan.innerHTML = `<img src="${pokeBall.sprite}" class="w-5 h-5 mr-2 flex-shrink-0">${pokeBall.displayName}`;
         ballTopImg.src = pokeBall.sprite;
         ballBottomImg.src = pokeBall.sprite;
         updateContextualInputs(pokeBall.name, selectedPokemon);
@@ -849,24 +954,14 @@ export async function initCatchRateCalc(appContainer) {
     else if (gen === 8) {
       const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
       const catchCharm = document.getElementById('catching-charm')?.checked || false;
-      const difficultyModifier = document.getElementById('gym-badge-8')?.checked || false;
-      const grassModifier = false;
+      const raidEncounter = document.getElementById('raid-encounter')?.checked || false;
+      const eventRaid = document.getElementById('event-raid')?.checked || false;
+      const gigantamaxRaid = document.getElementById('gigantamax-raid')?.checked || false;
+      const raidHost = document.getElementById('raid-host')?.checked || false;
 
-      if (apricornBonus != 1 || heavyBall) {
-        if (heavyBall) {
-          result = calculateGen8(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
-        }
-        else {
-          result = calculateGen8(selectedPokemon.captureRate, currentHP, maxHP, apricornBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
-        }
-      }
-      else {
-        result = calculateGen8(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
-      }
+      result = calculateGen8(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, false, dexCount, raidEncounter, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm, eventRaid, gigantamaxRaid, raidHost);
     }
     else if (gen === 9) {
-      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
-      const capturePower = parseInt(document.getElementById('capture-power')?.value || 0);
       const unawareModifier = document.getElementById('caught-unawares')?.checked || false;
       const catchCharm = document.getElementById('catching-charm')?.checked || false;
       const badgeCount = parseInt(document.getElementById('badge-count')?.value || 0);
@@ -987,6 +1082,10 @@ export async function initCatchRateCalc(appContainer) {
       }
 
       catchPercentage.textContent = `${result.catchPercentage}%`;
+      // Collapse Menu
+      selectionDetails.open = false;
+
+      // Show result
       catchResult.classList.remove('hidden');
       void catchResult.offsetWidth;
       catchResult.classList.remove('opacity-0');
@@ -1058,8 +1157,10 @@ export async function initCatchRateCalc(appContainer) {
     }
 
     document.getElementById('pokemon-dropdown').classList.remove('pointer-events-none');
-    document.getElementById('ball-dropdown').classList.remove('pointer-events-none');
+    // Reset Menu
+    selectionDetails.open = true;
 
+    // Clear and Hide results
     catchResult.classList.add('opacity-0');
     setTimeout(() => {
       catchResult.classList.add('hidden');

@@ -410,6 +410,65 @@ input:checked+.slider:before {
   list-style: none;
 }
 
+/* Details/Summary Animation Fix */
+details>div {
+  padding-bottom: 1rem;
+}
+
+details[open]>div {
+  animation: details-show 0.3s ease-out;
+}
+
+@keyframes details-show {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Base details styling */
+details summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Selection Card Shadow and Border */
+#selection-details {
+  overflow: visible;
+  /* Allow searchable dropdowns to pop out */
+  position: relative;
+  z-index: 50;
+}
+
+#selection-details[open] summary {
+  background: transparent;
+}
+
+/* Searchable Dropdown Layout Fix */
+.searchable-dropdown .selected-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.searchable-dropdown .selected-text img {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
 
 /* Pokeball Animations */
 .pokeball-scene {

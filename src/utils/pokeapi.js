@@ -15,26 +15,34 @@ const MAINLINE_VERSIONS = [
     'black', 'white', 'black-2', 'white-2',
     'x', 'y', 'omega-ruby', 'alpha-sapphire',
     'sun', 'moon', 'ultra-sun', 'ultra-moon',
-    // Excluded due to missing encounter data
-    // 'lets-go-pikachu', 'lets-go-eevee',
-    // 'sword', 'shield',
-    // 'brilliant-diamond', 'shining-pearl',
-    // 'legends-arceus',
-    // 'scarlet', 'violet',
-    // 'legends-za'
+    'lets-go-pikachu', 'lets-go-eevee',
+    'sword', 'shield',
+    'brilliant-diamond', 'shining-pearl',
+    'legends-arceus',
+    'scarlet', 'violet',
+    'legends-za'
 ];
 
 /**
  * Fetches all mainline versions from PokeAPI.
+ * Includes hardcoded versions for games not yet in the API.
  * @returns {Promise<Array>} List of versions.
  */
 export async function getVersions() {
     try {
         const response = await P.getVersionsList();
-        return response.results.filter(v => MAINLINE_VERSIONS.includes(v.name));
+        const apiVersions = response.results.map(v => v.name);
+
+        // Combine API versions (filtered by MAINLINE) with MISSING mainland versions
+        // This ensures unreleased games like legends-za appear.
+        return MAINLINE_VERSIONS.map(name => ({
+            name: name,
+            url: response.results.find(v => v.name === name)?.url || null
+        }));
     } catch (error) {
         console.error('Error fetching versions:', error);
-        return [];
+        // Fallback to just the names
+        return MAINLINE_VERSIONS.map(name => ({ name }));
     }
 }
 
