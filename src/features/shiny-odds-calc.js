@@ -77,14 +77,34 @@ export async function initShinyOddsCalc(appContainer) {
         const methods = [
             { id: 'random', name: 'Random Encounter', description: 'Standard wild Pokémon encounters in grass, caves, or water.' },
             { id: 'static', name: 'Static Encounter', description: 'Pokémon that appear as overworld sprites, gifts, or interactable objects (e.g., Legendaries, Snorlax).' },
-            { id: 'masuda', name: 'Breeding (Masuda Method)', description: 'Breeding two Pokémon with different real-world language origins.', minGen: 4 }
+            { id: 'masuda', name: 'Breeding (Masuda Method)', description: 'Breeding two Pokémon with different real-world language origins.', minGen: 4 },
+            { id: 'pokeradar-gen4', name: 'Poké Radar (Gen 4)', description: 'Chaining Pokémon using the Poké Radar. Odds max out at a chain of 40.', minGen: 4, maxGen: 4, hasInput: true, inputLabel: 'Chain Length (0-40)', maxInput: 40 },
+            { id: 'friendsafari', name: 'Friend Safari', description: 'Encounters in the Friend Safari have a flat boosted shiny rate.', minGen: 6, maxGen: 6 },
+            { id: 'chainfishing', name: 'Chain Fishing', description: 'Consecutive successful fishing attempts increase odds. Maxes at chain 20.', minGen: 6, maxGen: 6, hasInput: true, inputLabel: 'Chain Length (0-20)', maxInput: 20 },
+            { id: 'pokeradar-gen6', name: 'Poké Radar (Gen 6)', description: 'Chaining with the Poké Radar in Kalos. Odds max out at a chain of 40.', minGen: 6, maxGen: 6, hasInput: true, inputLabel: 'Chain Length (0-40)', maxInput: 40 }
         ];
 
         methodsList.innerHTML = methods
-            .filter(m => !m.minGen || gen >= m.minGen)
+            .filter(m => (!m.minGen || gen >= m.minGen) && (!m.maxGen || gen <= m.maxGen))
             .map((m, index) => {
-                const odds = calculateShinyOdds(gen, m.id, hasCharm);
+                // Get current input value if exists, or default 0
+                const inputId = `input-${m.id}`;
+                const currentVal = document.getElementById(inputId)?.value || 0;
+
+                const odds = calculateShinyOdds(gen, m.id, hasCharm, { chain: parseInt(currentVal) });
                 const isOpen = index === 0 ? 'open' : '';
+
+                let inputHtml = '';
+                if (m.hasInput) {
+                    inputHtml = `
+                        <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <label for="${inputId}" class="block mb-2 text-sm font-bold text-gray-700 dark:text-gray-300">${m.inputLabel}</label>
+                            <input type="number" id="${inputId}" min="0" max="${m.maxInput}" value="${currentVal}" 
+                                class="shiny-input w-full p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white"
+                                oninput="document.dispatchEvent(new CustomEvent('shinyInputUpdate'))">
+                        </div>
+                    `;
+                }
 
                 return `
                     <details class="group bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden" ${isOpen}>
@@ -94,7 +114,7 @@ export async function initShinyOddsCalc(appContainer) {
                                 <span class="font-bold text-gray-900 dark:text-white">${m.name}</span>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <span class="text-sm font-mono font-bold text-yellow-600 dark:text-yellow-400">${odds.fraction}</span>
+                                <span class="text-sm font-mono font-bold text-yellow-600 dark:text-yellow-400 fraction-display">${odds.fraction}</span>
                                 <svg class="w-5 h-5 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -102,15 +122,19 @@ export async function initShinyOddsCalc(appContainer) {
                         </summary>
                         <div class="p-4 pt-0 text-sm text-gray-600 dark:text-gray-400 bg-gray-50/50 dark:bg-gray-900/20 border-t border-gray-50 dark:border-gray-700">
                             <p class="mt-3 mb-4 italic">${m.description}</p>
+                            ${inputHtml}
                             <div class="grid grid-cols-2 gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
                                 <div>
                                     <span class="block text-xs uppercase font-bold text-gray-400 mb-1">Percentage</span>
-                                    <span class="text-lg font-bold text-gray-900 dark:text-white">${odds.percentage}%</span>
+                                    <span class="text-lg font-bold text-gray-900 dark:text-white percentage-display">${odds.percentage}%</span>
                                 </div>
                                 <div>
                                     <span class="block text-xs uppercase font-bold text-gray-400 mb-1">Shiny Rolls</span>
-                                    <span class="text-lg font-bold text-gray-900 dark:text-white">${odds.rolls} <span class="text-xs font-normal text-gray-500">(1/${odds.base} base)</span></span>
+                                    <span class="text-lg font-bold text-gray-900 dark:text-white rolls-display">${odds.rolls} <span class="text-xs font-normal text-gray-500">(1/${odds.base} base)</span></span>
                                 </div>
+                                <div class="hidden fraction-display">${odds.fraction}</div> 
+                                <!-- Hidden element to store/update fraction for summary if needed, 
+                                     actually summary is at top. Let's update top summary too. -->
                             </div>
                         </div>
                     </details>
@@ -120,4 +144,39 @@ export async function initShinyOddsCalc(appContainer) {
 
     gameSelect.addEventListener('change', updateUI);
     charmToggle.addEventListener('change', updateUI);
+
+    // Listen for custom input updates to re-render without closing details (if we handle state better)
+    // Actually, full re-render closes details. Let's just re-calculate?
+    // For simplicity V1: Re-render. Use state preservation for 'open' details?
+    // Better: Add event listeners to inputs AFTER render.
+
+    // Using event delegation for dynamic inputs
+    methodsList.addEventListener('input', (e) => {
+        if (e.target.classList.contains('shiny-input')) {
+            // We need to update ONLY the results part of this card, or re-render.
+            // Re-rendering kills contrast/focus.
+            // Let's implement a targeted update.
+
+            // Find parent method ID
+            // Actually, simplest is to just trigger a recalc for that specific row.
+            // But our render logic is monolithic.
+            // Let's just re-render and try to restore focus? No, that's janky.
+
+            // Let's attach onchange listener to update the numbers in place.
+            const card = e.target.closest('details');
+            const methodId = e.target.id.replace('input-', '');
+            const val = parseInt(e.target.value);
+            const game = gameSelect.value;
+            const gen = VERSION_TO_GEN[game];
+            const hasCharm = charmToggle.checked;
+
+            const odds = calculateShinyOdds(gen, methodId, hasCharm, { chain: val });
+
+            // Update DOM elements
+            card.querySelector('.percentage-display').textContent = odds.percentage + '%';
+            card.querySelector('.fraction-display').textContent = odds.fraction;
+            card.querySelector('.rolls-display').innerHTML = `${odds.rolls} <span class="text-xs font-normal text-gray-500">(1/${odds.base} base)</span>`;
+        }
+    });
+
 }

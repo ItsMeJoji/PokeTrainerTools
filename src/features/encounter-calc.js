@@ -194,9 +194,26 @@ export async function initEncounterCalc(appContainer) {
   // Disable start button until location is selected
   startBtn.disabled = true;
 
+  // --- Ellipsis Animation Helper ---
+  function animateEllipsis(element, baseText) {
+    let dots = 0;
+    const interval = setInterval(() => {
+      dots = (dots % 3) + 1;
+      if (element.tagName === 'SELECT') {
+        const firstOption = element.options[0];
+        if (firstOption) firstOption.textContent = baseText + '.'.repeat(dots);
+      } else {
+        element.textContent = baseText + '.'.repeat(dots);
+      }
+    }, 500);
+    return interval;
+  }
+
   // Populate games
+  const gamesLoadingInterval = animateEllipsis(gameSelect, "Loading versions");
   try {
     const versions = await getVersions();
+    clearInterval(gamesLoadingInterval);
     gameSelect.innerHTML = '<option value="">Choose a game</option>';
     versions.forEach(version => {
       const option = document.createElement('option');
@@ -205,6 +222,7 @@ export async function initEncounterCalc(appContainer) {
       gameSelect.appendChild(option);
     });
   } catch (error) {
+    clearInterval(gamesLoadingInterval);
     console.error('Failed to load games:', error);
     gameSelect.innerHTML = '<option value="">Error loading games</option>';
   }
@@ -292,11 +310,13 @@ export async function initEncounterCalc(appContainer) {
     void locationWrapper.offsetWidth;
     locationWrapper.classList.remove('opacity-0');
 
-    locationSelect.innerHTML = '<option value="">Loading locations...</option>';
+    locationSelect.innerHTML = '<option value="">Loading locations.</option>';
     locationSelect.disabled = true;
+    const locationsLoadingInterval = animateEllipsis(locationSelect, "Loading locations");
 
     try {
       const locations = await getLocationsForVersion(selectedVersion);
+      clearInterval(locationsLoadingInterval);
       locationSelect.innerHTML = '<option value="">Choose a location</option>';
       if (locations.length === 0) {
         locationSelect.innerHTML = '<option value="">No locations found</option>';

@@ -234,6 +234,9 @@ export async function initCatchRateCalc(appContainer) {
     document.addEventListener('click', outsideClick);
 
     // Initial state
+    const span = selectedDisplay.querySelector('span');
+    span.innerHTML = placeholder;
+    span.className = "placeholder text-gray-400";
     updateList();
   }
 
@@ -257,6 +260,9 @@ export async function initCatchRateCalc(appContainer) {
     // Manage Global Inputs for Gen 5, 6, 7, 8, 9
     if (gen >= 5) {
       globalContextInputs.classList.remove('hidden');
+      globalContextInputs.classList.remove('grid', 'grid-cols-1'); // Remove old grid classes
+      globalContextInputs.classList.add('flex', 'flex-col', 'items-center', 'space-y-6'); // Center everything
+
       let powerLabel = gen === 5 ? "Capture Power" : (gen === 6 ? "Capture O-Power" : (gen === 7 ? "Roto Catch" : "Capture Power"));
       let maxPokedex = gen === 5 ? 649 : (gen === 6 ? 721 : (gen === 7 ? 807 : (gen === 8 ? 898 : 1025)));
 
@@ -270,19 +276,19 @@ export async function initCatchRateCalc(appContainer) {
         `;
       } else if (gen === 8 || gen === 9) {
         powerInputHtml = `
-          <div class="grid grid-cols-2 gap-4">
-            <div>
+          <div class="flex flex-wrap justify-center gap-4 w-full">
+            <div class="w-full sm:w-40">
               <label for="your-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Level</label>
-              <input id="your-pokemon-level" type="number" min="1" max="100" value="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <input id="your-pokemon-level" type="number" min="1" max="100" value="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
             </div>
-            <div>
+            <div class="w-full sm:w-40">
               <label for="wild-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wild Level</label>
-              <input id="wild-pokemon-level" type="number" min="1" max="100" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <input id="wild-pokemon-level" type="number" min="1" max="100" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
             </div>
           </div>
           ${gen === 9 ? `
-          <div class="grid grid-cols-2 gap-4 mt-4">
-            <div>
+          <div class="flex flex-wrap justify-center gap-4 w-full mt-4">
+            <div class="w-full sm:w-40">
               <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">${powerLabel}</label>
               <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <option value="0">No Power</option>
@@ -291,21 +297,21 @@ export async function initCatchRateCalc(appContainer) {
                 <option value="3">Level 3</option>
               </select>
             </div>
-            <div>
+            <div class="w-full sm:w-40">
               <label for="badge-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Badge Count</label>
-              <input id="badge-count" type="number" min="0" max="8" value="8" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <input id="badge-count" type="number" min="0" max="8" value="8" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
             </div>
           </div>
           ` : ''}
         `;
       } else {
         powerInputHtml = `
-          <div>
+          <div class="w-full sm:w-48">
             <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">${powerLabel}</label>
             <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="0">No Power</option>
               <option value="1">Level 1</option>
-              <option value="2">Level 3</option>
+              <option value="2">Level 2</option>
               <option value="3">Level 3 / S / MAX</option>
             </select>
           </div>
@@ -313,19 +319,31 @@ export async function initCatchRateCalc(appContainer) {
       }
 
       globalContextInputs.innerHTML = `
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+          <!-- Primary Inputs Row -->
+          <div class="flex flex-wrap justify-center items-end gap-6 w-full">
+            <div class="w-full sm:w-48">
               <label for="pokedex-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pokémon Caught</label>
-              <input id="pokedex-count" type="number" min="0" max="${maxPokedex}" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <input id="pokedex-count" type="number" min="0" max="${maxPokedex}" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
             </div>
-            <div class="space-y-4">
-              ${powerInputHtml}
-            </div>
+            ${gen < 8 ? powerInputHtml : ''}
           </div>
 
-          <!-- Generation Specific Checkboxes -->
+          <!-- Level/Badge Logic for Gen 8/9 -->
+          ${gen >= 8 ? `
+          <div class="w-full">
+            ${powerInputHtml}
+          </div>
+          ` : ''}
+
+          <!-- Thick Grass (Only for Gen 5) -->
+          <div class="flex items-center justify-center space-x-2 ${gen !== 5 ? 'hidden' : ''}">
+            <input id="thick-grass-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+            <label for="thick-grass-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Thick Grass?</label>
+          </div>
+
+          <!-- Centered Checkboxes Row -->
           ${gen === 8 || gen === 9 ? `
-          <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-6 pt-4 border-t border-gray-100 dark:border-gray-600">
+          <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full pt-4 border-t border-gray-100 dark:border-gray-600">
             <div class="flex items-center space-x-2 select-none">
               <input id="catching-charm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
               <label for="catching-charm" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Catching Charm?</label>
@@ -346,9 +364,7 @@ export async function initCatchRateCalc(appContainer) {
               <label for="raid-encounter" class="text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed italic">Raid Encounter?</label>
             </div>
           </div>
-          ` : (gen === 5 ? `
-          <!-- Thick Grass handled above for Gen 5 -->
-          ` : '')}
+          ` : ''}
       `;
     } else {
       globalContextInputs.classList.add('hidden');
@@ -356,7 +372,7 @@ export async function initCatchRateCalc(appContainer) {
     }
 
     // Show Loading state
-    setupSearchableDropdown('pokemon-dropdown', [], () => { }, "Loading Pokemon...");
+    setupSearchableDropdown('pokemon-dropdown', [], () => { }, 'Loading Pokemon<span class="anim-loading-dots"></span>');
 
     try {
       currentPokemonList = await getPokemonUpToGeneration(gen);

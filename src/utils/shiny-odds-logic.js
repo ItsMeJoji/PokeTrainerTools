@@ -25,11 +25,12 @@ export const VERSIONS_WITH_SHINY_CHARM = [
 /**
  * Calculates the shiny odds based on generation, method, and extra help (Shiny Charm).
  * @param {number} gen - Generation number (1-9).
- * @param {string} method - 'random', 'static', 'breeding', 'masuda'.
+ * @param {string} method - 'random', 'static', 'breeding', 'masuda', 'pokeradar-gen4', 'pokeradar-gen6', 'chainfishing', 'friendsafari'.
  * @param {boolean} hasShinyCharm - Whether the player has the Shiny Charm.
+ * @param {Object} extraParams - Additional parameters like 'chain' length.
  * @returns {Object} { fraction: string, percentage: string, rolls: number }
  */
-export function calculateShinyOdds(gen, method, hasShinyCharm = false) {
+export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraParams = {}) {
     if (gen < 2) return { fraction: '0/0', percentage: '0', rolls: 0 };
 
     let baseOdds = gen >= 6 ? 4096 : 8192;
@@ -57,14 +58,38 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false) {
         rolls = 8;
     }
 
+    if (method === 'pokeradar-gen4') {
+        const chain = Math.min(extraParams.chain || 0, 40);
+        let n = Math.ceil(65535 / (8200 - chain * 200));
+        let probability = n / 65536;
+        let oneInX = Math.round(1 / probability);
+        return formatResult(1, oneInX);
+    } else if (method === 'pokeradar-gen6') {
+        const chain = Math.min(extraParams.chain || 0, 40);
+        if (chain >= 40) return formatResult(1, 200);
+
+        let n = Math.ceil(65535 / (8200 - chain * 200));
+        let oneInX = Math.round(65536 / n);
+        return formatResult(1, oneInX);
+    } else if (method === 'chainfishing') {
+        const chain = Math.min(extraParams.chain || 0, 20);
+        rolls += 2 * chain;
+    } else if (method === 'friendsafari') {
+        rolls = 5;
+        if (hasShinyCharm) rolls += 2;
+    }
+
+    return formatResult(rolls, baseOdds);
+}
+
+function formatResult(rolls, baseOdds) {
     const percentage = (rolls / baseOdds) * 100;
 
-    // Simplify fraction if possible
+    // Simplify fraction
     let displayFraction = `${rolls}/${baseOdds}`;
     if (baseOdds % rolls === 0) {
         displayFraction = `1/${baseOdds / rolls}`;
     } else {
-        // Approximate for common values if not perfectly divisible
         const approx = Math.round(baseOdds / rolls);
         displayFraction = `~1/${approx} (${rolls}/${baseOdds})`;
     }
