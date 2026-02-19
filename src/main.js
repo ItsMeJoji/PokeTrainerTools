@@ -155,6 +155,7 @@ const renderPage = () => {
           </div>
         </div>
         <p class="text-gray-500 dark:text-gray-500 text-sm mb-6 max-w-2xl mx-auto leading-relaxed italic">This is a fan-made project built for Pokémon trainers and enthusiasts. We are not affiliated with the official Pokémon brand.</p>
+        <p class="text-gray-500 dark:text-gray-500 text-sm mb-6 max-w-2xl mx-auto leading-relaxed italic">Information and Logic is pulled from Bulbapedia and PokeAPI.</p>
         <div class="text-xs text-gray-400 dark:text-gray-600 space-y-1 opacity-75">
           <p>© 1995 - ${new Date().getFullYear()} Nintendo, GAME FREAK, and Creatures, Inc.</p>
           <p>Pokémon and Pokémon character names are trademarks of Nintendo, GAME FREAK, and Creatures, Inc.</p>

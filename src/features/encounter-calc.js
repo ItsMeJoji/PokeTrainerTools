@@ -10,7 +10,7 @@ export async function initEncounterCalc(appContainer) {
   appContainer.innerHTML = `
     <div class="encounter-page text-center max-w-2xl mx-auto px-4">
       <h1 class="mb-6 text-4xl text-black px-8 py-3 dark:text-white font-extrabold text-shadow-lg">Encounter Calculator</h1>
-      <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate the probability of encountering specific Pokemon in various regions and conditions. *</p>
+      <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate the probability of encountering specific Pokemon in various regions and conditions.</p>
       
       <!-- Selections Container -->
       <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
@@ -156,7 +156,6 @@ export async function initEncounterCalc(appContainer) {
           </div>
         </div>
       </div>
-      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">*Advanced Filters (Radar, Swarm, etc.) Coming Soon</p>
     </div>
   `;
 

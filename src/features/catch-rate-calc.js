@@ -6,14 +6,14 @@ import pokeballSprite from '../assets/images/pokeball.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
 
 import { getPokemonUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
-import { calculateGen34, calculateGen5, simulateShakes } from '../utils/catch-rate-logic.js';
+import { calculateGen34, calculateGen5, calculateGen67, calculateGen8, calculateGen9, simulateShakes } from '../utils/catch-rate-logic.js';
 import P from '../utils/pokeapi.js';
 
 export async function initCatchRateCalc(appContainer) {
   appContainer.innerHTML = `
     <div class="catch-rate-page text-center max-w-2xl mx-auto px-4">
       <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Catch Rate Calculator</h1>
-      <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Determine your chances of a successful catch based on HP, status, and various Pokeballs.*</p>
+      <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Determine your chances of a successful catch based on HP, status, and various Pokeballs.</p>
       
       <!-- Selections Container -->
       <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
@@ -23,7 +23,7 @@ export async function initCatchRateCalc(appContainer) {
             <label for="gen-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Generation</label>
             <select id="gen-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="">Choose Generation</option>
-              ${[3, 4, 5].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
+              ${[3, 4, 5, 6, 7, 8, 9].map(num => `<option value="${num}">Generation ${num}</option>`).join('')}
             </select>
           </div>
 
@@ -145,8 +145,6 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         </details>
       </div>
-      
-      <p class="mt-8 text-xs text-gray-400 italic">* Gen 1-2 and 6-9 calculations coming soon. Gen 3-5 logic is active. Note the logic is still a work in progress to match Bulbapedia's calculations.</p>
     </div>
   `;
 
@@ -256,29 +254,101 @@ export async function initCatchRateCalc(appContainer) {
 
     pokemonSearchContainer.classList.remove('opacity-50', 'pointer-events-none');
 
-    // Manage Gen 5 Global Inputs
-    if (gen === 5) {
+    // Manage Global Inputs for Gen 5, 6, 7, 8, 9
+    if (gen >= 5) {
       globalContextInputs.classList.remove('hidden');
+      let powerLabel = gen === 5 ? "Capture Power" : (gen === 6 ? "Capture O-Power" : (gen === 7 ? "Roto Catch" : "Capture Power"));
+      let maxPokedex = gen === 5 ? 649 : (gen === 6 ? 721 : (gen === 7 ? 807 : (gen === 8 ? 898 : 1025)));
+
+      let powerInputHtml = '';
+      if (gen === 7) {
+        powerInputHtml = `
+          <div class="flex items-center space-x-2 mt-7 h-10 select-none">
+            <input id="capture-power" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+            <label for="capture-power" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">${powerLabel} Active?</label>
+          </div>
+        `;
+      } else if (gen === 8 || gen === 9) {
+        powerInputHtml = `
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="your-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Level</label>
+              <input id="your-pokemon-level" type="number" min="1" max="100" value="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+            <div>
+              <label for="wild-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wild Level</label>
+              <input id="wild-pokemon-level" type="number" min="1" max="100" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+          </div>
+          ${gen === 9 ? `
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
+              <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">${powerLabel}</label>
+              <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <option value="0">No Power</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+              </select>
+            </div>
+            <div>
+              <label for="badge-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Badge Count</label>
+              <input id="badge-count" type="number" min="0" max="8" value="8" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+          </div>
+          ` : ''}
+        `;
+      } else {
+        powerInputHtml = `
+          <div>
+            <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">${powerLabel}</label>
+            <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <option value="0">No Power</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 3</option>
+              <option value="3">Level 3 / S / MAX</option>
+            </select>
+          </div>
+        `;
+      }
+
       globalContextInputs.innerHTML = `
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="pokedex-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pokémon Caught</label>
-              <input id="pokedex-count" type="number" min="0" max="649" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <input id="pokedex-count" type="number" min="0" max="${maxPokedex}" value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
-            <div>
-              <label for="capture-power" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capture Power</label>
-              <select id="capture-power" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                <option value="0">No Power</option>
-                <option value="1">Capture Power 1</option>
-                <option value="2">Capture Power 2</option>
-                <option value="3">Capture Power 3, S, or MAX</option>
-              </select>
+            <div class="space-y-4">
+              ${powerInputHtml}
             </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <input id="thick-grass-indicator" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600">
-            <label for="thick-grass-indicator" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Thick Grass?</label>
+
+          <!-- Generation Specific Checkboxes -->
+          ${gen === 8 || gen === 9 ? `
+          <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-6 pt-4 border-t border-gray-100 dark:border-gray-600">
+            <div class="flex items-center space-x-2 select-none">
+              <input id="catching-charm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+              <label for="catching-charm" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Catching Charm?</label>
+            </div>
+            ${gen === 8 ? `
+            <div class="flex items-center space-x-2 select-none">
+              <input id="gym-badge-8" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+              <label for="gym-badge-8" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">8 Gym Badges?</label>
+            </div>
+            ` : `
+            <div class="flex items-center space-x-2 select-none">
+              <input id="caught-unawares" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer">
+              <label for="caught-unawares" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none">Caught Unawares?</label>
+            </div>
+            `}
+            <div class="flex items-center space-x-2 select-none">
+              <input id="raid-encounter" type="checkbox" disabled class="w-4 h-4 text-gray-400 bg-gray-100 border-gray-300 rounded cursor-not-allowed opacity-50">
+              <label for="raid-encounter" class="text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed italic">Raid Encounter?</label>
+            </div>
           </div>
+          ` : (gen === 5 ? `
+          <!-- Thick Grass handled above for Gen 5 -->
+          ` : '')}
       `;
     } else {
       globalContextInputs.classList.add('hidden');
@@ -333,17 +403,32 @@ export async function initCatchRateCalc(appContainer) {
           </div>
         `;
     } else if (ballName === 'level-ball') {
-      html += `
-          <div>
-            <label for="pokemon-level-diff" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level Difference</label>
-            <select id="pokemon-level-diff" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <option value="<=1x"><= 1x</option>
-              <option value="2x">2x</option>
-              <option value=">2x <4x">> 2x < 4x</option>
-              <option value=">=4x">>= 4x</option>
-            </select>
-          </div>
-        `;
+      if (gen < 6) {
+        html += `
+            <div>
+              <label for="pokemon-level-diff" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level Difference</label>
+              <select id="pokemon-level-diff" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <option value="<=1x"><= 1x</option>
+                <option value="2x">2x</option>
+                <option value=">2x <4x">> 2x < 4x</option>
+                <option value=">=4x">>= 4x</option>
+              </select>
+            </div>
+          `;
+      } else if (gen < 8) {
+        html += `
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="your-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Level</label>
+                <input id="your-pokemon-level" type="number" min="1" max="100" value="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              </div>
+              <div>
+                <label for="wild-pokemon-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wild Level</label>
+                <input id="wild-pokemon-level" type="number" min="1" max="100" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              </div>
+            </div>
+          `;
+      }
     } else if (ballName === 'lure-ball') {
       html += `
           <div class="flex items-center space-x-2">
@@ -474,7 +559,11 @@ export async function initCatchRateCalc(appContainer) {
     // Contextual values
 
     // Level Ball
+    // Gen 4
     const pokemonLevelDiff = document.getElementById('pokemon-level-diff')?.value || '<=1x';
+    // Gen 5
+    const yourPokemonLevel = document.getElementById('your-pokemon-level')?.value || '1';
+    const wildPokemonLevel = document.getElementById('wild-pokemon-level')?.value || '1';
     // Lure Ball
     const fishing = document.getElementById('fishing-indicator')?.checked || false;
     // Love Ball
@@ -514,12 +603,15 @@ export async function initCatchRateCalc(appContainer) {
       console.log('Type Match: ' + typeMatch);
     }
 
-
-
     let ballBonus = 1;
     let apricornBonus = 1;
     const bName = selectedBall.name;
     let heavyBall = false;
+    // Ultra Beast List
+    const ultraBeasts = ['nihilego', 'buzzwole', 'pheromosa', 'stakataka', 'blacephalon', 'xurkitree', 'celesteela', 'kartana', 'guzzlord', 'poipole', 'naganadel'];
+
+
+
     switch (bName) {
       case 'master-ball': ballBonus = 255; break;
       case 'ultra-ball': ballBonus = 2; break;
@@ -642,19 +734,26 @@ export async function initCatchRateCalc(appContainer) {
         ballBonus = 1;
         switch (bName) {
           case 'level-ball':
-            switch (pokemonLevelDiff) {
-              case '<=1x': apricornBonus = 1; break;
-              case '2x': apricornBonus = 2; break;
-              case '>2x <4x': apricornBonus = 4; break;
-              case '>=4x': apricornBonus = 8; break;
+            if (gen < 5) {
+              switch (pokemonLevelDiff) {
+                case '<=1x': apricornBonus = 1; break;
+                case '2x': apricornBonus = 2; break;
+                case '>2x <4x': apricornBonus = 4; break;
+                case '>=4x': apricornBonus = 8; break;
+              }
+            } else {
+              apricornBonus = (Math.floor(parseInt(yourPokemonLevel) / 4) >= parseInt(wildPokemonLevel)) ? 8 :
+                (Math.floor(parseInt(yourPokemonLevel) / 2) >= parseInt(wildPokemonLevel)) ? 4 :
+                  (parseInt(yourPokemonLevel) > parseInt(wildPokemonLevel)) ? 2 : 1;
             }
             break;
           case 'lure-ball':
             apricornBonus = fishing ? 3 : 1;
             break;
           case 'moon-ball':
-            const moonEvolutionFamily = ['nidoran-f', 'nidorina', 'nidoran-m', 'nidorino', 'clefairy', 'cleffa', 'igglybuff', 'jigglypuff', 'skitty'];
-            apricornBonus = moonEvolutionFamily.includes(selectedPokemon.name) ? 4 : 1;
+            const moonEvolutionFamilyGen4 = ['nidoran-f', 'nidorina', 'nidoran-m', 'nidorino', 'clefairy', 'cleffa', 'igglybuff', 'jigglypuff', 'skitty'];
+            const moonEvolutionFamilyGen5 = ['nidorina', 'nidorino', 'clefairy', 'jigglypuff', 'skitty', 'munna'];
+            apricornBonus = gen < 5 ? moonEvolutionFamilyGen4.includes(selectedPokemon.name) ? 4 : 1 : moonEvolutionFamilyGen5.includes(selectedPokemon.name) ? 4 : 1;
             break;
           case 'friend-ball':
             apricornBonus = 1;
@@ -664,17 +763,33 @@ export async function initCatchRateCalc(appContainer) {
             break;
           case 'heavy-ball':
             heavyBall = true;
-            if (pokemonWeight < 2048) apricornBonus = -20;
-            else if (pokemonWeight < 3072) apricornBonus = 20;
-            else if (pokemonWeight < 4096) apricornBonus = 30;
-            else apricornBonus = 40;
+            if (gen < 7) {
+              if (pokemonWeight < 2048) apricornBonus = -20;
+              else if (pokemonWeight < 3072) apricornBonus = 20;
+              else if (pokemonWeight < 4096) apricornBonus = 30;
+              else apricornBonus = 40;
+            }
+            else {
+              if (pokemonWeight < 1000) apricornBonus = -20;
+              else if (pokemonWeight < 2000) apricornBonus = 0;
+              else if (pokemonWeight < 3000) apricornBonus = 20;
+              else apricornBonus = 30;
+            }
             break;
           case 'fast-ball':
             apricornBonus = baseSpeed >= 100 ? 4 : 1;
             break;
         }
         break;
+      case 'beast-ball':
+        ballBonus = ultraBeasts.includes(selectedPokemon.name) ? 5 : 0.1;
+        break;
       default: ballBonus = 1;
+    }
+
+    // Readjust if Ultra Beast caught in non-Beast Ball in gen 7.
+    if (ultraBeasts.includes(selectedPokemon.name) && bName !== 'beast-ball' && gen === 7) {
+      ballBonus = 0.1;
     }
     const maxHP = 100;
     const currentHP = check1hp.checked ? 1 : Math.max(1, (hpPercent / 100) * maxHP);
@@ -689,6 +804,69 @@ export async function initCatchRateCalc(appContainer) {
       const grassModifier = document.getElementById('thick-grass-indicator')?.checked || false;
 
       result = calculateGen5(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, entralinkModifier);
+    }
+    else if (gen === 6 || gen === 7) {
+      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
+      const powerEl = document.getElementById('capture-power');
+      let oPowerModifier = "0";
+      if (powerEl) {
+        if (powerEl.type === 'checkbox') {
+          oPowerModifier = powerEl.checked ? "3" : "0";
+        } else {
+          oPowerModifier = powerEl.value;
+        }
+      }
+      const grassModifier = false; // Multiplier no longer exists in Gen 6+
+
+      if (apricornBonus != 1 || heavyBall) {
+        if (heavyBall) {
+          result = calculateGen67(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, oPowerModifier);
+        }
+        else {
+          result = calculateGen67(selectedPokemon.captureRate, currentHP, maxHP, apricornBonus, statusBonus, grassModifier, dexCount, oPowerModifier);
+        }
+      }
+      else {
+        result = calculateGen67(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, oPowerModifier);
+      }
+    }
+    else if (gen === 8) {
+      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
+      const catchCharm = document.getElementById('catching-charm')?.checked || false;
+      const difficultyModifier = document.getElementById('gym-badge-8')?.checked || false;
+      const grassModifier = false;
+
+      if (apricornBonus != 1 || heavyBall) {
+        if (heavyBall) {
+          result = calculateGen8(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
+        }
+        else {
+          result = calculateGen8(selectedPokemon.captureRate, currentHP, maxHP, apricornBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
+        }
+      }
+      else {
+        result = calculateGen8(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, difficultyModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm);
+      }
+    }
+    else if (gen === 9) {
+      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
+      const capturePower = parseInt(document.getElementById('capture-power')?.value || 0);
+      const unawareModifier = document.getElementById('caught-unawares')?.checked || false;
+      const catchCharm = document.getElementById('catching-charm')?.checked || false;
+      const badgeCount = parseInt(document.getElementById('badge-count')?.value || 0);
+      const grassModifier = false;
+
+      if (apricornBonus != 1 || heavyBall) {
+        if (heavyBall) {
+          result = calculateGen9(Math.max(1, selectedPokemon.captureRate + apricornBonus), currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, capturePower, unawareModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm, badgeCount);
+        }
+        else {
+          result = calculateGen9(selectedPokemon.captureRate, currentHP, maxHP, apricornBonus, statusBonus, grassModifier, dexCount, capturePower, unawareModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm, badgeCount);
+        }
+      }
+      else {
+        result = calculateGen9(selectedPokemon.captureRate, currentHP, maxHP, ballBonus, statusBonus, grassModifier, dexCount, capturePower, unawareModifier, parseInt(yourPokemonLevel), parseInt(wildPokemonLevel), catchCharm, badgeCount);
+      }
     }
     else if (apricornBonus != 1 || heavyBall) {
       if (heavyBall) {
