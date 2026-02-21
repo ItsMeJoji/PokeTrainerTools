@@ -5,7 +5,7 @@
 export function initShinyHuntingGuide(container) {
     container.innerHTML = `
     <div class="anim-fade-in text-left max-w-4xl mx-auto px-4 py-8">
-      <h1 class="mb-8 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg text-center">Shiny Hunting Guide</h1>
+      <h1 class="mb-8 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg text-center">Shiny Hunting</h1>
       
       <div class="space-y-12">
         <!-- Section: The Beginning -->
