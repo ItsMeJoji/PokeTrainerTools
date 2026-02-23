@@ -4,6 +4,7 @@ import { initEncounterCalc } from './features/encounter-calc.js'
 import { initCatchRateCalc } from './features/catch-rate-calc.js'
 import { initShinyOddsCalc } from './features/shiny-odds-calc.js'
 import { initShinyHuntingGuide } from './features/shiny-hunting-guide.js'
+import { initPokemonLookup } from './features/pokemon-lookup.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
@@ -28,6 +29,7 @@ const renderNavbar = () => {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="dropdown-menu">
+            <a href="#/pokemon-lookup" class="dropdown-item">Pokemon Lookup</a>
             <a href="#/encounter" class="dropdown-item">Encounter Calculator</a>
             <a href="#/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
             <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
@@ -74,6 +76,20 @@ async function getRandomShinyPokemon() {
   }
 }
 
+/**
+ * Fetches a random (non-shiny) pokemon sprite for the lookup card.
+ */
+async function getRandomPokemon() {
+  try {
+    const id = Math.floor(Math.random() * 649) + 1; // Gen 1-5
+    const pokemon = await P.getPokemonByName(id);
+    return pokemon.sprites.front_default;
+  } catch (err) {
+    console.error('Error fetching random pokemon:', err);
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'; // Pikachu fallback
+  }
+}
+
 const renderPage = () => {
   const hash = window.location.hash || '#/';
   const app = document.querySelector('#app');
@@ -87,6 +103,20 @@ const renderPage = () => {
           <p class="mb-12 text-xl text-gray-500 dark:text-gray-400 max-w-2xl text-center">Your ultimate companion for Pokémon training and hunting. Optimize your journey with our specialized calculators.</p>
           
           <div class="tool-previews w-full">
+            <!-- Pokemon Lookup -->
+            <div class="tool-card anim-fade-in shadow-2xl">
+              <div class="tool-image bg-lookup">
+                <div class="tool-overlay" id="lookup-tool-overlay">
+                  <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>Pokémon Lookup</h3>
+                <p>Find every location where any Pokémon can be encountered across all games, complete with encounter rates and level ranges!</p>
+                <a href="#/pokemon-lookup" class="tool-cta" style="background-color: #6366f1">Try it now!</a>
+              </div>
+            </div>
+
             <!-- Encounter Calculator -->
             <div class="tool-card anim-fade-in shadow-2xl">
               <div class="tool-image bg-encounter">
@@ -143,6 +173,8 @@ const renderPage = () => {
       return `<div id="catch-rate-calc-container"></div>`;
     } else if (hash === '#/shiny-odds') {
       return `<div id="shiny-odds-calc-container"></div>`;
+    } else if (hash === '#/pokemon-lookup') {
+      return `<div id="pokemon-lookup-container"></div>`;
     } else if (hash === '#/privacy') {
       return `
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
@@ -233,6 +265,7 @@ const renderPage = () => {
   `;
 
   if (hash === '#/' || hash === '') {
+    // Shiny Odds card: random shiny sprite
     getRandomShinyPokemon().then(sprite => {
       const overlay = document.querySelector('#shiny-tool-overlay');
       if (overlay) {
@@ -247,12 +280,25 @@ const renderPage = () => {
         `;
       }
     });
+
+    // Pokemon Lookup card: random normal sprite + magnifying glass Z-animation
+    getRandomPokemon().then(sprite => {
+      const overlay = document.querySelector('#lookup-tool-overlay');
+      if (overlay) {
+        overlay.innerHTML = `
+          <img src="${sprite}" class="relative z-10" style="image-rendering:pixelated; object-fit:contain" />
+          <div class="mag-glass anim-mag-z-periodic"></div>
+        `;
+      }
+    });
   } else if (hash === '#/encounter') {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
   } else if (hash === '#/catch-rate') {
     initCatchRateCalc(document.querySelector('#catch-rate-calc-container'));
   } else if (hash === '#/shiny-odds') {
     initShinyOddsCalc(document.querySelector('#shiny-odds-calc-container'));
+  } else if (hash === '#/pokemon-lookup') {
+    initPokemonLookup(document.querySelector('#pokemon-lookup-container'));
   } else if (hash === '#/info/shiny-hunting') {
     initShinyHuntingGuide(document.querySelector('#shiny-hunting-guide-container'));
   }
