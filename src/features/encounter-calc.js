@@ -1,6 +1,7 @@
 import grassSprite from '../assets/images/grass-sprite.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
 import { getVersions, getLocationsForVersion, getEncounters } from '../utils/pokeapi.js';
+import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 
 /**
  * Initializes the Encounter Calculator page.
@@ -15,19 +16,13 @@ export async function initEncounterCalc(appContainer) {
       <!-- Selections Container -->
       <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
         <!-- Game Selection -->
-        <div>
-          <label for="game-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Select Game</label>
-          <select id="game-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="">Loading versions...</option>
-          </select>
+        <div id="game-select-container">
+          ${getSearchableDropdownHtml('game-dropdown', 'Select Game', 'Search games...')}
         </div>
 
         <!-- Location Selection -->
-        <div id="location-wrapper" class="hidden opacity-0 transition-opacity duration-500">
-          <label for="location-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Select Location</label>
-          <select id="location-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="">Choose a location</option>
-          </select>
+        <div id="location-wrapper" class="hidden opacity-0 transition-all duration-500">
+          ${getSearchableDropdownHtml('location-dropdown', 'Select Location', 'Search locations...')}
         </div>
 
         <!-- Advanced Filter Grid (DPPT) -->
@@ -161,8 +156,8 @@ export async function initEncounterCalc(appContainer) {
 
   const startBtn = document.getElementById('start-encounter');
   const resetBtn = document.getElementById('reset-encounter');
-  const gameSelect = document.getElementById('game-select');
-  const locationSelect = document.getElementById('location-select');
+  const gameDropdown = document.getElementById('game-dropdown');
+  const locationDropdown = document.getElementById('location-dropdown');
   const locationWrapper = document.getElementById('location-wrapper');
 
   const dpptFilterWrapper = document.getElementById('dppt-filter-wrapper');
@@ -194,81 +189,33 @@ export async function initEncounterCalc(appContainer) {
   // Disable start button until location is selected
   startBtn.disabled = true;
 
-  // --- Ellipsis Animation Helper ---
-  function animateEllipsis(element, baseText) {
-    let dots = 0;
-    const interval = setInterval(() => {
-      dots = (dots % 3) + 1;
-      if (element.tagName === 'SELECT') {
-        const firstOption = element.options[0];
-        if (firstOption) firstOption.textContent = baseText + '.'.repeat(dots);
-      } else {
-        element.textContent = baseText + '.'.repeat(dots);
-      }
-    }, 500);
-    return interval;
-  }
-
   // Populate games
-  const gamesLoadingInterval = animateEllipsis(gameSelect, "Loading versions");
+  updateDropdownLoading(gameDropdown, "Loading Games");
   try {
     const versions = await getVersions();
-    clearInterval(gamesLoadingInterval);
-    gameSelect.innerHTML = '<option value="">Choose a game</option>';
-    versions.forEach(version => {
-      const option = document.createElement('option');
-      option.value = version.name;
-      option.textContent = version.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      gameSelect.appendChild(option);
-    });
+    const gameItems = versions.map(v => ({
+      name: v.name,
+      displayName: v.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    }));
+
+    setupSearchableDropdown(gameDropdown, gameItems, (game) => {
+      handleGameChange(game.name);
+    }, "Choose a game");
+
   } catch (error) {
-    clearInterval(gamesLoadingInterval);
     console.error('Failed to load games:', error);
-    gameSelect.innerHTML = '<option value="">Error loading games</option>';
+    const selectedSpan = gameDropdown.querySelector('.selected-item span');
+    selectedSpan.textContent = "Error loading games";
+    selectedSpan.classList.add('text-red-500');
   }
 
-  // Toggle Handlers
-  checkTime.addEventListener('change', () => {
-    if (checkTime.checked) {
-      timeDropdownContainer.classList.remove('hidden');
-    } else {
-      timeDropdownContainer.classList.add('hidden');
-      selectTime.value = "";
-    }
-  });
+  let selectedGame = null;
+  let selectedLocation = null;
 
-  checkSlot2.addEventListener('change', () => {
-    if (checkSlot2.checked) {
-      slot2DropdownContainer.classList.remove('hidden');
-    } else {
-      slot2DropdownContainer.classList.add('hidden');
-      selectSlot2.value = "";
-    }
-  });
-
-  // Toggle Handlers (HGSS)
-  checkHgssTime.addEventListener('change', () => {
-    if (checkHgssTime.checked) {
-      hgssTimeDropdownContainer.classList.remove('hidden');
-    } else {
-      hgssTimeDropdownContainer.classList.add('hidden');
-      selectHgssTime.value = "";
-    }
-  });
-
-  checkRadio.addEventListener('change', () => {
-    if (checkRadio.checked) {
-      radioDropdownContainer.classList.remove('hidden');
-    } else {
-      radioDropdownContainer.classList.add('hidden');
-      selectRadio.value = "";
-    }
-  });
-
-  // Handle game change
-  gameSelect.addEventListener('change', async () => {
-    const selectedVersion = gameSelect.value;
+  async function handleGameChange(selectedVersion) {
+    selectedGame = selectedVersion;
     startBtn.disabled = true;
+    selectedLocation = null;
 
     // Reset Filter UI
     dpptFilterWrapper.classList.add('hidden', 'opacity-0');
@@ -285,59 +232,79 @@ export async function initEncounterCalc(appContainer) {
     selectHgssTime.value = "";
     selectRadio.value = "";
 
+    // Toggle Handlers
+    checkTime.addEventListener('change', () => {
+      if (checkTime.checked) {
+        timeDropdownContainer.classList.remove('hidden');
+      } else {
+        timeDropdownContainer.classList.add('hidden');
+        selectTime.value = "";
+      }
+    });
+
+    checkSlot2.addEventListener('change', () => {
+      if (checkSlot2.checked) {
+        slot2DropdownContainer.classList.remove('hidden');
+      } else {
+        slot2DropdownContainer.classList.add('hidden');
+        selectSlot2.value = "";
+      }
+    });
+
+    // Toggle Handlers (HGSS)
+    checkHgssTime.addEventListener('change', () => {
+      if (checkHgssTime.checked) {
+        hgssTimeDropdownContainer.classList.remove('hidden');
+      } else {
+        hgssTimeDropdownContainer.classList.add('hidden');
+        selectHgssTime.value = "";
+      }
+    });
+
+    checkRadio.addEventListener('change', () => {
+      if (checkRadio.checked) {
+        radioDropdownContainer.classList.remove('hidden');
+      } else {
+        radioDropdownContainer.classList.add('hidden');
+        selectRadio.value = "";
+      }
+    });
+
     if (!selectedVersion) {
       locationWrapper.classList.add('hidden');
       return;
     }
 
-    // Logic for Advanced Filters (DISABLED FOR TIME-SPLIT VIEW)
-    /*
-    if (['diamond', 'pearl', 'platinum'].includes(selectedVersion)) {
-        dpptFilterWrapper.classList.remove('hidden');
-        void dpptFilterWrapper.offsetWidth; // reflow
-        dpptFilterWrapper.classList.remove('opacity-0');
-
-    } else if (['heartgold', 'soulsilver'].includes(selectedVersion)) {
-        hgssFilterWrapper.classList.remove('hidden');
-        void hgssFilterWrapper.offsetWidth; // reflow
-        hgssFilterWrapper.classList.remove('opacity-0');
-    }
-    */
-    // TODO: Re-integrate HGSS logic if needed later, focusing on DPPT for now.
-
     locationWrapper.classList.remove('hidden');
-    // Trigger reflow to enable transition
     void locationWrapper.offsetWidth;
     locationWrapper.classList.remove('opacity-0');
 
-    locationSelect.innerHTML = '<option value="">Loading locations.</option>';
-    locationSelect.disabled = true;
-    const locationsLoadingInterval = animateEllipsis(locationSelect, "Loading locations");
+    updateDropdownLoading(locationDropdown, "Loading Locations");
 
     try {
       const locations = await getLocationsForVersion(selectedVersion);
-      clearInterval(locationsLoadingInterval);
-      locationSelect.innerHTML = '<option value="">Choose a location</option>';
-      if (locations.length === 0) {
-        locationSelect.innerHTML = '<option value="">No locations found</option>';
-      } else {
-        locations.forEach(loc => {
-          const option = document.createElement('option');
-          option.value = loc.name;
-          option.textContent = loc.displayName;
-          locationSelect.appendChild(option);
-        });
-        locationSelect.disabled = false;
+      const locationItems = locations.map(loc => ({
+        name: loc.name,
+        displayName: loc.displayName
+      }));
+
+      setupSearchableDropdown(locationDropdown, locationItems, (loc) => {
+        selectedLocation = loc.name;
+        startBtn.disabled = false;
+      }, "Choose a location");
+
+      if (locationItems.length === 0) {
+        const selectedSpan = locationDropdown.querySelector('.selected-item span');
+        selectedSpan.textContent = "No locations found";
+        selectedSpan.classList.add('italic');
       }
     } catch (error) {
       console.error('Failed to load locations:', error);
-      locationSelect.innerHTML = '<option value="">Error loading locations</option>';
+      const selectedSpan = locationDropdown.querySelector('.selected-item span');
+      selectedSpan.textContent = "Error loading locations";
+      selectedSpan.classList.add('text-red-500');
     }
-  });
-
-  locationSelect.addEventListener('change', () => {
-    startBtn.disabled = !locationSelect.value;
-  });
+  }
 
   // Shiny Toggle Handler
   encounterResults.addEventListener('click', (e) => {
@@ -387,8 +354,8 @@ export async function initEncounterCalc(appContainer) {
   });
 
   startBtn.addEventListener('click', async () => {
-    const version = gameSelect.value;
-    const location = locationSelect.value;
+    const version = selectedGame;
+    const location = selectedLocation;
 
     // Collect Filter Options
     const isHgss = ['heartgold', 'soulsilver'].includes(version);
@@ -482,8 +449,8 @@ export async function initEncounterCalc(appContainer) {
     encounterResults.innerHTML = areaSections;
 
     // Set and Show Results Header
-    // Get display name from selected option text
-    const locationNameDisplay = locationSelect.options[locationSelect.selectedIndex].text;
+    // Get display name from selected dropdown item text
+    const locationNameDisplay = locationDropdown.querySelector('.selected-item span').textContent;
     resultsHeader.textContent = locationNameDisplay;
 
     // Delay showing header until grass parts (1s) to be smooth

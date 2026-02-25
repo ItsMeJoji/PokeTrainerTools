@@ -1,5 +1,6 @@
 import P from '../utils/pokeapi.js';
 import { getPokemonUpToGeneration } from '../utils/pokemon-data.js';
+import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 
 // Ordered list of mainline English-release games (gen order, 'green' excluded)
 const GAME_ORDER = [
@@ -69,18 +70,8 @@ export async function initPokemonLookup(appContainer) {
       <!-- Selection Container -->
       <div id="lookup-selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
         <div>
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Select Pokemon</label>
-          <div id="pokemon-lookup-dropdown" class="searchable-dropdown relative">
-            <div class="selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
-              <span class="placeholder text-gray-400">Select a Pokemon</span>
-              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-            <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-              <div class="p-2 border-b border-gray-100 dark:border-gray-600">
-                <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Pokemon...">
-              </div>
-              <div class="items-list py-1"></div>
-            </div>
+          <div id="pokemon-lookup-container-dropdown">
+            ${getSearchableDropdownHtml('pokemon-lookup-dropdown', 'Select Pokemon', 'Search Pokemon...')}
           </div>
         </div>
 
@@ -99,10 +90,9 @@ export async function initPokemonLookup(appContainer) {
 
         <!-- Game Selection (Hidden until "Select a Game" clicked) -->
         <div id="lookup-game-container" class="hidden opacity-0 transition-opacity duration-500 space-y-4">
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Select Game</label>
-          <select id="lookup-game-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="">Loading games</option>
-          </select>
+          <div id="game-select-container">
+            ${getSearchableDropdownHtml('lookup-game-dropdown', 'Select Game', 'Search games...')}
+          </div>
           <button id="lookup-go-back-btn" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
             Go Back
           </button>
@@ -125,7 +115,7 @@ export async function initPokemonLookup(appContainer) {
   const pokemonDropdown = document.getElementById('pokemon-lookup-dropdown');
   const choiceContainer = document.getElementById('lookup-choice-container');
   const gameContainer = document.getElementById('lookup-game-container');
-  const gameSelect = document.getElementById('lookup-game-select');
+  const gameDropdown = document.getElementById('lookup-game-dropdown');
   const selectGameBtn = document.getElementById('lookup-select-game-btn');
   const showEverythingBtn = document.getElementById('lookup-show-everything-btn');
   const goBackBtn = document.getElementById('lookup-go-back-btn');
@@ -138,79 +128,11 @@ export async function initPokemonLookup(appContainer) {
   let pokemonSprites = {};      // { versionName: normalSpriteUrl | null }
   let pokemonShinySprites = {}; // { versionName: shinySpriteUrl | null }
 
-  // --- Searchable Dropdown Utility ---
-  function setupSearchableDropdown(dropdown, items, onSelect, placeholder = "Select Item") {
-    const selectedDisplay = dropdown.querySelector('.selected-item');
-    const listContainer = dropdown.querySelector('.dropdown-list');
-    const itemsList = dropdown.querySelector('.items-list');
-    const searchInput = dropdown.querySelector('.search-input');
-
-    const updateList = (filter = "") => {
-      const filtered = items.filter(item =>
-        item.displayName.toLowerCase().includes(filter.toLowerCase())
-      );
-      itemsList.innerHTML = filtered.map(item => `
-        <div data-value="${item.name}" class="dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white">
-          ${item.displayName}
-        </div>
-      `).join('') || '<div class="px-4 py-2 text-sm text-gray-500 italic">No items found</div>';
-    };
-
-    selectedDisplay.onclick = (e) => {
-      e.stopPropagation();
-      const isHidden = listContainer.classList.contains('hidden');
-      document.querySelectorAll('.dropdown-list').forEach(l => l.classList.add('hidden'));
-      if (isHidden) {
-        listContainer.classList.remove('hidden');
-        searchInput.focus();
-        updateList(searchInput.value);
-      }
-    };
-
-    searchInput.onclick = (e) => e.stopPropagation();
-    searchInput.oninput = (e) => updateList(e.target.value);
-
-    itemsList.onclick = (e) => {
-      const itemEl = e.target.closest('.dropdown-item');
-      if (!itemEl) return;
-      const value = itemEl.dataset.value;
-      const item = items.find(i => i.name === value);
-
-      selectedDisplay.querySelector('span').className = "selected-text flex items-center overflow-hidden text-gray-900 dark:text-white";
-      selectedDisplay.querySelector('span').innerHTML = item.displayName;
-      listContainer.classList.add('hidden');
-      onSelect(item);
-    };
-
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target)) listContainer.classList.add('hidden');
-    });
-
-    updateList();
-  }
-
-  // --- Ellipsis Animation Helper (for <select> elements) ---
-  function animateSelectEllipsis(selectEl, baseText) {
-    let dots = 0;
-    const interval = setInterval(() => {
-      dots = (dots % 3) + 1;
-      const firstOption = selectEl.options[0];
-      if (firstOption) firstOption.textContent = baseText + '.'.repeat(dots);
-    }, 500);
-    return interval;
-  }
-
   // --- Data Loading ---
   // Show loading state in the Pokemon dropdown
-  const pokemonSelectedSpan = pokemonDropdown.querySelector('.selected-item span');
-  pokemonSelectedSpan.className = 'placeholder text-gray-400';
-  pokemonSelectedSpan.innerHTML = 'Loading Pokémon<span class="anim-loading-dots"></span>';
+  updateDropdownLoading(pokemonDropdown, "Loading Pokémon");
 
   const pokemonList = await getPokemonUpToGeneration(9);
-
-  // Reset placeholder after load
-  pokemonSelectedSpan.className = 'placeholder text-gray-400';
-  pokemonSelectedSpan.innerHTML = 'Select a Pokemon';
 
   setupSearchableDropdown(pokemonDropdown, pokemonList, (pokemon) => {
     selectedPokemon = pokemon;
@@ -249,10 +171,8 @@ export async function initPokemonLookup(appContainer) {
     setTimeout(() => gameContainer.classList.remove('opacity-0'), 10);
 
     if (!pokemonEncounterData) {
-      gameSelect.innerHTML = '<option value="">Loading encounters.</option>';
-      const loadingInterval = animateSelectEllipsis(gameSelect, 'Loading encounters');
+      updateDropdownLoading(gameDropdown, "Loading encounters");
       await fetchEncounterData();
-      clearInterval(loadingInterval);
     }
     populateGameSelect();
   };
@@ -284,11 +204,11 @@ export async function initPokemonLookup(appContainer) {
     setTimeout(() => choiceContainer.classList.remove('opacity-0'), 10);
   };
 
-  gameSelect.onchange = () => {
-    if (gameSelect.value) {
-      renderResults(gameSelect.value);
-    }
-  };
+  // gameSelect.onchange = () => {
+  //   if (gameSelect.value) {
+  //     renderResults(gameSelect.value);
+  //   }
+  // };
 
   async function fetchEncounterData() {
     try {
@@ -376,13 +296,15 @@ export async function initPokemonLookup(appContainer) {
   function populateGameSelect() {
     const versions = Object.keys(pokemonEncounterData)
       .sort((a, b) => gameOrderIndex(a) - gameOrderIndex(b));
-    gameSelect.innerHTML = '<option value="">Choose a game</option>';
-    versions.forEach(v => {
-      const option = document.createElement('option');
-      option.value = v;
-      option.textContent = v.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      gameSelect.appendChild(option);
-    });
+
+    const gameItems = versions.map(v => ({
+      name: v,
+      displayName: v.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    }));
+
+    setupSearchableDropdown(gameDropdown, gameItems, (game) => {
+      renderResults(game.name);
+    }, "Choose a game");
   }
 
   function renderResults(specificVersion = null) {

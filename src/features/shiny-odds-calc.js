@@ -1,5 +1,6 @@
 import { getVersions } from '../utils/pokeapi.js';
 import { calculateShinyOdds, VERSION_TO_GEN, VERSIONS_WITH_SHINY_CHARM } from '../utils/shiny-odds-logic.js';
+import { setupSearchableDropdown, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 
 export async function initShinyOddsCalc(appContainer) {
     appContainer.innerHTML = `
@@ -8,11 +9,8 @@ export async function initShinyOddsCalc(appContainer) {
             <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate your chances of finding a Shiny Pokemon based on game version and method.</p>
 
             <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
-                <div class="text-left">
-                    <label for="game-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Game</label>
-                    <select id="game-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="">Choose a game</option>
-                    </select>
+                <div id="game-select-container" class="text-left">
+                    ${getSearchableDropdownHtml('game-dropdown', 'Select Game', 'Search games...')}
                 </div>
 
                 <div id="shiny-charm-container" class="hidden flex items-center space-x-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-100 dark:border-yellow-800/50 transition-all duration-300">
@@ -49,7 +47,7 @@ export async function initShinyOddsCalc(appContainer) {
         </div>
     `;
 
-    const gameSelect = document.getElementById('game-select');
+    const gameDropdown = document.getElementById('game-dropdown');
     const charmContainer = document.getElementById('shiny-charm-container');
     const charmToggle = document.getElementById('shiny-charm-toggle');
     const sparklingContainer = document.getElementById('sparkling-power-container');
@@ -82,18 +80,24 @@ export async function initShinyOddsCalc(appContainer) {
 
     // Populate Games
     try {
-        Object.keys(VERSION_MAPPING).forEach(label => {
-            const option = document.createElement('option');
-            option.value = VERSION_MAPPING[label];
-            option.textContent = label;
-            gameSelect.appendChild(option);
-        });
+        const gameItems = Object.keys(VERSION_MAPPING).map(label => ({
+            name: VERSION_MAPPING[label],
+            displayName: label
+        }));
+
+        setupSearchableDropdown(gameDropdown, gameItems, (game) => {
+            selectedGameValue = game.name;
+            updateUI();
+        }, "Choose a game");
+
     } catch (err) {
         console.error('Failed to load games:', err);
     }
 
+    let selectedGameValue = "";
+
     const updateUI = () => {
-        const game = gameSelect.value;
+        const game = selectedGameValue;
         if (!game) {
             resultsContainer.classList.add('hidden');
             charmContainer.classList.add('hidden');
@@ -297,7 +301,7 @@ export async function initShinyOddsCalc(appContainer) {
             }).join('');
     };
 
-    gameSelect.addEventListener('change', updateUI);
+    // gameSelect.addEventListener('change', updateUI); // Removed in favor of setupSearchableDropdown callback
     charmToggle.addEventListener('change', updateUI);
     sparklingSelect.addEventListener('change', updateUI);
     researchSelect.addEventListener('change', updateUI);
@@ -312,7 +316,7 @@ export async function initShinyOddsCalc(appContainer) {
         if (e.target.classList.contains('shiny-input')) {
             const card = e.target.closest('details');
             const methodId = card.querySelector('.method-id-marker').dataset.id;
-            const game = gameSelect.value;
+            const game = selectedGameValue;
             const gen = VERSION_TO_GEN[game];
             const hasCharm = charmToggle.checked;
 

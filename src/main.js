@@ -18,7 +18,7 @@ const renderNavbar = () => {
     <nav class="flex justify-between items-center p-4 bg-[#1a1a1b] text-white">
       <div class="flex gap-4 items-center">
         <a href="#/" class="flex items-center">
-          <div class="logo-placeholder"></div>
+          <img src="${pokeballSprite}" class="w-8 h-8 object-contain" alt="PokéTrainer Tools Logo" />
         </a>
         <a href="#/" class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</a>
       </div>

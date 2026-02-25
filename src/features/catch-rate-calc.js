@@ -8,6 +8,7 @@ import unknownSprite from '../assets/images/unknown-sprite.png';
 import { getPokemonUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
 import { calculateGen34, calculateGen5, calculateGen67, calculateGen8, calculateGen9, simulateShakes } from '../utils/catch-rate-logic.js';
 import P from '../utils/pokeapi.js';
+import { setupSearchableDropdown, updateDropdownLoading } from '../utils/ui-utils.js';
 
 export async function initCatchRateCalc(appContainer) {
   appContainer.innerHTML = `
@@ -188,71 +189,6 @@ export async function initCatchRateCalc(appContainer) {
   let ballList = [];
   let selectedPokemon = null;
   let selectedBall = null;
-
-  // --- Searchable Dropdown Utility ---
-  function setupSearchableDropdown(dropdownId, items, onSelect, placeholder = "Select Item") {
-    const dropdown = document.getElementById(dropdownId);
-    const selectedDisplay = dropdown.querySelector('.selected-item');
-    const listContainer = dropdown.querySelector('.dropdown-list');
-    const itemsList = dropdown.querySelector('.items-list');
-    const searchInput = dropdown.querySelector('.search-input');
-
-    const updateList = (filter = "") => {
-      const filtered = items.filter(item =>
-        item.displayName.toLowerCase().includes(filter.toLowerCase())
-      );
-      itemsList.innerHTML = filtered.map(item => `
-            <div data-value="${item.id || item.name}" class="dropdown-item px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 cursor-pointer flex items-center text-sm dark:text-white">
-                ${item.sprite ? `<img src="${item.sprite}" class="w-6 h-6 mr-2 object-contain">` : ''}
-                ${item.displayName}
-            </div>
-        `).join('') || '<div class="px-4 py-2 text-sm text-gray-500 italic">No items found</div>';
-    };
-
-    selectedDisplay.onclick = (e) => {
-      e.stopPropagation();
-      const isHidden = listContainer.classList.contains('hidden');
-      document.querySelectorAll('.dropdown-list').forEach(l => l.classList.add('hidden'));
-      if (isHidden) {
-        listContainer.classList.remove('hidden');
-        searchInput.focus();
-        updateList(searchInput.value);
-      }
-    };
-
-    searchInput.onclick = (e) => e.stopPropagation();
-    searchInput.oninput = (e) => updateList(e.target.value);
-
-    itemsList.onclick = (e) => {
-      const itemEl = e.target.closest('.dropdown-item');
-      if (!itemEl) return;
-      const value = itemEl.dataset.value;
-      const item = items.find(i => (i.id || i.name) == value);
-
-      selectedDisplay.querySelector('span').className = "selected-text flex items-center overflow-hidden";
-      selectedDisplay.querySelector('span').innerHTML = `
-            ${item.sprite ? `<img src="${item.sprite}" class="w-5 h-5 mr-2 flex-shrink-0">` : ''}
-            ${item.displayName}
-        `;
-      listContainer.classList.add('hidden');
-      onSelect(item);
-      if (dropdownId === 'pokemon-dropdown') {
-        startBtn.disabled = !item;
-      }
-    };
-
-    // Close on outside click
-    const outsideClick = (e) => {
-      if (!dropdown.contains(e.target)) listContainer.classList.add('hidden');
-    };
-    document.addEventListener('click', outsideClick);
-
-    // Initial state
-    const span = selectedDisplay.querySelector('span');
-    span.innerHTML = placeholder;
-    span.className = "placeholder text-gray-400";
-    updateList();
-  }
 
   // --- Initial Data Load & Event Listeners ---
   genSelect.addEventListener('change', async () => {
@@ -476,7 +412,7 @@ export async function initCatchRateCalc(appContainer) {
     };
 
     // Show Loading state
-    setupSearchableDropdown('pokemon-dropdown', [], () => { }, 'Loading Pokemon<span class="anim-loading-dots"></span>');
+    updateDropdownLoading('pokemon-dropdown', 'Loading Pokemon');
 
     try {
       currentPokemonList = await getPokemonUpToGeneration(gen);
@@ -485,7 +421,7 @@ export async function initCatchRateCalc(appContainer) {
       }, "Select Pokemon");
 
       ballList = await getPokeBalls(gen);
-      setupSearchableDropdown('ball-dropdown', ballList, (b) => {
+      const ballDropdownCtrl = setupSearchableDropdown('ball-dropdown', ballList, (b) => {
         selectedBall = b;
         ballTopImg.src = b.sprite;
         ballBottomImg.src = b.sprite;
@@ -496,9 +432,7 @@ export async function initCatchRateCalc(appContainer) {
       const pokeBall = ballList.find(b => b.name === 'poke-ball') || ballList[0];
       if (pokeBall) {
         selectedBall = pokeBall;
-        const ballSelectedSpan = document.querySelector('#ball-dropdown .selected-item span');
-        ballSelectedSpan.className = "selected-text flex items-center overflow-hidden";
-        ballSelectedSpan.innerHTML = `<img src="${pokeBall.sprite}" class="w-5 h-5 mr-2 flex-shrink-0">${pokeBall.displayName}`;
+        ballDropdownCtrl.setSelected(pokeBall);
         ballTopImg.src = pokeBall.sprite;
         ballBottomImg.src = pokeBall.sprite;
         updateContextualInputs(pokeBall.name, selectedPokemon);
