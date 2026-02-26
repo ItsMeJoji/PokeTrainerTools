@@ -8,6 +8,12 @@ import { initPokemonLookup } from './features/pokemon-lookup.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
+import { getPokemonUpToGeneration } from './utils/pokemon-data.js'
+import { getVersions } from './utils/pokeapi.js'
+
+// Pre-fetch critical data on startup
+getPokemonUpToGeneration(9);
+getVersions();
 
 // Initialize theme
 initTheme();

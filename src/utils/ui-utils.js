@@ -5,7 +5,7 @@
  * @param {Function} onSelect - Callback when an item is selected.
  * @param {string} placeholder - Initial placeholder text.
  */
-export function setupSearchableDropdown(dropdown, items, onSelect, placeholder = "Select Item") {
+export function setupSearchableDropdown(dropdown, items, onSelect, placeholder = "Select Pokemon") {
     const container = typeof dropdown === 'string' ? document.getElementById(dropdown) : dropdown;
     if (!container) return;
 

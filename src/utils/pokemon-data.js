@@ -5,6 +5,8 @@ const P = new Pokedex({
     cacheImages: true
 });
 
+const upToGenCache = {};
+
 /**
  * Fetches all Pokemon for a specific generation.
  * @param {number} genNumber - The generation number (1-9).
@@ -42,18 +44,23 @@ export async function getPokemonByGeneration(genNumber) {
  * @returns {Promise<Array>} List of Pokemon with id, name, and capture_rate.
  */
 export async function getPokemonUpToGeneration(genNumber) {
+    if (upToGenCache[genNumber]) return upToGenCache[genNumber];
     try {
         const gens = Array.from({ length: genNumber }, (_, i) => i + 1);
         const genData = await Promise.all(gens.map(g => P.getGenerationByName(g)));
-
         const speciesRefs = genData.flatMap(g => g.pokemon_species);
 
-        // Fetch species details in chunks to avoid overwhelming the API
-        const speciesDetails = await Promise.all(
-            speciesRefs.map(ref => P.getPokemonSpeciesByName(ref.name).catch(() => null))
-        );
+        const speciesDetails = [];
+        const chunkSize = 50;
+        for (let i = 0; i < speciesRefs.length; i += chunkSize) {
+            const chunk = speciesRefs.slice(i, i + chunkSize);
+            const details = await Promise.all(
+                chunk.map(ref => P.getPokemonSpeciesByName(ref.name).catch(() => null))
+            );
+            speciesDetails.push(...details);
+        }
 
-        return speciesDetails
+        const finalResult = speciesDetails
             .filter(s => s !== null)
             .map(s => ({
                 id: s.id,
@@ -63,6 +70,9 @@ export async function getPokemonUpToGeneration(genNumber) {
                 generation: parseInt(s.generation.url.split('/').filter(Boolean).pop())
             }))
             .sort((a, b) => a.id - b.id);
+
+        upToGenCache[genNumber] = finalResult;
+        return finalResult;
     } catch (error) {
         console.error(`Error fetching Pokemon up to Generation ${genNumber}:`, error);
         return [];
