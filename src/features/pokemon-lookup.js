@@ -49,6 +49,7 @@ const EXCLUDED_VERSIONS = new Set(['green']);
 // Some Pokemon are stored under a different form name in the API
 const POKEMON_API_NAME_OVERRIDES = {
   'minior': 'minior-red-meteor',
+  'mimikyu': 'mimikyu-disguised',
 };
 
 /** Returns the index of a version in GAME_ORDER, or Infinity if not found. */
@@ -294,6 +295,7 @@ export async function initPokemonLookup(appContainer) {
   }
 
   function populateGameSelect() {
+    if (!pokemonEncounterData) return;
     const versions = Object.keys(pokemonEncounterData)
       .sort((a, b) => gameOrderIndex(a) - gameOrderIndex(b));
 
@@ -309,6 +311,7 @@ export async function initPokemonLookup(appContainer) {
 
   function renderResults(specificVersion = null) {
     resultsContainer.innerHTML = '';
+    if (!pokemonEncounterData) return;
     const versionsToShow = specificVersion
       ? [specificVersion]
       : Object.keys(pokemonEncounterData).sort((a, b) => gameOrderIndex(a) - gameOrderIndex(b));

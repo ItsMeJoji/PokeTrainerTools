@@ -12,7 +12,6 @@ import { getPokemonUpToGeneration } from './utils/pokemon-data.js'
 import { getVersions } from './utils/pokeapi.js'
 
 // Pre-fetch critical data on startup
-getPokemonUpToGeneration(9);
 getVersions();
 
 // Initialize theme

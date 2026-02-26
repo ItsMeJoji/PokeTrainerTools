@@ -190,6 +190,14 @@ export async function initCatchRateCalc(appContainer) {
   let selectedPokemon = null;
   let selectedBall = null;
 
+  const updateStartButton = () => {
+    if (selectedPokemon && selectedBall) {
+      startBtn.disabled = false;
+    } else {
+      startBtn.disabled = true;
+    }
+  };
+
   // --- Initial Data Load & Event Listeners ---
   genSelect.addEventListener('change', async () => {
     const gen = parseInt(genSelect.value);
@@ -418,6 +426,7 @@ export async function initCatchRateCalc(appContainer) {
       currentPokemonList = await getPokemonUpToGeneration(gen);
       setupSearchableDropdown('pokemon-dropdown', currentPokemonList, (p) => {
         selectedPokemon = p;
+        updateStartButton();
       }, "Select Pokemon");
 
       ballList = await getPokeBalls(gen);
@@ -426,6 +435,7 @@ export async function initCatchRateCalc(appContainer) {
         ballTopImg.src = b.sprite;
         ballBottomImg.src = b.sprite;
         updateContextualInputs(b.name, selectedPokemon);
+        updateStartButton();
       }, "Select Poké Ball");
 
       // Default select first available ball (usually Poke Ball)
@@ -436,6 +446,7 @@ export async function initCatchRateCalc(appContainer) {
         ballTopImg.src = pokeBall.sprite;
         ballBottomImg.src = pokeBall.sprite;
         updateContextualInputs(pokeBall.name, selectedPokemon);
+        updateStartButton();
       }
 
     } catch (err) {
@@ -447,6 +458,10 @@ export async function initCatchRateCalc(appContainer) {
 
   function updateContextualInputs(ballName, pokemon) {
     contextInputs.innerHTML = '';
+    if (!pokemon) {
+      contextInputs.classList.add('hidden');
+      return;
+    }
     const gen = parseInt(genSelect.value);
     let html = '';
 
@@ -898,6 +913,8 @@ export async function initCatchRateCalc(appContainer) {
     else if (gen === 9) {
       const unawareModifier = document.getElementById('caught-unawares')?.checked || false;
       const catchCharm = document.getElementById('catching-charm')?.checked || false;
+      const dexCount = parseInt(document.getElementById('pokedex-count')?.value || 0);
+      const capturePower = document.getElementById('capture-power')?.value || "0";
       const badgeCount = parseInt(document.getElementById('badge-count')?.value || 0);
       const grassModifier = false;
 
