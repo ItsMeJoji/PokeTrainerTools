@@ -54,13 +54,23 @@ body {
 #navbar button {
   background-color: transparent !important;
   color: white !important;
-  border: none !important;
-  padding: 0 !important;
+  border: 1px solid transparent !important;
+  outline: none !important;
 }
 
 #navbar button:hover {
   border-color: transparent !important;
   text-decoration: none !important;
+}
+
+#navbar button:focus,
+#navbar button:focus-visible {
+  outline: none !important;
+}
+
+.dropdown button.active {
+  background-color: #2d3748 !important;
+  color: white !important;
 }
 
 h1 {
@@ -140,14 +150,16 @@ button:focus-visible {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
+  left: auto;
   background-color: #1a1a1a;
   /* Consistent dark background */
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
-  z-index: 1;
-  border-radius: 4px;
+  z-index: 10;
+  border-radius: 0 0 4px 4px;
   border: 1px solid #2d3748;
+  border-top: none;
 }
 
 .logo-placeholder {
@@ -158,7 +170,7 @@ button:focus-visible {
   flex-shrink: 0;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown-menu.show {
   display: block;
 }
 
@@ -169,6 +181,7 @@ button:focus-visible {
   text-decoration: none;
   display: block;
   font-size: 0.9em;
+  text-align: center;
 }
 
 .dropdown-item:hover {
@@ -819,6 +832,29 @@ details summary::-webkit-details-marker {
 .tool-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* SOS Move Tracker Styles */
+.move-slot {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.move-slot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.pp-display {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.decrement-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.override-overlay {
+  backdrop-filter: blur(4px);
 }
 
 @media (min-width: 768px) {

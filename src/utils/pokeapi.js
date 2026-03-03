@@ -269,4 +269,45 @@ export async function getEncounters(versionName, locationName, options = {}) {
     }
 }
 
+/**
+ * Fetches the moves available to a Pokemon in Generation 7 (Sun/Moon/Ultra).
+ * @param {string} pokemonName - The name of the Pokemon.
+ * @returns {Promise<Array>} List of Gen 7 moves.
+ */
+export async function getPokemonMovesGen7(pokemonName) {
+    try {
+        const pokemon = await P.getPokemonByName(pokemonName);
+        const gen7Moves = pokemon.moves.filter(m =>
+            m.version_group_details.some(v =>
+                v.version_group.name === 'sun-moon' || v.version_group.name === 'ultra-sun-ultra-moon'
+            )
+        ).map(m => m.move.name);
+
+        return gen7Moves;
+    } catch (error) {
+        console.error(`Error fetching Gen 7 moves for ${pokemonName}:`, error);
+        return [];
+    }
+}
+
+/**
+ * Fetches details about a specific move, including its base PP.
+ * @param {string} moveName - The name of the move.
+ * @returns {Promise<Object>} Move details (name, pp, type).
+ */
+export async function getMoveDetails(moveName) {
+    try {
+        const move = await P.getMoveByName(moveName);
+        return {
+            name: move.name,
+            displayName: move.names.find(n => n.language.name === 'en')?.name || move.name,
+            pp: move.pp,
+            type: move.type.name
+        };
+    } catch (error) {
+        console.error(`Error fetching details for move ${moveName}:`, error);
+        return { name: moveName, displayName: moveName, pp: 0, type: 'unknown' };
+    }
+}
+
 export default P;

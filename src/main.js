@@ -3,8 +3,10 @@ import { initTheme, toggleTheme } from './utils/mode-toggle.js'
 import { initEncounterCalc } from './features/encounter-calc.js'
 import { initCatchRateCalc } from './features/catch-rate-calc.js'
 import { initShinyOddsCalc } from './features/shiny-odds-calc.js'
-import { initShinyHuntingGuide } from './features/shiny-hunting-guide.js'
+import { initShinyHuntingGuide } from './articles/shiny-hunting-guide.js'
+import { initSosHuntingGuide } from './articles/sos-hunting-guide.js'
 import { initPokemonLookup } from './features/pokemon-lookup.js'
+import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
@@ -20,16 +22,16 @@ initTheme();
 const renderNavbar = () => {
   const isDark = document.documentElement.classList.contains('dark');
   document.querySelector('#navbar').innerHTML = `
-    <nav class="flex justify-between items-center p-4 bg-[#1a1a1b] text-white">
+    <nav class="flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white">
       <div class="flex gap-4 items-center">
         <a href="#/" class="flex items-center">
           <img src="${pokeballSprite}" class="w-8 h-8 object-contain" alt="PokéTrainer Tools Logo" />
         </a>
         <a href="#/" class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</a>
       </div>
-      <div class="flex items-center gap-6">
-        <div class="dropdown">
-          <button class="flex items-center gap-1 hover:text-blue-500 transition-colors bg-transparent border-none text-white p-0 cursor-pointer">
+      <div class="flex items-center gap-6 h-full">
+        <div class="dropdown h-full">
+          <button class="flex items-center gap-1 hover:text-blue-500 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer">
             Tools
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
@@ -38,15 +40,17 @@ const renderNavbar = () => {
             <a href="#/encounter" class="dropdown-item">Encounter Calculator</a>
             <a href="#/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
             <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
+            <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
           </div>
         </div>
-        <div class="dropdown">
-          <button class="flex items-center gap-1 hover:text-blue-400 transition-colors bg-transparent border-none text-white p-0 cursor-pointer">
+        <div class="dropdown h-full">
+          <button class="flex items-center gap-1 hover:text-blue-400 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer">
             Info
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="dropdown-menu">
             <a href="#/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
+            <a href="#/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
           </div>
         </div>
         <div class="theme-switch-wrapper">
@@ -64,6 +68,41 @@ const renderNavbar = () => {
 
   document.querySelector('#checkbox').addEventListener('change', (e) => {
     toggleTheme();
+  });
+
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  dropdowns.forEach(dropdown => {
+    const button = dropdown.querySelector('button');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const isOpen = menu.classList.contains('show');
+
+      dropdowns.forEach(other => {
+        other.querySelector('.dropdown-menu').classList.remove('show');
+        other.querySelector('button').classList.remove('active');
+        other.querySelector('button').setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        menu.classList.add('show');
+        button.classList.add('active');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    dropdowns.forEach(dropdown => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.querySelector('.dropdown-menu').classList.remove('show');
+        dropdown.querySelector('button').classList.remove('active');
+        dropdown.querySelector('button').setAttribute('aria-expanded', 'false');
+      }
+    });
   });
 };
 
@@ -219,6 +258,10 @@ const renderPage = () => {
       `;
     } else if (hash === '#/info/shiny-hunting') {
       return `<div id="shiny-hunting-guide-container"></div>`;
+    } else if (hash === '#/info/sos-hunting') {
+      return `<div id="sos-hunting-guide-container"></div>`;
+    } else if (hash === '#/sos-tracker') {
+      return `<div id="sos-move-tracker-container"></div>`;
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -306,6 +349,10 @@ const renderPage = () => {
     initPokemonLookup(document.querySelector('#pokemon-lookup-container'));
   } else if (hash === '#/info/shiny-hunting') {
     initShinyHuntingGuide(document.querySelector('#shiny-hunting-guide-container'));
+  } else if (hash === '#/info/sos-hunting') {
+    initSosHuntingGuide(document.querySelector('#sos-hunting-guide-container'));
+  } else if (hash === '#/sos-tracker') {
+    initSosMoveTracker(document.querySelector('#sos-move-tracker-container'));
   }
 };
 
