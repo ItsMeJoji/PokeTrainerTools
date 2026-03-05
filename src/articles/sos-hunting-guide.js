@@ -56,6 +56,15 @@ export function initSosHuntingGuide(container) {
           </div>
         </section>
 
+        <!-- SOS Move Tracker CTA Section -->
+        <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Track Wild Pokémon PP</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our SOS Move Tracker to monitor exactly when you need to swap out the calling Pokémon so it doesn't Struggle to death!</p>
+          <button id="sos-tracker-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #8b5cf6; align-self: center">
+            SOS Move Tracker
+          </button>
+        </section>
+
         <!-- Section: Chain Mechanics -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
@@ -98,5 +107,9 @@ export function initSosHuntingGuide(container) {
 
   document.getElementById('sos-cta-btn').addEventListener('click', () => {
     window.location.hash = '#/shiny-odds';
+  });
+
+  document.getElementById('sos-tracker-cta-btn').addEventListener('click', () => {
+    window.location.hash = '#/sos-tracker';
   });
 }

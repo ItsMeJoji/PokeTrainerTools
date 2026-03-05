@@ -343,43 +343,43 @@ function renderTracker() {
 
         <div id="struggle-warning" class="hidden mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm" role="alert">
           <p class="font-bold">Warning: Struggle Imminent!</p>
-          <p>This Pokémon has 0 PP left across all known moves. It will use Struggle next turn and take recoil damage.</p>
+          <p>This Pokémon has 0 PP left across all known moves!</p>
         </div>
 
-      <div class="card bg-white dark:bg-[#1a1a1b] shadow-xl rounded-xl border border-gray-100 dark:border-gray-800 p-6 sm:p-8 mb-8">
+      <div class="card bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-700 p-6 sm:p-8 mb-8 transition-all duration-300">
         
         <!-- Searchable Dropdown -->
-        <div class="searchable-dropdown relative w-full mb-6" id="pokemon-dropdown" tabindex="0">
-          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wider">Target Pokémon</label>
-          <div class="dropdown-header flex justify-between items-center w-full bg-gray-50 dark:bg-[#2d2d2d] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg p-3 cursor-pointer">
-            <span class="selected-text font-medium text-lg">Select a Pokémon...</span>
-            <svg class="w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        <div class="searchable-dropdown relative w-full mb-6 text-left" id="pokemon-dropdown" tabindex="0">
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Target Pokémon</label>
+          <div class="dropdown-header selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
+            <span class="selected-text placeholder text-gray-400 flex items-center overflow-hidden">Select a Pokémon...</span>
+            <svg class="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
-          <div class="dropdown-list absolute z-50 w-full mt-1 bg-white dark:bg-[#2d2d2d] border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl max-h-80 overflow-y-auto hidden">
-            <div class="sticky top-0 bg-white dark:bg-[#2d2d2d] p-2 border-b border-gray-100 dark:border-gray-700">
-              <input type="text" class="search-input w-full bg-gray-50 dark:bg-[#1a1a1b] border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white rounded px-3 py-2 outline-none focus:border-blue-500" placeholder="Search Pokémon..." autocomplete="off">
+          <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+            <div class="p-2 border-b border-gray-100 dark:border-gray-600 sticky top-0 bg-white dark:bg-gray-700 z-10">
+              <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Pokémon..." autocomplete="off">
             </div>
-            <div class="options-container"></div>
+            <div class="options-container items-list py-1"></div>
           </div>
         </div>
 
         <!-- Move Slots Container -->
         <div id="move-slots-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden">
           ${[0, 1, 2, 3].map(i => `
-            <div class="move-slot bg-gray-50 dark:bg-[#252526] rounded-lg p-4 border border-gray-200 dark:border-gray-700 relative flex flex-col" data-slot="${i}">
+            <div class="move-slot bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600 relative flex flex-col transition-all duration-300" data-slot="${i}">
               
-              <div class="mb-3">
+              <div class="mb-3 text-left">
                 <div class="flex items-center gap-2">
                    <div class="move-dropdown relative flex-1" data-slot-idx="${i}">
-                     <div class="move-dropdown-header flex justify-between items-center w-full bg-white dark:bg-[#1a1a1b] border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded px-2 py-1 cursor-pointer text-sm font-medium">
-                       <span class="move-selected-text text-gray-400">-- Select Move --</span>
-                       <svg class="w-3 h-3 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                     <div class="move-dropdown-header selected-item bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer flex items-center justify-between">
+                       <span class="move-selected-text placeholder text-gray-400 truncate">-- Select Move --</span>
+                       <svg class="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                      </div>
-                     <div class="move-dropdown-list absolute z-50 w-full mt-1 bg-white dark:bg-[#2d2d2d] border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl max-h-48 overflow-y-auto hidden">
-                       <div class="sticky top-0 bg-white dark:bg-[#2d2d2d] p-1.5 border-b border-gray-100 dark:border-gray-700">
-                         <input type="text" class="move-search-input w-full bg-gray-50 dark:bg-[#1a1a1b] border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white rounded px-2 py-1 outline-none focus:border-blue-500 text-sm" placeholder="Search moves..." autocomplete="off">
+                     <div class="move-dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                       <div class="p-2 border-b border-gray-100 dark:border-gray-600 sticky top-0 bg-white dark:bg-gray-700 z-10">
+                         <input type="text" class="move-search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search moves..." autocomplete="off">
                        </div>
-                       <div class="move-options-container"></div>
+                       <div class="move-options-container items-list py-1"></div>
                      </div>
                    </div>
                    <button class="override-btn flex-shrink-0 text-gray-400 hover:text-blue-500 transition-colors p-1" title="Override Move Details">
@@ -402,21 +402,21 @@ function renderTracker() {
               </button>
 
               <!-- Override Overlay (Hidden by default) -->
-              <div class="override-overlay absolute inset-0 bg-white dark:bg-[#252526] p-4 rounded-lg flex flex-col justify-center z-10 hidden border-2 border-blue-500">
+              <div class="override-overlay absolute inset-0 bg-white dark:bg-gray-800 p-4 rounded-lg flex flex-col justify-center z-10 hidden border-2 border-blue-500 transition-all duration-300">
                 <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Manual PP Override</h4>
-                <div class="flex gap-2 mb-4">
+                <div class="flex gap-2 mb-4 text-left">
                   <div class="flex-1">
-                    <label class="block text-xs text-gray-500 mb-1">Current</label>
-                    <input type="number" class="override-current w-full bg-gray-50 border px-2 py-1 rounded dark:bg-[#1a1a1b] dark:border-gray-600 dark:text-white" min="0">
+                    <label class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Current</label>
+                    <input type="number" class="override-current bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="0">
                   </div>
                   <div class="flex-1">
-                    <label class="block text-xs text-gray-500 mb-1">Max</label>
-                    <input type="number" class="override-max w-full bg-gray-50 border px-2 py-1 rounded dark:bg-[#1a1a1b] dark:border-gray-600 dark:text-white" min="1">
+                    <label class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Max</label>
+                    <input type="number" class="override-max bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="1">
                   </div>
                 </div>
                 <div class="flex justify-between gap-2">
-                  <button class="cancel-override-btn flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded py-1 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
-                  <button class="save-override-btn flex-1 bg-blue-600 text-white rounded py-1 text-sm font-medium hover:bg-blue-700">Save</button>
+                  <button class="cancel-override-btn flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white rounded-lg py-1.5 text-sm font-bold transition-colors shadow-sm">Cancel</button>
+                  <button class="save-override-btn flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-1.5 text-sm font-bold transition-colors shadow-sm">Save</button>
                 </div>
               </div>
 
@@ -447,10 +447,10 @@ function setupPokemonDropdown() {
     );
 
     optionsContainer.innerHTML = filteredOptions.map(p => `
-      <div class="dropdown-option p-3 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer text-gray-800 dark:text-gray-200 flex items-center" data-value="${p.name}">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" class="w-8 h-8 mr-3 object-contain" alt="${p.displayName}" loading="lazy" />
-        <span class="font-medium">${p.displayName}</span>
-        <span class="ml-2 text-xs text-gray-400">#${p.id}</span>
+      <div class="dropdown-option dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${p.name}">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" class="w-6 h-6 mr-3 object-contain flex-shrink-0" alt="${p.displayName}" loading="lazy" />
+        <span class="truncate font-medium">${p.displayName}</span>
+        <span class="ml-auto text-xs text-gray-400">#${p.id}</span>
       </div>
     `).join('');
 
@@ -459,7 +459,9 @@ function setupPokemonDropdown() {
       option.addEventListener('click', async () => {
         const val = option.getAttribute('data-value');
         const selectedObj = SOS_POKEMON.find(p => p.name === val);
-        selectedText.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${selectedObj.id}.png" class="inline w-6 h-6 mr-2" /> ${selectedObj.displayName}`;
+        selectedText.classList.remove('placeholder', 'text-gray-400');
+        selectedText.classList.add('text-gray-900', 'dark:text-white');
+        selectedText.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${selectedObj.id}.png" class="w-5 h-5 mr-2 flex-shrink-0" /> <span class="truncate">${selectedObj.displayName}</span>`;
         list.classList.add('hidden');
 
         await handlePokemonSelection(selectedObj.name);
@@ -555,8 +557,8 @@ function setupMoveDropdown(dropdownEl, slotIndex) {
     );
 
     optionsContainer.innerHTML = filtered.map(m => `
-      <div class="move-option px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer text-gray-800 dark:text-gray-200 text-sm" data-value="${m}">
-        ${formatMoveName(m)}
+      <div class="move-option dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${m}">
+        <span class="truncate">${formatMoveName(m)}</span>
       </div>
     `).join('');
 
@@ -564,7 +566,7 @@ function setupMoveDropdown(dropdownEl, slotIndex) {
       opt.addEventListener('click', async () => {
         const moveName = opt.getAttribute('data-value');
         selectedText.textContent = formatMoveName(moveName);
-        selectedText.classList.remove('text-gray-400');
+        selectedText.classList.remove('placeholder', 'text-gray-400');
         selectedText.classList.add('text-gray-900', 'dark:text-white');
         newList.classList.add('hidden');
         await handleMoveSelection(slotIndex, moveName);
