@@ -5,8 +5,10 @@ import { initCatchRateCalc } from './features/catch-rate-calc.js'
 import { initShinyOddsCalc } from './features/shiny-odds-calc.js'
 import { initShinyHuntingGuide } from './articles/shiny-hunting-guide.js'
 import { initSosHuntingGuide } from './articles/sos-hunting-guide.js'
+import { initMmoGuide } from './articles/mmo-guide.js'
 import { initPokemonLookup } from './features/pokemon-lookup.js'
 import { initSosMoveTracker } from './features/sos-move-tracker.js'
+import { initMmoPermutations } from './features/mmo-permutations.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
@@ -41,6 +43,7 @@ const renderNavbar = () => {
             <a href="#/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
             <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
             <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
+            <a href="#/mmo-permutations" class="dropdown-item">MMO Permutations</a>
           </div>
         </div>
         <div class="dropdown h-full">
@@ -51,6 +54,7 @@ const renderNavbar = () => {
           <div class="dropdown-menu">
             <a href="#/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
             <a href="#/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
+            <a href="#/info/mmo-guide" class="dropdown-item">MMO Permutations Guide</a>
           </div>
         </div>
         <div class="theme-switch-wrapper">
@@ -260,8 +264,12 @@ const renderPage = () => {
       return `<div id="shiny-hunting-guide-container"></div>`;
     } else if (hash === '#/info/sos-hunting') {
       return `<div id="sos-hunting-guide-container"></div>`;
+    } else if (hash === '#/info/mmo-guide') {
+      return `<div id="mmo-guide-container"></div>`;
     } else if (hash === '#/sos-tracker') {
       return `<div id="sos-move-tracker-container"></div>`;
+    } else if (hash === '#/mmo-permutations') {
+      return `<div id="mmo-permutations-container"></div>`;
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -351,8 +359,12 @@ const renderPage = () => {
     initShinyHuntingGuide(document.querySelector('#shiny-hunting-guide-container'));
   } else if (hash === '#/info/sos-hunting') {
     initSosHuntingGuide(document.querySelector('#sos-hunting-guide-container'));
+  } else if (hash === '#/info/mmo-guide') {
+    initMmoGuide(document.querySelector('#mmo-guide-container'));
   } else if (hash === '#/sos-tracker') {
     initSosMoveTracker(document.querySelector('#sos-move-tracker-container'));
+  } else if (hash === '#/mmo-permutations') {
+    initMmoPermutations(document.querySelector('#mmo-permutations-container'));
   }
 };
 
