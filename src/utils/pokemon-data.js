@@ -1,6 +1,6 @@
 import { Pokedex } from 'pokeapi-js-wrapper';
 
-const P = new Pokedex({
+export const P = new Pokedex({
     cache: true,
     cacheImages: true
 });
@@ -75,6 +75,39 @@ export async function getPokemonUpToGeneration(genNumber) {
         return finalResult;
     } catch (error) {
         console.error(`Error fetching Pokemon up to Generation ${genNumber}:`, error);
+        return [];
+    }
+}
+
+const listUpToGenCache = {};
+
+/**
+ * Fetches only the lightweight list (name, ID, displayName) of Pokemon up to a specific generation.
+ * This is MUCH faster than getPokemonUpToGeneration because it doesn't resolve species details.
+ * @param {number} genNumber - The generation number (1-9).
+ * @returns {Promise<Array>} List of Pokemon with id, name, and displayName.
+ */
+export async function getPokemonListUpToGeneration(genNumber) {
+    if (listUpToGenCache[genNumber]) return listUpToGenCache[genNumber];
+    try {
+        const gens = Array.from({ length: genNumber }, (_, i) => i + 1);
+        const genData = await Promise.all(gens.map(g => P.getGenerationByName(g)));
+        const speciesRefs = genData.flatMap(g => g.pokemon_species);
+
+        // Sort by ID extracted from URL to maintain Dex order
+        const finalResult = speciesRefs.map(ref => {
+            const id = parseInt(ref.url.split('/').filter(Boolean).pop());
+            return {
+                id: id,
+                name: ref.name,
+                displayName: ref.name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+            };
+        }).sort((a, b) => a.id - b.id);
+
+        listUpToGenCache[genNumber] = finalResult;
+        return finalResult;
+    } catch (error) {
+        console.error(`Error fetching Pokemon list up to Generation ${genNumber}:`, error);
         return [];
     }
 }

@@ -44,11 +44,13 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraPara
     }
 
     // Shiny Charm Effect (Introduced in Gen 5)
-    // +2 rolls for most methods
+    // +2 rolls for most methods (+3 for Legends Z-A)
     if (effectiveCharm && gen >= 5) {
         // PLA charm logic handles itself in its specific block below
         // SV charm logic is also standard, but PLA has specific requirements
-        if (game !== 'legends-arceus') {
+        if (game === 'legends-za') {
+            rolls += 3;
+        } else if (game !== 'legends-arceus') {
             rolls += 2;
         }
     }
@@ -154,10 +156,6 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraPara
     } else if (method === 'hyperspace' || method === 'hyperspace-static') {
         // PLZA Hyperspace specifically uses Sparkling Power 1-3
         rolls += (sparkling || 0);
-        // Hyperspace Static (Legendaries) are also affected by Shiny Charm in PLZA
-        if (method === 'hyperspace-static' && hasShinyCharm) {
-            rolls += 3; // Using PLA-style +3 rolls for charm
-        }
     }
 
     return formatResult(rolls, baseOdds);

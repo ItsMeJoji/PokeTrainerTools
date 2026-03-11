@@ -130,6 +130,41 @@ export async function getLocationsForVersion(versionName) {
 }
 
 /**
+ * Fetches a lightweight list of locations for a specific version.
+ * This is MUCH faster than getLocationsForVersion because it doesn't resolve location details or area encounters.
+ * @param {string} versionName - The name of the version.
+ * @returns {Promise<Array>} List of locations with name and displayName.
+ */
+export async function getLocationsListForVersion(versionName) {
+    if (resultCache.locations[versionName]) return resultCache.locations[versionName];
+
+    try {
+        const version = await P.getVersionByName(versionName);
+        const versionGroup = await P.getVersionGroupByName(version.version_group.name);
+
+        const locationRefs = [];
+        for (const regionRef of versionGroup.regions) {
+            const region = await P.getRegionByName(regionRef.name);
+            locationRefs.push(...region.locations);
+        }
+
+        const finalResult = locationRefs
+            .map(ref => ({
+                name: ref.name,
+                displayName: ref.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+            }))
+            .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+        // Note: We don't cache this in resultCache.locations because it's not the "full" verified list.
+        // However, for the dropdown, it's perfect.
+        return finalResult;
+    } catch (error) {
+        console.error(`Error fetching locations list for version ${versionName}:`, error);
+        return [];
+    }
+}
+
+/**
  * Fetches all version groups from PokeAPI.
  * @returns {Promise<Array>} List of version groups.
  */

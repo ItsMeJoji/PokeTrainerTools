@@ -1,6 +1,6 @@
 import grassSprite from '../assets/images/grass-sprite.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
-import { getVersions, getLocationsForVersion, getEncounters } from '../utils/pokeapi.js';
+import { getVersions, getLocationsListForVersion, getEncounters } from '../utils/pokeapi.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 
 /**
@@ -282,7 +282,7 @@ export async function initEncounterCalc(appContainer) {
     updateDropdownLoading(locationDropdown, "Loading Locations");
 
     try {
-      const locations = await getLocationsForVersion(selectedVersion);
+      const locations = await getLocationsListForVersion(selectedVersion);
       const locationItems = locations.map(loc => ({
         name: loc.name,
         displayName: loc.displayName

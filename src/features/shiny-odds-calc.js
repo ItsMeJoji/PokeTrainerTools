@@ -146,7 +146,7 @@ export async function initShinyOddsCalc(appContainer) {
         // Preserve open state of details
         const openIds = Array.from(methodsList.querySelectorAll('details[open]')).map(d => d.querySelector('.method-id-marker')?.dataset.id);
 
-        renderMethods(gen, hasCharm, game);
+        renderMethods(gen, hasCharm, game, savedStates);
 
         // Restore input states after re-render
         savedStates.forEach((val, id) => {
@@ -166,7 +166,7 @@ export async function initShinyOddsCalc(appContainer) {
         }
     };
 
-    const renderMethods = (gen, hasCharm, game) => {
+    const renderMethods = (gen, hasCharm, game, savedStates = null) => {
         const methods = [
             { id: 'random', name: 'Random Encounter', description: 'Standard wild Pokémon encounters in grass, caves, or water.' },
             { id: 'static', name: 'Static Encounter', description: 'Pokémon that appear as overworld sprites, gifts, or interactable objects (e.g., Legendaries, Snorlax). *Note: Some Static Encounters are Shiny Locked. Check specific species for details.*', excludedVersions: ['sword', 'shield', 'legends-arceus', 'legends-za'] },
@@ -211,10 +211,6 @@ export async function initShinyOddsCalc(appContainer) {
             .filter(m => !m.allowedVersions || m.allowedVersions.includes(game))
             .filter(m => !m.excludedVersions || !m.excludedVersions.includes(game))
             .map((m, index) => {
-                // Get current value from DOM if possible for consistency
-                const inputId = `input-${m.id}`;
-                const currentVal = document.getElementById(inputId)?.value || 0;
-
                 // Add version and global sparkling power/research level to parameters
                 const params = { game: game };
                 if (game === 'scarlet' || game === 'violet') {
@@ -222,6 +218,20 @@ export async function initShinyOddsCalc(appContainer) {
                 }
                 if (game === 'legends-arceus') {
                     params.level = parseInt(researchSelect.value) || 0;
+                }
+
+                // Restore inputs into logic state so odds calc is correct initially
+                if (m.inputs && savedStates) {
+                    m.inputs.forEach(input => {
+                        const fieldId = `input-${m.id}-${input.id}`;
+                        if (savedStates.has(fieldId)) {
+                            params[input.id] = savedStates.get(fieldId);
+                            // If it's a number string, parse it
+                            if (input.type === 'number' || input.type === 'select') {
+                                params[input.id] = parseInt(params[input.id]) || 0;
+                            }
+                        }
+                    });
                 }
 
                 const odds = calculateShinyOdds(gen, m.id, hasCharm, params);
@@ -232,28 +242,34 @@ export async function initShinyOddsCalc(appContainer) {
                     inputHtml = `<div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg space-y-3">`;
                     m.inputs.forEach(input => {
                         const fieldId = `input-${m.id}-${input.id}`;
+                        // Fetch the saved value from our savedStates map if it exists, otherwise use DOM, otherwise default to 0 / false
+                        const savedVal = savedStates ? savedStates.get(fieldId) : null;
+
                         if (input.type === 'number') {
+                            const valToUse = savedVal !== null ? savedVal : (document.getElementById(fieldId)?.value || 0);
                             inputHtml += `
                                 <div>
                                     <label for="${fieldId}" class="block mb-1 text-sm font-bold text-gray-700 dark:text-gray-300">${input.label}</label>
-                                    <input type="number" id="${fieldId}" min="0" max="${input.max}" value="0" 
+                                    <input type="number" id="${fieldId}" min="0" max="${input.max}" value="${valToUse}" 
                                         class="shiny-input w-full p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white">
                                 </div>
                             `;
                         } else if (input.type === 'checkbox') {
+                            const isChecked = savedVal !== null ? savedVal : (document.getElementById(fieldId)?.checked || false);
                             inputHtml += `
                                 <div class="flex items-center space-x-2">
-                                    <input type="checkbox" id="${fieldId}" 
+                                    <input type="checkbox" id="${fieldId}" ${isChecked ? 'checked' : ''}
                                         class="shiny-input w-4 h-4 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500">
                                     <label for="${fieldId}" class="text-sm font-bold text-gray-700 dark:text-gray-300 cursor-pointer select-none">${input.label}</label>
                                 </div>
                             `;
                         } else if (input.type === 'select') {
+                            const valToUse = savedVal !== null ? savedVal : (document.getElementById(fieldId)?.value || input.options[0].v);
                             inputHtml += `
                                 <div>
                                     <label for="${fieldId}" class="block mb-1 text-sm font-bold text-gray-700 dark:text-gray-300">${input.label}</label>
                                     <select id="${fieldId}" class="shiny-input w-full p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white">
-                                        ${input.options.map(opt => `<option value="${opt.v}">${opt.l}</option>`).join('')}
+                                        ${input.options.map(opt => `<option value="${opt.v}" ${valToUse == opt.v ? 'selected' : ''}>${opt.l}</option>`).join('')}
                                     </select>
                                 </div>
                             `;

@@ -12,7 +12,6 @@ import { initMmoPermutations } from './features/mmo-permutations.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
-import { getPokemonUpToGeneration } from './utils/pokemon-data.js'
 import { getVersions } from './utils/pokeapi.js'
 
 // Pre-fetch critical data on startup
@@ -249,7 +248,7 @@ const renderPage = () => {
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
           <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">Contact</h1>
           <div class="space-y-6 text-gray-600 dark:text-gray-400">
-            <p>If you have any questions, suggestions, or if you find any incorrect information in our calculators, please reach out!</p>
+            <p>If you have any questions, suggestions, or if you find any incorrect information on our site, please reach out!</p>
             
             <section>
               <h2 class="text-2xl font-bold text-black dark:text-white mb-2">Get in Touch</h2>

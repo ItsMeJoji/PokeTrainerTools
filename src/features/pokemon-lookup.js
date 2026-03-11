@@ -1,5 +1,4 @@
-import P from '../utils/pokeapi.js';
-import { getPokemonUpToGeneration } from '../utils/pokemon-data.js';
+import { getPokemonListUpToGeneration, P } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 
 // Ordered list of mainline English-release games (gen order, 'green' excluded)
@@ -133,7 +132,7 @@ export async function initPokemonLookup(appContainer) {
   // Show loading state in the Pokemon dropdown
   updateDropdownLoading(pokemonDropdown, "Loading Pokémon");
 
-  const pokemonList = await getPokemonUpToGeneration(9);
+  const pokemonList = await getPokemonListUpToGeneration(9);
 
   setupSearchableDropdown(pokemonDropdown, pokemonList, (pokemon) => {
     selectedPokemon = pokemon;
