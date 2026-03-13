@@ -9,6 +9,7 @@ import { initMmoGuide } from './articles/mmo-guide.js'
 import { initPokemonLookup } from './features/pokemon-lookup.js'
 import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import { initMmoPermutations } from './features/mmo-permutations.js'
+import { initRibbonTracker } from './features/ribbon-tracker.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
@@ -43,6 +44,7 @@ const renderNavbar = () => {
             <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
             <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
             <a href="#/mmo-permutations" class="dropdown-item">MMO Permutations</a>
+            <a href="#/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
           </div>
         </div>
         <div class="dropdown h-full">
@@ -205,6 +207,20 @@ const renderPage = () => {
                 <a href="#/shiny-odds" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
             </div>
+
+            <!-- Ribbon Tracker -->
+            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.6s">
+              <div class="tool-image bg-blue-600">
+                <div class="tool-overlay flex items-center justify-center">
+                  <i class="fas fa-ribbon text-7xl text-white/50 anim-rustle-periodic"></i>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>Ribbon Tracker</h3>
+                <p>Track every ribbon and mark for your battle-hardened companions across all generations!</p>
+                <a href="#/ribbon-tracker" class="tool-cta" style="background-color: #3b82f6">Try it now!</a>
+              </div>
+            </div>
           </div>
         </div>
       `;
@@ -269,6 +285,8 @@ const renderPage = () => {
       return `<div id="sos-move-tracker-container"></div>`;
     } else if (hash === '#/mmo-permutations') {
       return `<div id="mmo-permutations-container"></div>`;
+    } else if (hash === '#/ribbon-tracker') {
+      return `<div id="ribbon-tracker-container"></div>`;
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -364,6 +382,8 @@ const renderPage = () => {
     initSosMoveTracker(document.querySelector('#sos-move-tracker-container'));
   } else if (hash === '#/mmo-permutations') {
     initMmoPermutations(document.querySelector('#mmo-permutations-container'));
+  } else if (hash === '#/ribbon-tracker') {
+    initRibbonTracker(document.querySelector('#ribbon-tracker-container'));
   }
 };
 

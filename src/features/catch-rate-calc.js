@@ -5,10 +5,10 @@
 import pokeballSprite from '../assets/images/pokeball.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
 
-import { getPokemonUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
+import { getPokemonListUpToGeneration, getPokeBalls } from '../utils/pokemon-data.js';
 import { calculateGen34, calculateGen5, calculateGen67, calculateGen8, calculateGen9, simulateShakes } from '../utils/catch-rate-logic.js';
 import P from '../utils/pokeapi.js';
-import { setupSearchableDropdown, updateDropdownLoading } from '../utils/ui-utils.js';
+import { setupSearchableDropdown, updateDropdownLoading, updateDropdownError } from '../utils/ui-utils.js';
 
 export async function initCatchRateCalc(appContainer) {
   appContainer.innerHTML = `
@@ -419,14 +419,38 @@ export async function initCatchRateCalc(appContainer) {
       }
     };
 
-    // Show Loading state
-    updateDropdownLoading('pokemon-dropdown', 'Loading Pokemon');
-
     try {
-      currentPokemonList = await getPokemonUpToGeneration(gen);
-      setupSearchableDropdown('pokemon-dropdown', currentPokemonList, (p) => {
-        selectedPokemon = p;
-        updateStartButton();
+      currentPokemonList = await getPokemonListUpToGeneration(gen);
+      setupSearchableDropdown('pokemon-dropdown', currentPokemonList, async (p) => {
+        // Show loading state while fetching detailed data
+        const pokemonDropdown = document.getElementById('pokemon-dropdown');
+        const originalContent = pokemonDropdown.querySelector('.selected-item span').innerHTML;
+        updateDropdownLoading(pokemonDropdown, "Fetching data");
+        startBtn.disabled = true;
+
+        try {
+          const [details, species] = await Promise.all([
+            P.getPokemonByName(p.name),
+            P.getPokemonSpeciesByName(p.name)
+          ]);
+
+          selectedPokemon = {
+            ...p,
+            captureRate: species.capture_rate,
+            id: details.id,
+            // Add any other needed data...
+          };
+
+          // Restore display
+          const selectedSpan = pokemonDropdown.querySelector('.selected-item span');
+          selectedSpan.className = "selected-text flex items-center overflow-hidden text-gray-900 dark:text-white";
+          selectedSpan.innerHTML = p.displayName;
+
+          updateStartButton();
+        } catch (error) {
+          console.error('Error fetching Pokemon details:', error);
+          updateDropdownError(pokemonDropdown, "Error loading data");
+        }
       }, "Select Pokemon");
 
       ballList = await getPokeBalls(gen);
@@ -999,7 +1023,7 @@ export async function initCatchRateCalc(appContainer) {
       </div>
       ` : ''}
       <div class="grid grid-cols-2 gap-2 pt-1">
-        <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage}%</span>
+        <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage < 1 ? 'Less than 1%' : result.catchPercentage + '%'}</span>
       </div>
     `;
 
@@ -1032,7 +1056,7 @@ export async function initCatchRateCalc(appContainer) {
         catchMessage.textContent = `The ${selectedBall.displayName} shook ${shakes} times... but it broke free!`;
       }
 
-      catchPercentage.textContent = `${result.catchPercentage}%`;
+      catchPercentage.textContent = result.catchPercentage < 1 ? 'Less than 1%' : `${result.catchPercentage}%`;
       // Collapse Menu
       selectionDetails.open = false;
 
@@ -1126,15 +1150,8 @@ export async function initCatchRateCalc(appContainer) {
   });
 }
 
-/**
- * Helper to fetch detailed Pokemon data for weight and speed.
- */
 async function getPokemonDetails(name) {
   try {
-    // Import P is not possible here without moving it or passing it, 
-    // but pokeapi.js exports P as default.
-    // Wait, catch-rate-calc.js doesn't import P. It imports getPokemonUpToGeneration.
-    // I'll add an export to pokemon-data.js for the Pokedex instance or a wrapper.
     return await P.getPokemonByName(name);
   } catch (error) {
     console.error('Error fetching pokemon details:', error);
