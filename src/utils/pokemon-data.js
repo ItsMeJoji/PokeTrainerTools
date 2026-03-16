@@ -79,6 +79,36 @@ export async function getPokemonUpToGeneration(genNumber) {
     }
 }
 
+const availabilityCache = {};
+
+/**
+ * Determines which modern (Gen 8+) games a Pokémon is available in.
+ * Since PokeAPI doesn't have a direct "available in game X" flag that is fully reliable for Dexit,
+ * we verify availability by checking the version groups its moves belong to.
+ * 
+ * @param {string|number} pokemonIdOrName 
+ * @returns {Promise<Set<string>>} Set of version-group names (e.g. 'sword-shield', 'legends-arceus')
+ */
+export async function getPokemonGameAvailability(pokemonIdOrName) {
+    if (availabilityCache[pokemonIdOrName]) return availabilityCache[pokemonIdOrName];
+    try {
+        const details = await P.getPokemonByName(pokemonIdOrName);
+        const versionGroups = new Set();
+        
+        details.moves.forEach(move => {
+            move.version_group_details.forEach(vgd => {
+                versionGroups.add(vgd.version_group.name);
+            });
+        });
+        
+        availabilityCache[pokemonIdOrName] = versionGroups;
+        return versionGroups;
+    } catch (error) {
+        console.error(`Error fetching game availability for ${pokemonIdOrName}:`, error);
+        return new Set();
+    }
+}
+
 const listUpToGenCache = {};
 
 /**
