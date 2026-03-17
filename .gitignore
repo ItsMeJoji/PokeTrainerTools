@@ -25,3 +25,5 @@ dist-ssr
 
 # Debug Tools and Scripts
 debug*
+temp/
+tmp/

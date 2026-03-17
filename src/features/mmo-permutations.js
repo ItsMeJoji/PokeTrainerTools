@@ -8,7 +8,12 @@ function generatePermutations(totalSpawns) {
 
   function search(seq, reserve, onField) {
     if (reserve === 0) {
-      results.push(seq);
+      // All reserve spawns are out. Now catch the remaining on-field Pokémon.
+      const finalSeq = [...seq];
+      for (let i = 0; i < onField; i++) {
+        finalSeq.push('C');
+      }
+      results.push(finalSeq);
       return;
     }
 

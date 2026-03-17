@@ -108,19 +108,19 @@ export function initRibbonMasterGuide(container) {
           </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="bg-indigo-600 p-10 rounded-3xl shadow-2xl text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-white mb-4">Start Your Journey</h2>
-          <p class="text-lg text-indigo-100 mb-8 font-medium">Use our Ribbon Tracker to manage multiple candidates and ensure no ribbon is left behind!</p>
-          <button id="guide-cta-btn" class="!px-8 !py-3 !text-lg !font-bold !rounded-full bg-white text-indigo-600 hover:bg-gray-100 transition-all shadow-xl active:scale-95 border-none cursor-pointer">
-            Go to Tracker
+        <!-- Ribbon Tracker CTA Section -->
+        <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to start your journey?</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our Ribbon Tracker to manage multiple candidates and ensure no ribbon is left behind!</p>
+          <button id="guide-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #6366f1; align-self: center">
+            Ribbon Tracker Tool
           </button>
         </section>
       </div>
     </div>
     `;
 
-  document.getElementById('guide-cta-btn').onclick = () => {
+  document.getElementById('guide-cta-btn').addEventListener('click', () => {
     window.location.hash = '#/ribbon-tracker';
-  };
+  });
 }

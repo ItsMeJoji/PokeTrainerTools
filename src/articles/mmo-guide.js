@@ -3,7 +3,7 @@
  * @param {HTMLElement} container - The container to render the guide into.
  */
 export function initMmoGuide(container) {
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="anim-fade-in text-left max-w-4xl mx-auto px-4 py-8">
       <h1 class="mb-8 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg text-center">Massive Mass Outbreak Guide</h1>
       
@@ -42,15 +42,6 @@ export function initMmoGuide(container) {
               <p class="text-sm text-gray-600 dark:text-gray-400">Engaging multiple Pokémon at once skips steps in the internal RNG generator. A 4-way battle creates a drastically different Wave 2 than four 1-way battles.</p>
             </div>
           </div>
-        </section>
-
-        <!-- MMO Tracker CTA Section -->
-        <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to track your paths?</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our MMO Permutations tool to systematically check every possible path and find your shiny!</p>
-          <button id="mmo-tool-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #3b82f6; align-self: center">
-            MMO Permutations Tool
-          </button>
         </section>
 
         <!-- Section: The Strategy -->
@@ -94,11 +85,21 @@ export function initMmoGuide(container) {
             </p>
           </div>
         </section>
+
+
+        <!-- MMO Tracker CTA Section -->
+        <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to track your paths?</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our MMO Permutations tool to systematically check every possible path and find your shiny!</p>
+          <button id="mmo-tool-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #3b82f6; align-self: center">
+            MMO Permutations Tool
+          </button>
+        </section>
       </div>
     </div>
   `;
 
-    document.getElementById('mmo-tool-cta-btn').addEventListener('click', () => {
-        window.location.hash = '#/mmo-permutations';
-    });
+  document.getElementById('mmo-tool-cta-btn').addEventListener('click', () => {
+    window.location.hash = '#/mmo-permutations';
+  });
 }

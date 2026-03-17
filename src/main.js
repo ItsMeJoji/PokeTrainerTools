@@ -56,6 +56,7 @@ const renderNavbar = () => {
           <div class="dropdown-menu">
             <a href="#/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
             <a href="#/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
+            <a href="#/info/mmo-guide" class="dropdown-item">MMO Permutation Guide</a>
             <a href="#/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
           </div>
         </div>

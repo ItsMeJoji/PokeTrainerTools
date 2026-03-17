@@ -1,6 +1,8 @@
 import { getPokemonListUpToGeneration, getPokemonGameAvailability } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES } from '../utils/ribbon-data.js';
+import { initGoogleAuth, signIn, signOut, isSignedIn } from '../auth/google-auth.js';
+import { SyncManager } from '../auth/sync-manager.js';
 
 /**
  * Initializes the Ribbon Tracker page.
@@ -9,8 +11,16 @@ import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES } from '../utils/ribbon
 export async function initRibbonTracker(appContainer) {
   appContainer.innerHTML = `
     <div class="ribbon-tracker-page text-center max-w-4xl mx-auto px-4 pb-12">
-      <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Ribbon Tracker</h1>
-      <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Track ribbons and marks for your unique Pokémon journey.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+        <h1 class="text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Ribbon Tracker</h1>
+        <button id="cloud-sync-btn" class="p-2 rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 group relative border-none bg-transparent cursor-pointer">
+          <i id="cloud-icon" class="fas fa-cloud text-2xl text-gray-300 dark:text-gray-600"></i>
+          <div id="sync-status-tooltip" class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[110%] w-48 p-2 bg-gray-900 border border-gray-700 text-white text-[10px] rounded shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[60]">
+            Cloud Sync Disconnected. Click to sign in with Google Drive.
+          </div>
+        </button>
+      </div>
+      <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Track ribbons and marks for your unique Pok&eacute;mon journey.</p>
       <div class="mb-8">
         <a href="#/info/ribbon-master-guide" class="text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-4 py-1.5 rounded-full border border-indigo-100 dark:border-indigo-800">
           <i class="fas fa-question-circle mr-1"></i> What is a Ribbon Master?
@@ -81,7 +91,6 @@ export async function initRibbonTracker(appContainer) {
       </div>
     </div>
   `;
-
   // --- State ---
   let entries = JSON.parse(localStorage.getItem('ribbon_entries') || '[]');
   let selectedSpecies = null;
@@ -97,8 +106,98 @@ export async function initRibbonTracker(appContainer) {
     validateForm();
   });
 
-  const saveEntries = () => {
+  // --- Cloud Sync Logic ---
+  const updateSyncStatus = (status) => {
+    const icon = document.getElementById('cloud-icon');
+    const tooltip = document.getElementById('sync-status-tooltip');
+    
+    icon.className = 'fas text-2xl transition-all duration-300 ';
+    
+    switch(status) {
+      case 'syncing':
+        icon.classList.add('fa-sync-alt', 'fa-spin', 'text-blue-400');
+        tooltip.innerText = 'Syncing with Google Drive...';
+        break;
+      case 'synced':
+        icon.classList.add('fa-cloud', 'text-blue-500');
+        tooltip.innerText = `Last synced: ${new Date().toLocaleTimeString()}`;
+        break;
+      case 'error':
+        icon.classList.add('fa-cloud', 'text-red-500');
+        tooltip.innerText = 'Sync error. Click to retry.';
+        break;
+      case 'disconnected':
+      default:
+        icon.classList.add('fa-cloud', 'text-gray-300', 'dark:text-gray-600');
+        tooltip.innerText = 'Cloud Sync Disconnected. Click to sign in.';
+    }
+  };
+
+  const saveEntries = async (updatedEntryId = null) => {
+    // Update timestamp for the modified entry
+    if (updatedEntryId) {
+      const entry = entries.find(e => e.id === updatedEntryId);
+      if (entry) entry.lastUpdated = new Date().toISOString();
+    }
+    
     localStorage.setItem('ribbon_entries', JSON.stringify(entries));
+
+    if (isSignedIn()) {
+      updateSyncStatus('syncing');
+      try {
+        await SyncManager.push();
+        updateSyncStatus('synced');
+      } catch (err) {
+        console.error('Cloud Push Error:', err);
+        updateSyncStatus('error');
+      }
+    }
+  };
+
+  // Initialize Auth
+  const authPromise = initGoogleAuth().then(() => {
+    if (isSignedIn()) {
+      updateSyncStatus('synced');
+      // Trigger background sync
+      SyncManager.sync().then(syncedEntries => {
+        if (syncedEntries) {
+          entries = syncedEntries;
+          renderEntriesList();
+        }
+      });
+    }
+  });
+
+  document.getElementById('cloud-sync-btn').onclick = async () => {
+    if (!isSignedIn()) {
+      try {
+        updateSyncStatus('syncing');
+        await signIn();
+        updateSyncStatus('synced');
+        const syncedEntries = await SyncManager.sync();
+        if (syncedEntries) {
+          entries = syncedEntries;
+          renderEntriesList();
+        }
+      } catch (err) {
+        console.error('Sign-in Sync Error:', err);
+        updateSyncStatus('error');
+      }
+    } else {
+      // Toggle sync manually if already signed in
+      updateSyncStatus('syncing');
+      try {
+        const syncedEntries = await SyncManager.sync();
+        if (syncedEntries) {
+          entries = syncedEntries;
+          renderEntriesList();
+        }
+        updateSyncStatus('synced');
+      } catch (err) {
+        console.error('Manual Sync Error:', err);
+        updateSyncStatus('error');
+      }
+    }
   };
 
   // --- UI Functions ---
@@ -190,7 +289,7 @@ export async function initRibbonTracker(appContainer) {
   window.deleteEntry = (idx) => {
     if (confirm('Are you sure you want to end this journey? Progress will be lost.')) {
       entries.splice(idx, 1);
-      saveEntries();
+      saveEntries(); // Entire list changed
       renderEntriesList();
     }
   };
@@ -413,14 +512,14 @@ export async function initRibbonTracker(appContainer) {
     } else {
       entry.collectedRibbons.push(ribbonId);
     }
-    saveEntries();
+    saveEntries(entry.id);
     window.openRibbonDetail(entryIdx); // Re-render detail
     renderEntriesList(); // Update count on list
   };
 
   window.toggleEntryShiny = (idx) => {
     entries[idx].isShiny = !entries[idx].isShiny;
-    saveEntries();
+    saveEntries(entries[idx].id);
     window.openRibbonDetail(idx);
     renderEntriesList();
   };
@@ -429,7 +528,7 @@ export async function initRibbonTracker(appContainer) {
     const input = document.getElementById('nickname-edit-input');
     const newName = input.value.trim() || entries[idx].speciesName;
     entries[idx].nickname = newName;
-    saveEntries();
+    saveEntries(entries[idx].id);
     renderEntriesList();
     window.openRibbonDetail(idx);
   };
@@ -496,7 +595,7 @@ export async function initRibbonTracker(appContainer) {
       const availability = await getPokemonGameAvailability(entry.speciesId);
       entry.availableGames = [...availability]; // Convert Set to Array for serialization
 
-      saveEntries();
+      saveEntries(entry.id);
       renderEntriesList();
       window.openRibbonDetail(idx);
     };
@@ -507,7 +606,7 @@ export async function initRibbonTracker(appContainer) {
     if (game) {
       entries[idx].originGameId = newGameId;
       entries[idx].originGen = game.gen;
-      saveEntries();
+      saveEntries(entries[idx].id);
       window.openRibbonDetail(idx); // Full refresh to update eligibility
       renderEntriesList();
     }
@@ -600,11 +699,12 @@ export async function initRibbonTracker(appContainer) {
         originGameId: selectedOriginId,
         originGen: ORIGIN_GAMES.find(g => g.id === selectedOriginId)?.gen || 1,
         collectedRibbons: [],
-        availableGames: [...availableGames] // Store as array for localStorage
+        availableGames: [...availableGames], // Store as array for localStorage
+        lastUpdated: new Date().toISOString()
       };
 
       entries.unshift(newEntry);
-      saveEntries();
+      saveEntries(newEntry.id);
       renderEntriesList();
 
       // Reset form
