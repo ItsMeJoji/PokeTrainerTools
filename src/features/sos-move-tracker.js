@@ -327,13 +327,18 @@ export async function initSosMoveTracker(container) {
 
 function renderTracker() {
   containerEl.innerHTML = `
-    <div class="anim-fade-in text-left max-w-4xl mx-auto pb-12">
-      <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div class="anim-fade-in text-center max-w-4xl mx-auto pb-12">
+      <div class="mb-8 flex flex-col items-center gap-4">
         <div>
-          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-black dark:text-white mb-4">SOS Move Tracker</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-black dark:text-white mb-4 text-shadow-lg">SOS Move Tracker</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">
             Track the PP of Wild Pokémon during SOS Battles to prevent them from Struggling.
           </p>
+          <div class="flex justify-center">
+            <a href="#/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800">
+              <i class="fas fa-info-circle mr-2"></i> SOS Chaining Guide
+            </a>
+          </div>
         </div>
         <button id="btn-transformed" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors flex items-center gap-2 whitespace-nowrap" style="display: none;">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>

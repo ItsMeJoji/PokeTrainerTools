@@ -6,7 +6,12 @@ export async function initShinyOddsCalc(appContainer) {
     appContainer.innerHTML = `
         <div class="shiny-odds-page text-center max-w-2xl mx-auto px-4">
             <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Shiny Odds Calculator</h1>
-            <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate your chances of finding a Shiny Pokemon based on game version and method.</p>
+            <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Calculate your chances of finding a Shiny Pokemon based on game version and method.</p>
+            <div class="mb-8">
+                <a href="#/info/shiny-hunting" class="inline-flex items-center text-sm font-bold text-yellow-600 hover:text-yellow-700 transition-colors bg-yellow-50 dark:bg-yellow-900/20 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800">
+                    <i class="fas fa-info-circle mr-2"></i> Shiny Hunting Guide
+                </a>
+            </div>
 
             <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
                 <div id="game-select-container" class="text-left">

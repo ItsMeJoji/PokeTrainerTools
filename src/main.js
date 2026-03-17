@@ -10,6 +10,7 @@ import { initPokemonLookup } from './features/pokemon-lookup.js'
 import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import { initMmoPermutations } from './features/mmo-permutations.js'
 import { initRibbonTracker } from './features/ribbon-tracker.js'
+import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
@@ -55,7 +56,7 @@ const renderNavbar = () => {
           <div class="dropdown-menu">
             <a href="#/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
             <a href="#/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
-            <a href="#/info/mmo-guide" class="dropdown-item">MMO Permutations Guide</a>
+            <a href="#/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
           </div>
         </div>
         <div class="theme-switch-wrapper">
@@ -287,6 +288,8 @@ const renderPage = () => {
       return `<div id="mmo-permutations-container"></div>`;
     } else if (hash === '#/ribbon-tracker') {
       return `<div id="ribbon-tracker-container"></div>`;
+    } else if (hash === '#/info/ribbon-master-guide') {
+      return `<div id="ribbon-master-guide-container"></div>`;
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -384,6 +387,8 @@ const renderPage = () => {
     initMmoPermutations(document.querySelector('#mmo-permutations-container'));
   } else if (hash === '#/ribbon-tracker') {
     initRibbonTracker(document.querySelector('#ribbon-tracker-container'));
+  } else if (hash === '#/info/ribbon-master-guide') {
+    initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
   }
 };
 

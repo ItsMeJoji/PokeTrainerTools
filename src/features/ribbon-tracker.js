@@ -10,7 +10,12 @@ export async function initRibbonTracker(appContainer) {
   appContainer.innerHTML = `
     <div class="ribbon-tracker-page text-center max-w-4xl mx-auto px-4 pb-12">
       <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Ribbon Tracker</h1>
-      <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Track ribbons and marks for your unique Pokémon journey.</p>
+      <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Track ribbons and marks for your unique Pokémon journey.</p>
+      <div class="mb-8">
+        <a href="#/info/ribbon-master-guide" class="text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-4 py-1.5 rounded-full border border-indigo-100 dark:border-indigo-800">
+          <i class="fas fa-question-circle mr-1"></i> What is a Ribbon Master?
+        </a>
+      </div>
 
       <!-- Pokemon Entry Creator -->
       <div id="entry-creator" class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
