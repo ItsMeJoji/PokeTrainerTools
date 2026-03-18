@@ -21,12 +21,16 @@ let gisInited = false;
  * Initializes the Google API client library.
  */
 async function initializeGapiClient() {
-  await gapi.client.init({
-    apiKey: API_KEY,
-    discoveryDocs: [DISCOVERY_DOC],
-  });
-  gapiInited = true;
-  console.log('GAPI client initialized');
+  try {
+    await gapi.client.init({
+      apiKey: API_KEY,
+      discoveryDocs: [DISCOVERY_DOC],
+    });
+    gapiInited = true;
+    console.log('GAPI client initialized');
+  } catch (err) {
+    console.error('GAPI client initialization failed:', err);
+  }
 }
 
 /**
