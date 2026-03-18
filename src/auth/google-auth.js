@@ -4,8 +4,8 @@
  */
 
 // Replace these with your actual keys from Google Cloud Console
-const CLIENT_ID = '20263944251-0fvpm9erp6lvrs63u6vas1oa6f3jk6ot.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyBeI1rU3Sl6c6sLzqG-7qbs6XSrqVKpOco';
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 // Discovery doc URL for APIs used by the quickstart
 const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
