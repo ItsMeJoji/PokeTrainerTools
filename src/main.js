@@ -25,16 +25,26 @@ initTheme();
 const renderNavbar = () => {
   const isDark = document.documentElement.classList.contains('dark');
   document.querySelector('#navbar').innerHTML = `
-    <nav class="flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white">
+    <nav class="flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
       <div class="flex gap-4 items-center">
-        <a href="#/" class="flex items-center">
-          <img src="${pokeballSprite}" class="w-8 h-8 object-contain" alt="PokéTrainer Tools Logo" />
+        <a href="#/" class="flex items-center gap-2">
+          <img src="${pokeballSprite}" class="w-12 h-12 md:w-8 md:h-8 object-contain" alt="PokéTrainer Tools Logo" />
+          <span class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</span>
         </a>
-        <a href="#/" class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</a>
       </div>
-      <div class="flex items-center gap-6 h-full">
-        <div class="dropdown h-full">
-          <button class="flex items-center gap-1 hover:text-blue-500 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer">
+
+      <!-- Hamburger Button (Mobile Only) -->
+      <button id="hamburger" class="md:hidden flex items-center p-2 text-white bg-transparent border-none cursor-pointer focus:outline-none" aria-label="Toggle Menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Navigation Links -->
+      <div id="nav-content" class="hidden md:flex flex-col md:flex-row items-center gap-2 md:gap-6 absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto bg-[#1a1a1b] md:bg-transparent p-4 md:p-0 z-50 shadow-lg md:shadow-none transition-all duration-300">
+        <div class="dropdown h-full w-full md:w-auto">
+          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-blue-500 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
             Tools
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
@@ -48,8 +58,8 @@ const renderNavbar = () => {
             <a href="#/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
           </div>
         </div>
-        <div class="dropdown h-full">
-          <button class="flex items-center gap-1 hover:text-blue-400 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer">
+        <div class="dropdown h-full w-full md:w-auto">
+          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-blue-400 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
             Info
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
@@ -60,7 +70,7 @@ const renderNavbar = () => {
             <a href="#/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
           </div>
         </div>
-        <div class="theme-switch-wrapper">
+        <div class="theme-switch-wrapper py-2 md:py-0">
           <label class="theme-switch" for="checkbox">
             <input type="checkbox" id="checkbox" ${isDark ? 'checked' : ''} />
             <div class="slider">
@@ -75,6 +85,18 @@ const renderNavbar = () => {
 
   document.querySelector('#checkbox').addEventListener('change', (e) => {
     toggleTheme();
+  });
+
+  // Hamburger Toggle Logic
+  const hamburger = document.querySelector('#hamburger');
+  const navContent = document.querySelector('#nav-content');
+  const hamburgerIcon = document.querySelector('#hamburger-icon');
+  const closeIcon = document.querySelector('#close-icon');
+
+  hamburger.addEventListener('click', () => {
+    navContent.classList.toggle('hidden');
+    hamburgerIcon.classList.toggle('hidden');
+    closeIcon.classList.toggle('hidden');
   });
 
   const dropdowns = document.querySelectorAll('.dropdown');
@@ -108,6 +130,24 @@ const renderNavbar = () => {
         dropdown.querySelector('.dropdown-menu').classList.remove('show');
         dropdown.querySelector('button').classList.remove('active');
         dropdown.querySelector('button').setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close hamburger menu when clicking outside
+    if (hamburger && !hamburger.contains(e.target) && !navContent.contains(e.target)) {
+      navContent.classList.add('hidden');
+      hamburgerIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+  });
+
+  // Close hamburger menu when clicking a link
+  navContent.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth < 768) { // md breakpoint
+        navContent.classList.add('hidden');
+        hamburgerIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
       }
     });
   });
