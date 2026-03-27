@@ -1,17 +1,34 @@
 import { getVersions } from '../utils/pokeapi.js';
 import { calculateShinyOdds, VERSION_TO_GEN, VERSIONS_WITH_SHINY_CHARM } from '../utils/shiny-odds-logic.js';
 import { setupSearchableDropdown, getSearchableDropdownHtml } from '../utils/ui-utils.js';
+import { SHINY_ODDS_INSTRUCTIONS } from '../utils/instruction-content.js';
 
 export async function initShinyOddsCalc(appContainer) {
     appContainer.innerHTML = `
         <div class="shiny-odds-page text-center max-w-2xl mx-auto px-4">
             <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Shiny Odds Calculator</h1>
-            <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Calculate your chances of finding a Shiny Pokemon based on game version and method.</p>
-            <div class="mb-8">
-                <a href="#/info/shiny-hunting" class="inline-flex items-center text-sm font-bold text-yellow-600 hover:text-yellow-700 transition-colors bg-yellow-50 dark:bg-yellow-900/20 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800">
-                    <i class="fas fa-info-circle mr-2"></i> Shiny Hunting Guide
-                </a>
-            </div>
+            <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Calculate your chances of finding a Shiny Pokemon based on game version and method.</p>
+
+            <!-- Instructions Collapsible -->
+            <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
+                <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
+                    </div>
+                    <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
+                    <div class="mb-6">
+                        <a href="#/info/shiny-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
+                            <i class="fas fa-info-circle mr-2"></i> Shiny Hunting Guide
+                        </a>
+                    </div>
+                    ${SHINY_ODDS_INSTRUCTIONS}
+                </div>
+            </details>
 
             <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
                 <div id="game-select-container" class="text-left">

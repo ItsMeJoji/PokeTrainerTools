@@ -26,7 +26,7 @@ export function setupSearchableDropdown(dropdown, items, onSelect, placeholder =
             const spriteHtml = item.sprite ? `<img src="${item.sprite}" class="w-6 h-6 mr-2 object-contain flex-shrink-0">` : '';
 
             return `
-        <div data-value="${value}" class="dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white">
+        <div data-value="${value}" class="dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm text-gray-900 dark:text-white">
           ${spriteHtml}
           <span class="truncate">${displayName}</span>
         </div>
@@ -163,7 +163,7 @@ export function getSearchableDropdownHtml(id, label, searchPlaceholder = "Search
         </div>
         <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
           <div class="p-2 border-b border-gray-100 dark:border-gray-600 sticky top-0 bg-white dark:bg-gray-700 z-10">
-            <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="${searchPlaceholder}">
+            <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 text-gray-900 dark:text-white" placeholder="${searchPlaceholder}">
           </div>
           <div class="items-list py-1"></div>
         </div>

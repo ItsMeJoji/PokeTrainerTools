@@ -1,5 +1,6 @@
 import { getPokemonListUpToGeneration, P } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
+import { POKEMON_LOOKUP_INSTRUCTIONS } from '../utils/instruction-content.js';
 
 // Ordered list of mainline English-release games (gen order, 'green' excluded)
 const GAME_ORDER = [
@@ -66,6 +67,22 @@ export async function initPokemonLookup(appContainer) {
     <div class="pokemon-lookup-page text-center max-w-2xl mx-auto px-4">
       <h1 class="mb-6 text-4xl text-black dark:text-white font-extrabold text-shadow-lg">Pokemon Lookup</h1>
       <p class="mb-8 text-lg text-gray-500 dark:text-gray-400">Find where any Pokemon can be encountered across all games.</p>
+
+      <!-- Instructions Collapsible -->
+      <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+          <div class="flex items-center space-x-3">
+            <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
+          </div>
+          <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
+          ${POKEMON_LOOKUP_INSTRUCTIONS}
+        </div>
+      </details>
       
       <!-- Selection Container -->
       <div id="lookup-selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">

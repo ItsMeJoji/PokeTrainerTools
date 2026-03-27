@@ -3,6 +3,8 @@ import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHt
 import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES } from '../utils/ribbon-data.js';
 import { initGoogleAuth, signIn, signOut, isSignedIn } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
+import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
+
 
 /**
  * Initializes the Ribbon Tracker page.
@@ -21,11 +23,27 @@ export async function initRibbonTracker(appContainer) {
         </button>
       </div>
       <p class="mb-2 text-lg text-gray-500 dark:text-gray-400">Track ribbons and marks for your unique Pok&eacute;mon journey.</p>
-      <div class="mb-8">
-        <a href="#/info/ribbon-master-guide" class="text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-4 py-1.5 rounded-full border border-indigo-100 dark:border-indigo-800">
-          <i class="fas fa-question-circle mr-1"></i> What is a Ribbon Master?
-        </a>
-      </div>
+      
+      <!-- Instructions Collapsible -->
+      <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
+        <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+          <div class="flex items-center space-x-3">
+            <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
+          </div>
+          <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
+          <div class="mb-6">
+            <a href="#/info/ribbon-master-guide" class="inline-flex items-center text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-6 py-2 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+              <i class="fas fa-question-circle mr-2"></i> Ribbon Master Guide
+            </a>
+          </div>
+          ${RIBBON_TRACKER_INSTRUCTIONS}
+        </div>
+      </details>
 
       <!-- Pokemon Entry Creator -->
       <div id="entry-creator" class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
@@ -222,15 +240,16 @@ export async function initRibbonTracker(appContainer) {
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain">
             ${entry.isShiny ? '<i class="fas fa-star text-[10px] text-yellow-400 absolute top-0 right-0 animate-pulse"></i>' : ''}
           </div>
-          <div class="text-left">
-            <h3 class="font-bold text-gray-800 dark:text-white">${entry.nickname}</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              ${entry.speciesName} \u2022 ${ORIGIN_GAMES.find(g => g.id === entry.originGameId)?.name || (entry.originGen ? `Gen ${entry.originGen}` : 'Unknown')}
-            </p>
+          <div class="text-left min-w-0">
+            <h3 class="font-bold text-gray-800 dark:text-white truncate">${entry.nickname}</h3>
+            <div class="flex flex-col text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">
+              <span class="truncate">${entry.speciesName}</span>
+              <span class="truncate">${ORIGIN_GAMES.find(g => g.id === entry.originGameId)?.name || (entry.originGen ? `Gen ${entry.originGen}` : 'Unknown')}</span>
+            </div>
           </div>
         </div>
         <div class="flex items-center gap-6">
-          <div class="text-right hidden sm:block">
+          <div class="text-right flex flex-col items-end">
             ${(() => {
         const pokemonState = {
           originGameId: entry.originGameId,
@@ -265,16 +284,16 @@ export async function initRibbonTracker(appContainer) {
         const isMaster = collectedCount > 0 && collectedCount === eligibleCount;
 
         return `
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 sm:gap-2">
                   ${isMaster ? `
-                    <div class="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                    <div class="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
                       <i class="fas fa-crown text-[8px]"></i>
-                      MASTER
+                      <span class="hidden sm:inline">MASTER</span>
                     </div>
                   ` : ''}
-                  <div class="text-sm font-bold ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}">${collectedCount} / ${eligibleCount}</div>
+                  <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}">${collectedCount} / ${eligibleCount}</div>
                 </div>
-                <div class="text-[10px] uppercase tracking-wider text-gray-400">${isMaster ? 'Collection Complete' : 'Ribbons'}</div>
+                <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
               `;
       })()}
           </div>

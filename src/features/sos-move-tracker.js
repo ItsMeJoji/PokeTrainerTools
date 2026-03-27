@@ -1,4 +1,5 @@
 import { getPokemonMovesGen7, getMoveDetails } from '../utils/pokeapi.js';
+import { SOS_MOVE_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
 
 // Hardcoded list of all Pokemon that can appear in SOS Battles (non-zero call rate)
 // Source: https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_call_rate
@@ -331,14 +332,30 @@ function renderTracker() {
       <div class="mb-8 flex flex-col items-center gap-4">
         <div>
           <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-black dark:text-white mb-4 text-shadow-lg">SOS Move Tracker</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
             Track the PP of Wild Pokémon during SOS Battles to prevent them from Struggling.
           </p>
-          <div class="flex justify-center">
-            <a href="#/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800">
-              <i class="fas fa-info-circle mr-2"></i> SOS Chaining Guide
-            </a>
-          </div>
+
+          <!-- Instructions Collapsible -->
+          <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
+            <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+              <div class="flex items-center space-x-3">
+                <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
+              </div>
+              <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
+              <div class="mb-6">
+                <a href="#/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
+                  <i class="fas fa-info-circle mr-2"></i> SOS Chaining Guide
+                </a>
+              </div>
+              ${SOS_MOVE_TRACKER_INSTRUCTIONS}
+            </div>
+          </details>
         </div>
         <button id="btn-transformed" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors flex items-center gap-2 whitespace-nowrap" style="display: none;">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
