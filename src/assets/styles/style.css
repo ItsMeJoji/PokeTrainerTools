@@ -152,7 +152,8 @@ button:focus-visible {
   top: 100%;
   right: 0;
   left: auto;
-  background-color: #1a1a1b; /* Matching navbar bg */
+  background-color: #1a1a1b;
+  /* Matching navbar bg */
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
   z-index: 60;
@@ -167,7 +168,8 @@ button:focus-visible {
     width: 100%;
     box-shadow: none;
     border: none;
-    background-color: #242424; /* Slightly lighter for contrast in mobile menu */
+    background-color: #242424;
+    /* Slightly lighter for contrast in mobile menu */
     border-radius: 8px;
     margin-top: 0.5rem;
   }
@@ -552,7 +554,7 @@ details summary::-webkit-details-marker {
   left: 50%;
   width: 32px;
   height: 32px;
-  background-color: #4379ec;
+  background-color: #bfec43;
   clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
