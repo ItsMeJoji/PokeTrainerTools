@@ -290,6 +290,8 @@ const renderPage = () => {
             <section>
               <h2 class="text-2xl font-bold text-black dark:text-white mb-2">Information We Collect</h2>
               <p>Actually, we don't collect anything! PokéTrainer Tools is designed to be a client-side utility. We do not store your personal information, Pokémon hunt data, or search history on our site.</p>
+              <br>
+              <p><strong>Google Drive Sync:</strong> If you choose to enable Cloud Sync (e.g., for the Ribbon Tracker), your data is saved directly to a hidden application folder within your own Google Drive. We do not have access to your Google Drive files, and your data never touches our servers.</p>
             </section>
 
             <section>
@@ -304,16 +306,34 @@ const renderPage = () => {
     } else if (hash === '#/contact') {
       return `
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
-          <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">Contact</h1>
-          <div class="space-y-6 text-gray-600 dark:text-gray-400">
-            <p>If you have any questions, suggestions, or if you find any incorrect information on our site, please reach out!</p>
-            
-            <section>
-              <h2 class="text-2xl font-bold text-black dark:text-white mb-2">Get in Touch</h2>
-              <p>The best way to contact me is via X (formerly Twitter). Send me a DM or mention me: 
-                <a href="https://x.com/itsmejoji_" target="_blank" class="text-blue-500 font-bold hover:underline">@ItsMeJoji_</a>
-              </p>
-            </section>
+          <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">Get in Touch with Me!</h1>
+          
+          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+              <div class="col-span-1 flex justify-center md:justify-start">
+                <img src="/src/assets/images/profile-image.png" alt="ItsMeJoji" class="w-32 h-32 md:w-full md:h-auto aspect-square object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-700">
+              </div>
+              <div class="col-span-1 md:col-span-3 space-y-4 text-gray-600 dark:text-gray-400">
+                <p class="text-lg">
+                  <span class="font-bold text-gray-900 dark:text-white">PokéTrainer Tools</span> is built and maintained by a team of 1 with a huge love for Pokémon. I'm always looking for ways to improve these tools for the community!
+                </p>
+                <p>
+                  If you have any questions, suggestions, or if you find any incorrect information on our site, please reach out! The best way to contact me is via X (formerly Twitter) or Bluesky. Send me a DM or mention me:
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                  <a href="https://x.com/itsmejoji_" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-bold rounded-xl transition-all shadow-md active:scale-95">
+                    <i class="fab fa-x-twitter text-lg"></i>
+                    @ItsMeJoji_
+                  </a>
+                  <a href="https://bsky.app/profile/itsmejoji.com" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-bold rounded-xl transition-all shadow-md active:scale-95">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M120.016 137.643c72.488 56.634 116.516 162.783 135.984 213.684 19.467-50.901 63.495-157.05 135.984-213.684 46.155-36.064 120.016-52.126 120.016-6.273 0 76.54-34.965 197.669-45.961 247.923-11.233 51.341-61.942 66.822-108.625 55.451-87.16-21.228-101.414-72.336-101.414-72.336s14.254 51.108-72.903 72.336c-46.683 11.37-97.392-4.11-108.625-55.451-10.996-50.254-45.961-171.383-45.961-247.923 0-45.853 73.861-29.791 120.016 6.273z"/>
+                    </svg>
+                    @itsmejoji.com
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       `;
