@@ -15,6 +15,7 @@ import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
 import { getVersions } from './utils/pokeapi.js'
+import { initRNGPage } from './features/rng-version.js'
 
 // Pre-fetch critical data on startup
 getVersions();
@@ -24,6 +25,8 @@ initTheme();
 
 const renderNavbar = () => {
   const isDark = document.documentElement.classList.contains('dark');
+  const today = new Date();
+  const isAprilFools = today.getMonth() === 3 && today.getDate() === 1;
   document.querySelector('#navbar').innerHTML = `
     <nav class="flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
       <div class="flex gap-4 items-center">
@@ -56,6 +59,7 @@ const renderNavbar = () => {
             <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
             <a href="#/mmo-permutations" class="dropdown-item">MMO Permutations</a>
             <a href="#/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
+            ${isAprilFools ? '<a href="#/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
           </div>
         </div>
         <div class="dropdown h-full w-full md:w-auto">
@@ -351,6 +355,13 @@ const renderPage = () => {
       return `<div id="ribbon-tracker-container"></div>`;
     } else if (hash === '#/info/ribbon-master-guide') {
       return `<div id="ribbon-master-guide-container"></div>`;
+    } else if (hash === '#/rng-version') {
+      const today = new Date();
+      if (today.getMonth() === 3 && today.getDate() === 1) {
+        return `<div id="rng-version-container"></div>`;
+      } else {
+        return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+      }
     } else {
       return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
     }
@@ -450,6 +461,11 @@ const renderPage = () => {
     initRibbonTracker(document.querySelector('#ribbon-tracker-container'));
   } else if (hash === '#/info/ribbon-master-guide') {
     initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
+  } else if (hash === '#/rng-version') {
+    const today = new Date();
+    if (today.getMonth() === 3 && today.getDate() === 1) {
+      initRNGPage('rng-version-container');
+    }
   }
 };
 
