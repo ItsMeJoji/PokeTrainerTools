@@ -96,10 +96,10 @@ export async function initPokemonLookup(appContainer) {
         <div id="lookup-choice-container" class="hidden opacity-0 transition-opacity duration-500 flex flex-col items-center gap-4">
           <p class="text-lg font-bold text-gray-700 dark:text-gray-300">Where are you hunting?</p>
           <div class="flex gap-4">
-            <button id="lookup-select-game-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
+            <button id="lookup-select-game-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
               Select a Game
             </button>
-            <button id="lookup-show-everything-btn" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
+            <button id="lookup-show-everything-btn" class="px-6 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-black dark:text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
               <span id="lookup-everything-text">Show EVERYTHING!</span>
             </button>
           </div>

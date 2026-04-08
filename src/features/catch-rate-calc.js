@@ -201,6 +201,7 @@ export async function initCatchRateCalc(appContainer) {
   const calculationBreakdown = document.getElementById('calculation-breakdown');
   const selectionDetails = document.getElementById('selection-details');
   const selectionContainer = document.getElementById('selection-container');
+  const catchRatePage = appContainer.querySelector('.catch-rate-page');
 
   let currentPokemonList = [];
   let ballList = [];
@@ -1082,6 +1083,10 @@ export async function initCatchRateCalc(appContainer) {
       void catchResult.offsetWidth;
       catchResult.classList.remove('opacity-0');
       catchResult.classList.add('opacity-100');
+
+      window.setTimeout(() => {
+        catchRatePage?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 60);
 
       recalBtn.disabled = false;
       resetBtn.disabled = false;

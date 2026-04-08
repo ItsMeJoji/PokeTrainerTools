@@ -17,6 +17,9 @@ import P from './utils/pokeapi.js'
 import { getVersions } from './utils/pokeapi.js'
 import { initRNGPage } from './features/rng-version.js'
 
+const ribbonMarkModules = import.meta.glob('./assets/images/ribbons-and-marks/*.png', { eager: true, import: 'default' });
+const ribbonMarkImages = Object.values(ribbonMarkModules);
+
 // Pre-fetch critical data on startup
 getVersions();
 
@@ -28,7 +31,7 @@ const renderNavbar = () => {
   const today = new Date();
   const isAprilFools = today.getMonth() === 3 && today.getDate() === 1;
   document.querySelector('#navbar').innerHTML = `
-    <nav class="flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
+    <nav class="w-full flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
       <div class="flex gap-4 items-center">
         <a href="#/" class="flex items-center gap-2">
           <img src="${pokeballSprite}" class="w-12 h-12 md:w-8 md:h-8 object-contain" alt="PokéTrainer Tools Logo" />
@@ -185,9 +188,21 @@ async function getRandomPokemon() {
   }
 }
 
+function getRandomRibbonMarkImage() {
+  if (ribbonMarkImages.length === 0) {
+    return null;
+  }
+
+  const index = Math.floor(Math.random() * ribbonMarkImages.length);
+  return ribbonMarkImages[index];
+}
+
 const renderPage = () => {
   const hash = window.location.hash || '#/';
   const app = document.querySelector('#app');
+  const isRibbonTrackerPage = hash === '#/ribbon-tracker';
+
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
   const content = (() => {
     if (hash === '#/' || hash === '') {
@@ -257,8 +272,8 @@ const renderPage = () => {
             <!-- Ribbon Tracker -->
             <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.6s">
               <div class="tool-image bg-blue-600">
-                <div class="tool-overlay flex items-center justify-center">
-                  <i class="fas fa-ribbon text-7xl text-white/50 anim-rustle-periodic"></i>
+                <div class="tool-overlay flex items-center justify-center" id="ribbon-tool-overlay">
+                  <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
                 </div>
               </div>
               <div class="tool-content">
@@ -368,7 +383,7 @@ const renderPage = () => {
   })();
 
   app.innerHTML = `
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl min-h-[80vh]">
+    <div class="${isRibbonTrackerPage ? 'w-full px-0 sm:px-4 lg:px-6 py-4 sm:py-8 min-h-[80vh]' : 'container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl min-h-[80vh]'}">
       ${content}
     </div>
     
@@ -439,6 +454,14 @@ const renderPage = () => {
         `;
       }
     });
+
+    const ribbonOverlay = document.querySelector('#ribbon-tool-overlay');
+    const ribbonImage = getRandomRibbonMarkImage();
+    if (ribbonOverlay && ribbonImage) {
+      ribbonOverlay.innerHTML = `
+        <img src="${ribbonImage}" class="relative z-10 w-24 h-24 object-contain anim-rustle-periodic drop-shadow-lg" alt="Random ribbon or mark" />
+      `;
+    }
   } else if (hash === '#/encounter') {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
   } else if (hash === '#/catch-rate') {

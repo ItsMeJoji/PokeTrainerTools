@@ -3,6 +3,13 @@
 
 
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 :root {
   font-family: "Leelawadee UI", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -88,6 +95,13 @@ h1 {
   margin: 0 auto;
   text-align: center;
   flex: 1;
+  width: 100%;
+  max-width: 100%;
+}
+
+#navbar {
+  width: 100%;
+  max-width: 100%;
 }
 
 .logo {
@@ -147,7 +161,7 @@ button:focus-visible {
 }
 
 .dropdown-menu {
-  display: none;
+  display: block;
   position: absolute;
   top: 100%;
   right: 0;
@@ -159,6 +173,14 @@ button:focus-visible {
   z-index: 60;
   border-radius: 0 0 4px 4px;
   border: 1px solid #2d3748;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transform-origin: top center;
+  transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease, max-height 220ms ease;
+  max-height: 0;
+  overflow: hidden;
 }
 
 @media (max-width: 767px) {
@@ -172,6 +194,7 @@ button:focus-visible {
     /* Slightly lighter for contrast in mobile menu */
     border-radius: 8px;
     margin-top: 0.5rem;
+    transform: translateY(-6px);
   }
 }
 
@@ -184,7 +207,11 @@ button:focus-visible {
 }
 
 .dropdown-menu.show {
-  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  max-height: 24rem;
 }
 
 .dropdown-item {
@@ -206,6 +233,37 @@ button:focus-visible {
 
 .dropdown-item:hover {
   border-radius: 4px;
+}
+
+.ribbon-entry-card {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 220ms ease, border-color 180ms ease;
+}
+
+.ribbon-entry-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ribbon-detail-overlay {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.ribbon-detail-overlay.is-visible {
+  opacity: 1;
+}
+
+.ribbon-detail-panel {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.ribbon-detail-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* Slider Toggle Styling */
