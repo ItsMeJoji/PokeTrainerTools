@@ -103,6 +103,39 @@ function getRibbonImageUrl(ribbon) {
   return candidates.map(candidate => ribbonImageMap[candidate]).find(Boolean) || null;
 }
 
+function humanizeRibbonSlug(slug) {
+  return slug
+    .split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+const usedRibbonImageKeys = new Set(
+  RIBBONS.flatMap(ribbon => getRibbonImageCandidates(ribbon))
+);
+usedRibbonImageKeys.add('contest-memory-ribbon-gold');
+usedRibbonImageKeys.add('battle-memory-ribbon-gold');
+
+const OPTIONAL_EXTRA_RIBBONS = Object.keys(ribbonImageMap)
+  .filter(key => !usedRibbonImageKeys.has(key))
+  .sort((a, b) => {
+    const aIsMark = a.endsWith('-mark');
+    const bIsMark = b.endsWith('-mark');
+
+    if (aIsMark !== bIsMark) {
+      return aIsMark ? 1 : -1;
+    }
+
+    return a.localeCompare(b);
+  })
+  .map(key => ({
+    id: `optional_${key}`,
+    name: humanizeRibbonSlug(key),
+    description: 'Optional extra ribbon/mark for personal tracking. This does not affect Ribbon Master status.',
+    imageKey: key,
+    isOptionalExtra: true
+  }));
+
 
 /**
  * Initializes the Ribbon Tracker page.
@@ -323,6 +356,9 @@ export async function initRibbonTracker(appContainer) {
     entries.forEach(entry => {
       if (entry.availableGames && !Array.isArray(entry.availableGames)) {
         entry.availableGames = []; // Reset to empty array if corrupted
+      }
+      if (!Array.isArray(entry.optionalRibbons)) {
+        entry.optionalRibbons = [];
       }
     });
 
@@ -564,10 +600,18 @@ export async function initRibbonTracker(appContainer) {
       grouped[genLabel][ar.game].unshift(ar);
     });
 
+    if (OPTIONAL_EXTRA_RIBBONS.length > 0) {
+      grouped['Optional Extras'] = {
+        'Optional Ribbons & Marks': OPTIONAL_EXTRA_RIBBONS
+      };
+    }
+
     // Sort categories: Recurring first, then numeric generations, then Marks
     const sortedCategories = Object.keys(grouped).sort((a, b) => {
       if (a === 'Recurring Ribbons') return -1;
       if (b === 'Recurring Ribbons') return 1;
+      if (a === 'Optional Extras') return 1;
+      if (b === 'Optional Extras') return -1;
       if (a === 'Marks') return 1;
       if (b === 'Marks') return -1;
       return a.localeCompare(b, undefined, { numeric: true });
@@ -576,43 +620,52 @@ export async function initRibbonTracker(appContainer) {
     gridContainer.innerHTML = sortedCategories.map(genCategory => {
       const gamesObj = grouped[genCategory];
       const isRecurring = genCategory === 'Recurring Ribbons';
+      const isOptionalExtras = genCategory === 'Optional Extras';
 
       // Calculate totals for this generation/category
       let earnedInGen = 0;
       let totalInGen = 0;
-      Object.values(gamesObj).forEach(ribbons => {
-        totalInGen += ribbons.length;
-        ribbons.forEach(r => {
-          const isEarned = r.isAutomated ? r.isEarned : entry.collectedRibbons.includes(r.id);
-          if (isEarned) earnedInGen++;
+      if (!isOptionalExtras) {
+        Object.values(gamesObj).forEach(ribbons => {
+          totalInGen += ribbons.length;
+          ribbons.forEach(r => {
+            const isEarned = r.isAutomated ? r.isEarned : entry.collectedRibbons.includes(r.id);
+            if (isEarned) earnedInGen++;
+          });
         });
-      });
+      }
 
       // Render the Generation/Category header
       return `
         <div class="mb-6 min-w-0">
           <div class="flex items-center justify-between gap-3 mb-3 pb-1 border-b dark:border-gray-700/50 min-w-0">
             <h3 class="text-xs font-black text-gray-800 dark:text-gray-200 uppercase tracking-[0.2em] min-w-0">${genCategory}</h3>
-            <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
+            ${isOptionalExtras
+              ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
+              : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
               <span class="text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
               <span class="text-[9px] font-black text-gray-300 dark:text-gray-600">/</span>
               <span class="text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
-            </div>
+            </div>`}
           </div>
           
           ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
         return `
-            <div class="mb-3 min-w-0 ${isRecurring ? '' : 'pl-3 sm:pl-4 border-l-2 border-indigo-200 dark:border-indigo-800'}">
+            <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-indigo-200 dark:border-indigo-800'}">
               ${isRecurring ? '' : `<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 break-words pr-1">${gameCategory}</h4>`}
               <div class="grid grid-cols-[repeat(auto-fit,minmax(2.25rem,2.25rem))] sm:grid-cols-[repeat(auto-fit,minmax(2.5rem,2.5rem))] justify-start gap-2 sm:gap-3 pb-2 min-w-0 max-w-full overflow-x-hidden">
                 ${eligibleRibbons.map(ribbon => {
-          const isEarned = ribbon.isAutomated ? ribbon.isEarned : entry.collectedRibbons.includes(ribbon.id);
+          const isEarned = ribbon.isOptionalExtra
+            ? entry.optionalRibbons.includes(ribbon.id)
+            : ribbon.isAutomated
+              ? ribbon.isEarned
+              : entry.collectedRibbons.includes(ribbon.id);
           const isMemoryRibbon = ribbon.id === 'gen6_contest_memory' || ribbon.id === 'gen6_battle_memory';
           const iconClass = isMemoryRibbon && ribbon.isGold ? 'fa-award text-yellow-500 animate-pulse' : 'fa-ribbon';
-          const ribbonImageUrl = getRibbonImageUrl(ribbon);
+          const ribbonImageUrl = ribbon.isOptionalExtra ? ribbonImageMap[ribbon.imageKey] : getRibbonImageUrl(ribbon);
           return `
                     <div 
-                      ${ribbon.isAutomated ? '' : `onclick="window.toggleRibbon(${idx}, '${ribbon.id}')"`}
+                      ${ribbon.isAutomated ? '' : ribbon.isOptionalExtra ? `onclick="window.toggleOptionalRibbon(${idx}, '${ribbon.id}')"` : `onclick="window.toggleRibbon(${idx}, '${ribbon.id}')"`}
                       ontouchstart="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}', true)"
                       onmouseenter="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}')"
                       onmouseleave="window.hideRibbonTooltip()"
@@ -666,6 +719,24 @@ export async function initRibbonTracker(appContainer) {
     saveEntries(entry.id);
     window.openRibbonDetail(entryIdx); // Re-render detail
     renderEntriesList(); // Update count on list
+  };
+
+  window.toggleOptionalRibbon = (entryIdx, ribbonId) => {
+    window.hideRibbonTooltip();
+    const entry = entries[entryIdx];
+    if (!Array.isArray(entry.optionalRibbons)) {
+      entry.optionalRibbons = [];
+    }
+
+    const ribbonIndex = entry.optionalRibbons.indexOf(ribbonId);
+    if (ribbonIndex > -1) {
+      entry.optionalRibbons.splice(ribbonIndex, 1);
+    } else {
+      entry.optionalRibbons.push(ribbonId);
+    }
+
+    saveEntries(entry.id);
+    window.openRibbonDetail(entryIdx);
   };
 
   window.toggleEntryShiny = (idx) => {
@@ -866,6 +937,7 @@ export async function initRibbonTracker(appContainer) {
         originGameId: selectedOriginId,
         originGen: ORIGIN_GAMES.find(g => g.id === selectedOriginId)?.gen || 1,
         collectedRibbons: [],
+        optionalRibbons: [],
         availableGames: [...availableGames], // Store as array for localStorage
         lastUpdated: new Date().toISOString()
       };

@@ -10,6 +10,7 @@ import { initPokemonLookup } from './features/pokemon-lookup.js'
 import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import { initMmoPermutations } from './features/mmo-permutations.js'
 import { initRibbonTracker } from './features/ribbon-tracker.js'
+import { initShinyBingo } from './features/shiny-bingo.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
@@ -62,6 +63,7 @@ const renderNavbar = () => {
             <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
             <a href="#/mmo-permutations" class="dropdown-item">MMO Permutations</a>
             <a href="#/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
+            <a href="#/shiny-bingo" class="dropdown-item">Shiny Bingo Generator</a>
             ${isAprilFools ? '<a href="#/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
           </div>
         </div>
@@ -282,6 +284,31 @@ const renderPage = () => {
                 <a href="#/ribbon-tracker" class="tool-cta" style="background-color: #3b82f6">Try it now!</a>
               </div>
             </div>
+
+            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.8s">
+              <div class="tool-image bg-gradient-to-br from-yellow-500 via-amber-400 to-cyan-500">
+                <div class="tool-overlay flex items-center justify-center">
+                  <div class="relative">
+                    <div class="grid grid-cols-3 gap-2">
+                      <div class="w-7 h-7 rounded-lg bg-white/30 border border-white/40"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/20 border border-white/30"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/30 border border-white/40"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/20 border border-white/30"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/40 border border-white/50"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/20 border border-white/30"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/30 border border-white/40"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/20 border border-white/30"></div>
+                      <div class="w-7 h-7 rounded-lg bg-white/30 border border-white/40"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>Shiny Bingo Generator</h3>
+                <p>Generate a shiny-hunting bingo board, set your targets, and export your challenge card as a PNG.</p>
+                <a href="#/shiny-bingo" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
+              </div>
+            </div>
           </div>
         </div>
       `;
@@ -368,6 +395,8 @@ const renderPage = () => {
       return `<div id="mmo-permutations-container"></div>`;
     } else if (hash === '#/ribbon-tracker') {
       return `<div id="ribbon-tracker-container"></div>`;
+    } else if (hash === '#/shiny-bingo') {
+      return `<div id="shiny-bingo-container"></div>`;
     } else if (hash === '#/info/ribbon-master-guide') {
       return `<div id="ribbon-master-guide-container"></div>`;
     } else if (hash === '#/rng-version') {
@@ -482,6 +511,8 @@ const renderPage = () => {
     initMmoPermutations(document.querySelector('#mmo-permutations-container'));
   } else if (hash === '#/ribbon-tracker') {
     initRibbonTracker(document.querySelector('#ribbon-tracker-container'));
+  } else if (hash === '#/shiny-bingo') {
+    initShinyBingo(document.querySelector('#shiny-bingo-container'));
   } else if (hash === '#/info/ribbon-master-guide') {
     initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
   } else if (hash === '#/rng-version') {

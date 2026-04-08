@@ -266,6 +266,16 @@ button:focus-visible {
   transform: translateY(0) scale(1);
 }
 
+#bingo-cell-editor .dropdown-list {
+  max-height: 20rem;
+}
+
+@media (max-width: 640px) {
+  #bingo-cell-editor .dropdown-list {
+    max-height: 17rem;
+  }
+}
+
 /* Slider Toggle Styling */
 .theme-switch-wrapper {
   display: flex;
