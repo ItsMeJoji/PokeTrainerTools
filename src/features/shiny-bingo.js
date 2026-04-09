@@ -34,9 +34,9 @@ const GAME_OPTIONS = [
   { id: 'ss', label: 'Sword / Shield', min: 1, max: 905, spriteSource: 'local', localFolder: 'SS', badge: 'SS', icon: 'SS', color: 'from-cyan-500 to-blue-600' },
   { id: 'bdsp', label: 'Brilliant Diamond / Shining Pearl', min: 1, max: 493, spriteSource: 'local', localFolder: 'SS', badge: 'BDSP', icon: 'BDSP', color: 'from-blue-500 to-pink-500' },
   { id: 'lgpe', label: "Let's Go Pikachu / Eevee", min: 1, max: 809, spriteSource: 'local', localFolder: 'SS', badge: 'LGPE', icon: 'LGPE', color: 'from-yellow-400 to-amber-600' },
-  { id: 'pla', label: 'Legends: Arceus', min: 1, max: 905, spriteSource: 'local', localFolder: 'SS', badge: 'PLA', icon: 'PLA', color: 'from-slate-500 to-cyan-600' },
-  { id: 'sv', label: 'Scarlet / Violet', min: 1, max: 1025, spriteSource: 'local', localFolder: 'SV', badge: 'SV', icon: 'SV', color: 'from-red-500 to-violet-600' },
-  { id: 'plza', label: 'Legends Z-A', min: 1, max: 1025, spriteSource: 'local', localFolder: 'SV', badge: 'PLZA', icon: 'PLZA', color: 'from-emerald-500 to-lime-500' }
+  { id: 'pla', label: 'Legends: Arceus', min: 1, max: 905, spriteSource: 'local', localFolder: 'SS', badge: 'PLA', icon: 'PLA', color: 'from-slate-500 to-cyan-600', pokedexes: ['hisui'] },
+  { id: 'sv', label: 'Scarlet / Violet', min: 1, max: 905, spriteSource: 'local', localFolder: 'SV', badge: 'SV', icon: 'SV', color: 'from-red-500 to-violet-600', pokedexes: ['paldea'] },
+  { id: 'plza', label: 'Legends Z-A', min: 1, max: 1025, spriteSource: 'local', localFolder: 'SV', badge: 'PLZA', icon: 'PLZA', color: 'from-emerald-500 to-lime-500', pokedexes: ['lumiose-city', 'hyperspace'] }
 ];
 
 const SPRITE_PATHS = {
@@ -57,8 +57,47 @@ const SPRITE_PATHS = {
   white: ['generation-v', 'black-white']
 };
 
+const gamePokemonAvailabilityCache = new Map();
+
+async function loadGamePokemonAvailability(gameId) {
+  if (gamePokemonAvailabilityCache.has(gameId)) {
+    return gamePokemonAvailabilityCache.get(gameId);
+  }
+
+  const game = getSelectedGame(gameId);
+  const pokedexes = game?.pokedexes;
+  if (!pokedexes?.length) {
+    const emptySet = new Set();
+    gamePokemonAvailabilityCache.set(gameId, emptySet);
+    return emptySet;
+  }
+
+  const idSet = new Set();
+  await Promise.all(pokedexes.map(async (pokedexName) => {
+    try {
+      const pokedexData = await P.getPokedexByName(pokedexName);
+      pokedexData.pokemon_entries.forEach((entry) => {
+        const pokemonId = parseInt(entry.pokemon_species.url.split('/').filter(Boolean).pop(), 10);
+        if (!Number.isNaN(pokemonId)) {
+          idSet.add(pokemonId);
+        }
+      });
+    } catch (error) {
+      console.warn(`Failed to load ${pokedexName} pokedex for ${gameId}:`, error);
+    }
+  }));
+
+  gamePokemonAvailabilityCache.set(gameId, idSet);
+  return idSet;
+}
+
+function getGamePokemonAvailability(gameId) {
+  return gamePokemonAvailabilityCache.get(gameId) || null;
+}
+
 const pokemonDetailsCache = new Map();
 const exportImageDataUrlCache = new Map();
+const transparentSpriteCache = new Map();
 
 function getBingoHeaderLetterDataUrl(letter) {
   const svg = `
@@ -105,6 +144,13 @@ function gameSupportsPokemon(game, pokemonId) {
     return (pokemonId >= 1 && pokemonId <= 151) || pokemonId === 808 || pokemonId === 809;
   }
 
+  if (['pla', 'sv', 'plza'].includes(game.id)) {
+    const availabilitySet = getGamePokemonAvailability(game.id);
+    if (availabilitySet && availabilitySet.size > 0) {
+      return availabilitySet.has(pokemonId);
+    }
+  }
+
   return pokemonId >= game.min && pokemonId <= game.max;
 }
 
@@ -147,7 +193,122 @@ function getApiSpriteUrl(details, variant) {
   }
 
   const [generation, version] = spritePath;
-  return details.sprites?.versions?.[generation]?.[version]?.front_default || details.sprites?.front_default || null;
+  return details.sprites?.versions?.[generation]?.[version]?.front_shiny || details.sprites?.front_shiny || null;
+}
+
+function variantNeedsWhiteBgRemoval(variant) {
+  return ['gold', 'silver', 'crystal'].includes(variant);
+}
+
+async function removeWhiteBackgroundFromSprite(imageUrl) {
+  if (!imageUrl) {
+    return null;
+  }
+
+  if (imageUrl.startsWith('data:')) {
+    return imageUrl;
+  }
+
+  if (transparentSpriteCache.has(imageUrl)) {
+    return transparentSpriteCache.get(imageUrl);
+  }
+
+  try {
+    const response = await fetch(imageUrl, { mode: 'cors' });
+    if (!response.ok) {
+      throw new Error(`Image request failed: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+
+    const processedDataUrl = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth || img.width;
+          canvas.height = img.naturalHeight || img.height;
+
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+          ctx.drawImage(img, 0, 0);
+
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const { data } = imageData;
+          const width = canvas.width;
+          const height = canvas.height;
+          const visited = new Uint8Array(width * height);
+          const queue = [];
+
+          const isNearWhite = (offset) => {
+            const r = data[offset];
+            const g = data[offset + 1];
+            const b = data[offset + 2];
+            const a = data[offset + 3];
+            return a > 0 && r >= 245 && g >= 245 && b >= 245;
+          };
+
+          const enqueueIfBackground = (x, y) => {
+            if (x < 0 || y < 0 || x >= width || y >= height) {
+              return;
+            }
+
+            const index = y * width + x;
+            if (visited[index]) {
+              return;
+            }
+            visited[index] = 1;
+
+            const offset = index * 4;
+            if (isNearWhite(offset)) {
+              queue.push(index);
+            }
+          };
+
+          for (let x = 0; x < width; x += 1) {
+            enqueueIfBackground(x, 0);
+            enqueueIfBackground(x, height - 1);
+          }
+
+          for (let y = 0; y < height; y += 1) {
+            enqueueIfBackground(0, y);
+            enqueueIfBackground(width - 1, y);
+          }
+
+          while (queue.length > 0) {
+            const index = queue.shift();
+            const offset = index * 4;
+            data[offset + 3] = 0;
+
+            const x = index % width;
+            const y = Math.floor(index / width);
+            enqueueIfBackground(x - 1, y);
+            enqueueIfBackground(x + 1, y);
+            enqueueIfBackground(x, y - 1);
+            enqueueIfBackground(x, y + 1);
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        } catch (error) {
+          reject(error);
+        } finally {
+          URL.revokeObjectURL(objectUrl);
+        }
+      };
+      img.onerror = (error) => {
+        URL.revokeObjectURL(objectUrl);
+        reject(error);
+      };
+      img.src = objectUrl;
+    });
+
+    transparentSpriteCache.set(imageUrl, processedDataUrl);
+    return processedDataUrl;
+  } catch (error) {
+    console.warn('Failed to remove white background from sprite:', imageUrl, error);
+    return imageUrl;
+  }
 }
 
 async function buildBoardCell(pokemon, forcedGameId = null) {
@@ -161,6 +322,9 @@ async function buildBoardCell(pokemon, forcedGameId = null) {
   } else {
     const details = await getPokemonDetails(pokemon.name);
     sprite = getApiSpriteUrl(details, gameSelection.variant) || details.sprites?.front_default;
+    if (variantNeedsWhiteBgRemoval(gameSelection.variant)) {
+      sprite = await removeWhiteBackgroundFromSprite(sprite);
+    }
   }
 
   return {
@@ -178,9 +342,9 @@ async function buildBoardCell(pokemon, forcedGameId = null) {
 function getInstructionsHtml() {
   return `
     <div class="space-y-4 text-left text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-      <p>Build a 5x5 shiny-hunting bingo board, then use <strong class="text-gray-900 dark:text-white">Game Era Filter</strong> to control which Pokemon can appear. Some games have smaller available rosters, so the board and manual picker both respect those limits.</p>
-      <p>Use <strong class="text-gray-900 dark:text-white">Reroll Board</strong> to generate a fresh card, or click any square to open the editor and set an exact Pokemon for that space. The editor now uses only the selected game to decide which Pokemon are valid.</p>
-      <p><strong class="text-gray-900 dark:text-white">Export PNG</strong> saves the current board as an image with the BINGO header and game icons. Sprites come from <strong class="text-gray-900 dark:text-white">PokeAPI for Gen 1-5</strong> and the local imported sprite archive for <strong class="text-gray-900 dark:text-white">Gen 6+</strong>.</p>
+      <p>Build a custom 5x5 shiny-hunting bingo board, then optionally use <strong class="text-gray-900 dark:text-white">Game Era Filter</strong> to control which Pokemon and Games can appear</p>
+      <p>Use <strong class="text-gray-900 dark:text-white">Reroll Board</strong> to generate a fresh card, or click any square to open the editor and set an exact Pokemon for that space.</p>
+      <p><strong class="text-gray-900 dark:text-white">Export Board</strong> saves the current board as an image with the BINGO header and game icons. Sprites come from <strong class="text-gray-900 dark:text-white">PokeAPI for Gen 1-5</strong> and an imported sprite archive for <strong class="text-gray-900 dark:text-white">Gen 6+</strong>.</p>
     </div>
   `;
 }
@@ -188,20 +352,20 @@ function getInstructionsHtml() {
 function getCellHtml(cell, index) {
   return `
     <button
-      class="shiny-bingo-cell group relative overflow-hidden rounded-none border border-slate-200 dark:border-white/40 bg-white dark:bg-[#4b4f59] p-2 sm:p-3 shadow-[0_10px_26px_rgba(148,163,184,0.24)] hover:shadow-[0_16px_34px_rgba(148,163,184,0.32)] dark:shadow-md dark:hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left"
+      class="shiny-bingo-cell group relative aspect-square sm:aspect-auto overflow-visible sm:overflow-hidden rounded-none border border-slate-200 dark:border-white/40 bg-white dark:bg-[#4b4f59] p-1.5 sm:p-3 shadow-[0_10px_26px_rgba(148,163,184,0.24)] hover:shadow-[0_16px_34px_rgba(148,163,184,0.32)] dark:shadow-md dark:hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left"
       data-index="${index}"
       title="Click to edit this space"
     >
       <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${cell.gameColor} opacity-90"></div>
-      <div class="absolute top-1 right-1 sm:top-2 sm:right-2">
+      <div class="absolute top-1 right-1 z-20 sm:top-2 sm:right-2">
         ${cell.gameIcon
-          ? `<img src="${cell.gameIcon}" alt="${cell.gameLabel}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-white shadow-sm object-cover">`
+          ? `<img src="${cell.gameIcon}" alt="${cell.gameLabel}" class="w-5 h-5 sm:w-8 sm:h-8 rounded-md bg-white shadow-sm object-cover">`
           : `<span class="inline-flex items-center rounded-md bg-white/90 px-1.5 py-1 text-[9px] font-black tracking-[0.18em] text-gray-700">${cell.gameLabel}</span>`}
       </div>
-      <div class="mt-5 sm:mt-6 flex items-center justify-center min-h-24 sm:min-h-28">
+      <div class="absolute inset-0 z-0 flex items-center justify-center pt-4 sm:static sm:h-full sm:pt-0 sm:mt-6 sm:min-h-28">
         ${cell.sprite
-          ? `<img src="${cell.sprite}" alt="${cell.pokemonName}" class="w-20 h-20 object-contain" style="image-rendering: pixelated;">`
-          : `<div class="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700"></div>`}
+          ? `<img src="${cell.sprite}" alt="${cell.pokemonName}" class="w-[90%] h-[90%] sm:w-20 sm:h-20 object-contain pointer-events-none" style="image-rendering: pixelated;">`
+          : `<div class="w-[90%] h-[90%] sm:w-20 sm:h-20 rounded-full bg-gray-100 dark:bg-gray-700"></div>`}
       </div>
     </button>
   `;
@@ -390,7 +554,7 @@ export async function initShinyBingo(appContainer) {
             <div class="flex items-end">
               <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button id="reroll-bingo-board" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Reroll Board</button>
-                <button id="export-bingo-board" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Export PNG</button>
+                <button id="export-bingo-board" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Export Board</button>
               </div>
             </div>
           </div>
@@ -405,7 +569,7 @@ export async function initShinyBingo(appContainer) {
               </div>
             `).join('')}
           </div>
-          <div id="bingo-board" class="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4"></div>
+          <div id="bingo-board" class="grid grid-cols-5 gap-2 sm:gap-4"></div>
         </div>
       </div>
 
@@ -604,5 +768,6 @@ export async function initShinyBingo(appContainer) {
 
   statusText.textContent = 'Loading Pokemon pool...';
   allPokemon = await getPokemonListUpToGeneration(9);
+  await Promise.all(['pla', 'sv', 'plza'].map(loadGamePokemonAvailability));
   await generateBoard();
 }
