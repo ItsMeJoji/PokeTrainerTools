@@ -9,9 +9,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages and creating releases
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -57,3 +57,20 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Extract Version
+        id: extract_version
+        run: |
+          VERSION=$(echo "${{ github.event.head_commit.message }}" | grep -oE "^[0-9]+\.[0-9]+(\.[0-9]+)?" || echo "Latest")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          name: "PokeTrainer Tools - ${{ steps.extract_version.outputs.version }}"
+          body: |
+            ### 🚀 Live Site
+            [Visit poketrainer.tools](https://poketrainer.tools)
+          draft: false
+          prerelease: false

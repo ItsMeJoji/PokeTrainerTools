@@ -1,8 +1,30 @@
+import localForage from 'localforage';
 import { Pokedex } from 'pokeapi-js-wrapper';
 
+const LOCAL_POKEAPI_HOSTNAMES = ['localhost', '127.0.0.1'];
+const LOCAL_POKEAPI_URL = 'http://localhost:8000/api/v2/';
+const DEFAULT_POKEAPI_URL = 'https://pokeapi.co/api/v2/';
+
+const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
+//const useLocalApi = false;
+const apiUrl = useLocalApi ? LOCAL_POKEAPI_URL : DEFAULT_POKEAPI_URL;
+const parsedApiUrl = new URL(apiUrl);
+
+console.info('[PokeAPI] Using base URL:', apiUrl, '(cache disabled:', useLocalApi, ')');
+
+if (useLocalApi) {
+    localForage.ready()
+        .then(() => localForage.clear())
+        .then(() => console.info('[PokeAPI] Cleared localForage cache for local API mode.'))
+        .catch(error => console.warn('[PokeAPI] Failed to clear local cache:', error));
+}
+
 const P = new Pokedex({
-    cache: true, // Internal pokeapi-js-wrapper cache
-    cacheImages: true
+    cache: !useLocalApi, // disable wrapper cache when using local API so offline state is detectable
+    cacheImages: false, // Disabled to prevent Service Worker Response clone conflict
+    protocol: parsedApiUrl.protocol.replace(':', ''),
+    hostName: parsedApiUrl.host,
+    versionPath: parsedApiUrl.pathname.endsWith('/') ? parsedApiUrl.pathname : `${parsedApiUrl.pathname}/`
 });
 
 // Secondary results cache to store processed data
@@ -11,6 +33,60 @@ const resultCache = {
     locations: {}, // versionName -> locations
     encounters: {}, // version-location -> encounters
 };
+
+function formatEncounterConditionLabels(conditionValues, methodNameRaw) {
+    if (!Array.isArray(conditionValues) || conditionValues.length === 0) {
+        return [];
+    }
+
+    const labels = [];
+    for (const raw of conditionValues) {
+        if (!raw || raw === 'none') continue;
+        if (methodNameRaw === 'walk' && ['time-morning', 'time-day', 'time-night'].includes(raw)) {
+            continue;
+        }
+
+        if (raw === 'radar-on') {
+            labels.push('Radar On');
+            continue;
+        }
+        if (raw === 'swarm-yes') {
+            labels.push('Swarm');
+            continue;
+        }
+        if (raw.startsWith('slot2-')) {
+            const value = raw.replace('slot2-', '');
+            labels.push(`Slot 2: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
+            continue;
+        }
+        if (raw.startsWith('radio-')) {
+            const value = raw.replace('radio-', '');
+            labels.push(`Radio: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
+            continue;
+        }
+        if (raw.startsWith('time-')) {
+            const value = raw.replace('time-', '');
+            labels.push(`Time: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
+            continue;
+        }
+
+        labels.push(raw.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+    }
+
+    return Array.from(new Set(labels));
+}
+
+function normalizePokeApiPath(rawPath) {
+    if (!rawPath || typeof rawPath !== 'string') {
+        return rawPath;
+    }
+    try {
+        const parsed = new URL(rawPath);
+        return parsed.pathname + parsed.search;
+    } catch (error) {
+        return rawPath;
+    }
+}
 
 const MAINLINE_VERSIONS = [
     'red', 'blue', 'yellow',
@@ -192,10 +268,16 @@ export async function getEncounters(versionName, locationName, options = {}) {
     try {
         const location = await P.getLocationByName(locationName);
         const areas = await Promise.all(
-            location.areas.map(areaRef => P.getLocationAreaByName(areaRef.name).catch(() => null))
+            location.areas.map(areaRef =>
+                P.resource(normalizePokeApiPath(areaRef.url))
+                    .catch(() => P.getLocationAreaByName(areaRef.name).catch(() => null))
+            )
         );
 
         const encountersByArea = {};
+        const methodOrderByArea = {};
+        const areaEntries = [];
+
         for (const area of areas) {
             if (!area || !area.pokemon_encounters) continue;
 
@@ -207,6 +289,11 @@ export async function getEncounters(versionName, locationName, options = {}) {
 
             if (!encountersByArea[areaNameDisplay]) {
                 encountersByArea[areaNameDisplay] = {};
+                methodOrderByArea[areaNameDisplay] = [];
+                areaEntries.push({
+                    name: areaNameDisplay,
+                    id: typeof area.id === 'number' ? area.id : Number.MAX_SAFE_INTEGER
+                });
             }
 
             for (const encounter of area.pokemon_encounters) {
@@ -241,16 +328,24 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             methodDisplayNames.push(methodNameFormatted);
                         }
 
+                        const conditionLabels = formatEncounterConditionLabels(conditionValues, methodNameRaw);
                         for (const methodKey of methodDisplayNames) {
                             if (!encountersByArea[areaNameDisplay][methodKey]) {
                                 encountersByArea[areaNameDisplay][methodKey] = new Map();
+                                methodOrderByArea[areaNameDisplay].push(methodKey);
                             }
                             const pokemonName = encounter.pokemon.name;
                             const chance = detail.chance;
                             if (encountersByArea[areaNameDisplay][methodKey].has(pokemonName)) {
-                                encountersByArea[areaNameDisplay][methodKey].get(pokemonName).sumChance += chance;
+                                const entry = encountersByArea[areaNameDisplay][methodKey].get(pokemonName);
+                                entry.sumChance += chance;
+                                conditionLabels.forEach(label => entry.conditions.add(label));
                             } else {
-                                encountersByArea[areaNameDisplay][methodKey].set(pokemonName, { sumChance: chance, sprite: null });
+                                encountersByArea[areaNameDisplay][methodKey].set(pokemonName, {
+                                    sumChance: chance,
+                                    conditions: new Set(conditionLabels),
+                                    sprite: null
+                                });
                             }
                         }
                     }
@@ -281,16 +376,21 @@ export async function getEncounters(versionName, locationName, options = {}) {
         });
 
         const finalGrouped = {};
-        for (const [areaName, methods] of Object.entries(encountersByArea)) {
-            if (Object.keys(methods).length > 0) {
+        const sortedAreaEntries = areaEntries.sort((a, b) => a.id - b.id);
+        for (const areaEntry of sortedAreaEntries) {
+            const areaName = areaEntry.name;
+            const methods = encountersByArea[areaName];
+            if (methods && Object.keys(methods).length > 0) {
                 finalGrouped[areaName] = {};
-                for (const [method, map] of Object.entries(methods)) {
+                for (const method of methodOrderByArea[areaName]) {
+                    const map = methods[method];
                     finalGrouped[areaName][method] = Array.from(map.entries()).map(([name, data]) => ({
                         name: name,
                         displayName: name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
                         sprite: spriteMap.get(name).normal,
                         shinySprite: spriteMap.get(name).shiny,
-                        rate: data.sumChance
+                        rate: data.sumChance,
+                        conditionText: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions).join(', ') : null
                     })).sort((a, b) => b.rate - a.rate);
                 }
             }
@@ -345,4 +445,5 @@ export async function getMoveDetails(moveName) {
     }
 }
 
+export { P };
 export default P;

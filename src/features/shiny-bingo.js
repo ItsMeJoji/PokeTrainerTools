@@ -163,6 +163,11 @@ function getRandomGameVariant(gameId, pokemonId) {
   const game = getSelectedGame(gameId);
   if (game.id === 'all') {
     const weightedGames = GAME_OPTIONS.filter(option => option.id !== 'all' && gameSupportsPokemon(option, pokemonId));
+    
+    if (weightedGames.length === 0) {
+      return { gameId: 'sv', variant: null };
+    }
+
     const randomGame = weightedGames[Math.floor(Math.random() * weightedGames.length)];
     const variant = randomGame.spriteVariants
       ? randomGame.spriteVariants[Math.floor(Math.random() * randomGame.spriteVariants.length)]

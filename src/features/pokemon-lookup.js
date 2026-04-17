@@ -52,6 +52,18 @@ const POKEMON_API_NAME_OVERRIDES = {
   'mimikyu': 'mimikyu-disguised',
 };
 
+function normalizePokeApiPath(rawPath) {
+  if (!rawPath || typeof rawPath !== 'string') {
+    return rawPath;
+  }
+  try {
+    const parsed = new URL(rawPath);
+    return parsed.pathname + parsed.search;
+  } catch (error) {
+    return rawPath;
+  }
+}
+
 /** Returns the index of a version in GAME_ORDER, or Infinity if not found. */
 function gameOrderIndex(version) {
   const i = GAME_ORDER.indexOf(version);
@@ -231,7 +243,7 @@ export async function initPokemonLookup(appContainer) {
     try {
       const apiName = POKEMON_API_NAME_OVERRIDES[selectedPokemon.name] || selectedPokemon.name;
       const response = await P.getPokemonByName(apiName);
-      const encounterDetails = await P.resource(response.location_area_encounters);
+      const encounterDetails = await P.resource(normalizePokeApiPath(response.location_area_encounters));
 
       // Build version sprite maps (normal + shiny) from the API response
       const spriteVersions = response.sprites?.versions || {};

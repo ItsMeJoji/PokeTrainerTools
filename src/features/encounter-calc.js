@@ -437,6 +437,7 @@ export async function initEncounterCalc(appContainer) {
                 />
                 <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">${p.displayName}</span>
                 <span class="text-xs font-mono px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full">${p.rate}%</span>
+                ${p.conditionText ? `<span class="text-[11px] italic text-gray-500 dark:text-gray-400 mt-1 block">${p.conditionText}</span>` : ''}
               </div>
             `).join('')}
           </div>

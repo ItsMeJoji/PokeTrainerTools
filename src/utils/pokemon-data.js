@@ -1,9 +1,4 @@
-import { Pokedex } from 'pokeapi-js-wrapper';
-
-export const P = new Pokedex({
-    cache: true,
-    cacheImages: true
-});
+import { P } from './pokeapi.js';
 
 const upToGenCache = {};
 
@@ -208,3 +203,5 @@ export async function getPokeBalls(genNumber) {
         sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${b.name}.png`
     })).sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
+
+export { P };
