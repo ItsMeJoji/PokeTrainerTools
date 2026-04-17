@@ -123,7 +123,7 @@ export function updateDropdownLoading(dropdown, message) {
     const selectedSpan = container.querySelector('.selected-item span');
     if (selectedSpan) {
         selectedSpan.className = "placeholder text-gray-400 flex items-center";
-        selectedSpan.innerHTML = `${message}<span class="anim-loading-dots"></span>`;
+        selectedSpan.innerHTML = `${message}<span class="anim-loading-dots"></span>  *If this your first visit, this may take a moment.`;
     }
 }
 

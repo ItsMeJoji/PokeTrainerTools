@@ -30,3 +30,4 @@ dist-ssr
 debug*
 temp/
 tmp/
+results/

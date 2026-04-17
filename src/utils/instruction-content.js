@@ -32,7 +32,7 @@ export const ENCOUNTER_CALC_INSTRUCTIONS = `
   <p>Welcome to the <strong>Encounter Calculator</strong>! This tool is designed to provide you with a high-fidelity simulation and breakdown of exactly what Pokemon are hiding in the tall grass (or water, or caves) of your favorite game. Unlike a standard wiki list, this calculator accounts for dynamic variables like time of day, special game mechanics, and regional variations to give you the most accurate percentages possible.</p>
   
   <h3 class="font-bold text-lg border-b border-gray-200 dark:border-gray-700 pb-1">The Core Workflow</h3>
-  <p>Using the calculator is a three-step process: <strong>Select Game</strong>, <strong>Select Location</strong>, and <strong>Start Encounter</strong>. Once you pick a game, the "Location" dropdown will dynamically populate with every named area in that version. We've gone to great lengths to ensure locations are named intuitively, matching their in-game counterparts.</p>
+  <p>Using the calculator is a three-step process: <strong>Select Game</strong>, <strong>Select Location</strong>, and <strong>Start Encounter</strong>. Once you pick a game, the "Location" dropdown will dynamically populate with every named area in that version.</p>
   
   <h3 class="font-bold text-lg border-b border-gray-200 dark:border-gray-700 pb-1">Advanced Filters and Game Mechanics</h3>
   <p>The real power of this tool lies in its ability to handle complex game-specific mechanics. When you select certain generations, "Advanced Filter" grids will appear. For example:</p>
@@ -59,10 +59,8 @@ export const ENCOUNTER_CALC_INSTRUCTIONS = `
     <li><strong>Nuzlocke Execution:</strong> Know exactly what could pop out for your "first encounter on the route."</li>
     <li><strong>Repel Tricks:</strong> Although we don't calculate the repel levels here, seeing the level ranges helps you determine if a Repel Trick is viable in your current location.</li>
   </ol>
-  
-  <h3 class="font-bold text-lg border-b border-gray-200 dark:border-gray-700 pb-1">Interactive Features</h3>
-  <p>Just like our Lookup tool, every sprite in the result list is interactive. Click a sprite to see its shiny form! We've also included a "Reset Encounter" button that allows you to quickly go back and change filters or locations without refreshing the page. This is part of our commitment to a smooth, single-page application experience.</p>
-  <p>Whether you're looking for that 1% Chansey in the Safari Zone or just trying to see what you can find at night on Route 1, the Encounter Calculator provides the most detailed and immersive way to explore the wild Pokemon of the world.</p>
+
+  <p>Some encounters, like Scarlet and Violet ones, have not been implemented into PokeAPI yet. As such, they are not included in the dropdown.</p>
 </div>
 `;
 

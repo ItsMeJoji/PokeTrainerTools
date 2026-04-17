@@ -1,5 +1,8 @@
 # PokéTrainer Tools
 
+**WIP**: If you somehow found this before I actually released it, go to one of my videos and comment "Tools!" 😉
+
+
 Your ultimate companion for your Pokémon journey. PokéTrainer Tools is a collection of specialized calculators and information guides designed to optimize your journey across all generations.
 
 ## 🔧 Core Tools
@@ -34,6 +37,7 @@ Your ultimate companion for your Pokémon journey. PokéTrainer Tools is a colle
 
 ## 👥 Credits
 
+Most of the data is from [Bulbapedia](https://bulbapedia.bulbagarden.net/) or pulled from [PokeAPI](https://pokeapi.co/).
 Created with ❤️ by **ItsMeJoji**. Connect with the creator:
 - [YouTube](https://youtube.com/@itsmejoji)
 - [Twitter](https://x.com/itsmejoji_)

@@ -1,6 +1,6 @@
 import grassSprite from '../assets/images/grass-sprite.png';
 import unknownSprite from '../assets/images/unknown-sprite.png';
-import { getVersions, getLocationsListForVersion, getEncounters } from '../utils/pokeapi.js';
+import { getVersions, getLocationsForVersion, getEncounters } from '../utils/pokeapi.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 import { ENCOUNTER_CALC_INSTRUCTIONS } from '../utils/instruction-content.js';
 
@@ -206,11 +206,22 @@ export async function initEncounterCalc(appContainer) {
   // Disable start button until location is selected
   startBtn.disabled = true;
 
+  // Array to exclude specific games from the dropdown.
+  const EXCLUDED_GAMES = [
+    'sword', 'shield',
+    'lets-go-pikachu', 'lets-go-eevee',
+    'brilliant-diamond', 'shining-pearl',
+    'scarlet', 'violet',
+    'legends-arceus', 'legends-za'
+  ];
+
   // Populate games
   updateDropdownLoading(gameDropdown, "Loading Games");
   try {
     const versions = await getVersions();
-    const gameItems = versions.map(v => ({
+    const filteredVersions = versions.filter(v => !EXCLUDED_GAMES.includes(v.name));
+
+    const gameItems = filteredVersions.map(v => ({
       name: v.name,
       displayName: v.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     }));
@@ -299,7 +310,7 @@ export async function initEncounterCalc(appContainer) {
     updateDropdownLoading(locationDropdown, "Loading Locations");
 
     try {
-      const locations = await getLocationsListForVersion(selectedVersion);
+      const locations = await getLocationsForVersion(selectedVersion);
       const locationItems = locations.map(loc => ({
         name: loc.name,
         displayName: loc.displayName

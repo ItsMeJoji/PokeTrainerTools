@@ -5,8 +5,8 @@ const LOCAL_POKEAPI_HOSTNAMES = ['localhost', '127.0.0.1'];
 const LOCAL_POKEAPI_URL = 'http://localhost:8000/api/v2/';
 const DEFAULT_POKEAPI_URL = 'https://pokeapi.co/api/v2/';
 
-const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
-//const useLocalApi = false;
+//const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
+const useLocalApi = false;
 const apiUrl = useLocalApi ? LOCAL_POKEAPI_URL : DEFAULT_POKEAPI_URL;
 const parsedApiUrl = new URL(apiUrl);
 
