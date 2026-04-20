@@ -111,9 +111,15 @@ export async function signIn() {
  * @param {string} state - State to pass through the redirect.
  */
 export function signInRedirect(state = '') {
-  // Save current location as a fallback if state handler isn't used
-  sessionStorage.setItem('google_auth_state', state);
+  if (!CLIENT_ID) {
+    console.error('Missing VITE_GOOGLE_CLIENT_ID environment variable.');
+    alert('Configuration Error: Google Client ID is missing. Please check your production environment variables.');
+    return;
+  }
   
+  // Temporary debug alert
+  alert('Debug Client ID: [[' + CLIENT_ID + ']]');
+
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: window.location.origin + '/',
