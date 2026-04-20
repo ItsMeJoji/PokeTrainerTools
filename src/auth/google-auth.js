@@ -116,9 +116,7 @@ export function signInRedirect(state = '') {
     alert('Configuration Error: Google Client ID is missing. Please check your production environment variables.');
     return;
   }
-  
-  // Temporary debug alert
-  alert('Debug Client ID: [[' + CLIENT_ID + ']]');
+
 
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -148,7 +146,7 @@ export function handleRedirectCallback() {
   if (token) {
     gapi.client.setToken({ access_token: token });
     console.log('Token recovered from redirect');
-    
+
     // Clean up the URL hash without triggering a load
     window.history.replaceState(null, null, window.location.pathname + window.location.search);
     return state;
