@@ -1,7 +1,7 @@
 import { getPokemonListUpToGeneration, getPokemonGameAvailability } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES } from '../utils/ribbon-data.js';
-import { initGoogleAuth, signIn, signOut, isSignedIn } from '../auth/google-auth.js';
+import { initGoogleAuth, signIn, signOut, isSignedIn, signInRedirect } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
 import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
 
@@ -320,19 +320,8 @@ export async function initRibbonTracker(appContainer) {
 
   document.getElementById('cloud-sync-btn').onclick = async () => {
     if (!isSignedIn()) {
-      try {
-        updateSyncStatus('syncing');
-        await signIn();
-        updateSyncStatus('synced');
-        const syncedEntries = await SyncManager.sync();
-        if (syncedEntries) {
-          entries = syncedEntries;
-          renderEntriesList();
-        }
-      } catch (err) {
-        console.error('Sign-in Sync Error:', err);
-        updateSyncStatus('error');
-      }
+      signInRedirect('sync_ribbons');
+      return;
     } else {
       // Toggle sync manually if already signed in
       updateSyncStatus('syncing');

@@ -83,7 +83,7 @@ export async function initGoogleAuth() {
 }
 
 /**
- * Trigger OAuth2 flow to get a token.
+ * Trigger OAuth2 flow to get a token via Popup.
  * @returns {Promise<string>} The access token.
  */
 export async function signIn() {
@@ -104,6 +104,51 @@ export async function signIn() {
       tokenClient.requestAccessToken({ prompt: '' });
     }
   });
+}
+
+/**
+ * Trigger OAuth2 flow via Redirect (useful for environments with strict COOP).
+ * @param {string} state - State to pass through the redirect.
+ */
+export function signInRedirect(state = '') {
+  // Save current location as a fallback if state handler isn't used
+  sessionStorage.setItem('google_auth_state', state);
+  
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: window.location.origin + '/',
+    response_type: 'token',
+    scope: SCOPES,
+    include_granted_scopes: 'true',
+    state: state
+  });
+
+  window.location.assign(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+}
+
+/**
+ * Parses and handles the OAuth redirect callback from the URL hash.
+ * @returns {string|null} The state passed during signInRedirect if successful.
+ */
+export function handleRedirectCallback() {
+  const hash = window.location.hash;
+  if (!hash || !hash.includes('access_token')) return null;
+
+  // URLSearchParams doesn't handle '#' at the start, remove it
+  const fragment = new URLSearchParams(hash.substring(1));
+  const token = fragment.get('access_token');
+  const state = fragment.get('state');
+
+  if (token) {
+    gapi.client.setToken({ access_token: token });
+    console.log('Token recovered from redirect');
+    
+    // Clean up the URL hash without triggering a load
+    window.history.replaceState(null, null, window.location.pathname + window.location.search);
+    return state;
+  }
+
+  return null;
 }
 
 /**

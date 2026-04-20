@@ -17,6 +17,7 @@ import pokeballSprite from './assets/images/pokeball.png'
 import P from './utils/pokeapi.js'
 import { getVersions } from './utils/pokeapi.js'
 import { initRNGPage } from './features/rng-version.js'
+import { handleRedirectCallback, initGoogleAuth } from './auth/google-auth.js'
 
 const ribbonMarkModules = import.meta.glob('./assets/images/ribbons-and-marks/*.png', { eager: true, import: 'default' });
 const ribbonMarkImages = Object.values(ribbonMarkModules);
@@ -522,6 +523,14 @@ const renderPage = () => {
     }
   }
 };
+
+// Initialize Auth and handle redirect returns
+initGoogleAuth().then(() => {
+  const state = handleRedirectCallback();
+  if (state === 'sync_ribbons') {
+    window.location.hash = '#/ribbon-tracker';
+  }
+});
 
 renderNavbar();
 renderPage();
