@@ -41,6 +41,7 @@ function initializeGisClient() {
     client_id: CLIENT_ID,
     scope: SCOPES,
     callback: '', // defined at request time
+    itp_support: true,
   });
   gisInited = true;
   console.log('GIS client initialized');
@@ -54,6 +55,8 @@ export async function initGoogleAuth() {
     // Load GAPI
     const gapiScript = document.createElement('script');
     gapiScript.src = 'https://apis.google.com/js/api.js';
+    gapiScript.async = true;
+    gapiScript.defer = true;
     gapiScript.onload = () => {
       gapi.load('client', async () => {
         await initializeGapiClient();
@@ -65,6 +68,8 @@ export async function initGoogleAuth() {
     // Load GIS
     const gisScript = document.createElement('script');
     gisScript.src = 'https://accounts.google.com/gsi/client';
+    gisScript.async = true;
+    gisScript.defer = true;
     gisScript.onload = () => {
       initializeGisClient();
       checkReady();
