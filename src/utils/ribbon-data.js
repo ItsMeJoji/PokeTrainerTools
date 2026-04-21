@@ -96,19 +96,19 @@ export const RIBBONS = [
   { id: 'gen4_multi_ability', name: 'Multi Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: '50 streak in Battle Tower Multi Challenge.', gen: 4 },
   { id: 'gen4_pair_ability', name: 'Pair Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: '50 streak in Battle Tower Link Multi Challenge.', gen: 4 },
   { id: 'gen4_world_ability', name: 'World Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Reach Rank 5 in Wi-Fi Battle Tower.', gen: 4 },
-  { id: 'gen4_footprint', name: 'Footprint Ribbon', game: RIBBON_GAMES.DP_PT, description: 'High friendship.', gen: 4, isRecurring: true },
-  { id: 'gen4_gorgeous', name: 'Gorgeous Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 10,000 Poké Dollars.', gen: 4, isRecurring: true },
-  { id: 'gen4_royal', name: 'Royal Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 100,000 Poké Dollars.', gen: 4, isRecurring: true },
-  { id: 'gen4_gorgeous_royal', name: 'Gorgeous Royal Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 999,999 Poké Dollars.', gen: 4, isRecurring: true },
+  { id: 'gen4_footprint', name: 'Footprint Ribbon', game: RIBBON_GAMES.DP_PT, description: 'High friendship.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'x-y', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_gorgeous', name: 'Gorgeous Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 10,000 Poké Dollars.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_royal', name: 'Royal Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 100,000 Poké Dollars.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_gorgeous_royal', name: 'Gorgeous Royal Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 999,999 Poké Dollars.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
 
   // --- Days of the Week (Gen 4) ---
-  { id: 'gen4_alert', name: 'Alert Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Monday).', gen: 4, isRecurring: true },
-  { id: 'gen4_shock', name: 'Shock Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Tuesday).', gen: 4, isRecurring: true },
-  { id: 'gen4_downcast', name: 'Downcast Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Wednesday).', gen: 4, isRecurring: true },
-  { id: 'gen4_careless', name: 'Careless Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Thursday).', gen: 4, isRecurring: true },
-  { id: 'gen4_relax', name: 'Relax Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Friday).', gen: 4, isRecurring: true },
-  { id: 'gen4_snooze', name: 'Snooze Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Saturday).', gen: 4, isRecurring: true },
-  { id: 'gen4_smile', name: 'Smile Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Sunday).', gen: 4, isRecurring: true },
+  { id: 'gen4_alert', name: 'Alert Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Monday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_shock', name: 'Shock Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Tuesday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_downcast', name: 'Downcast Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Wednesday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_careless', name: 'Careless Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Thursday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_relax', name: 'Relax Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Friday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_snooze', name: 'Snooze Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Saturday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen4_smile', name: 'Smile Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Talk to Week Siblings (Sunday).', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
 
   // --- Gen 4 HeartGold / SoulSilver Exclusives ---
   { id: 'gen4_legend', name: 'Legend Ribbon', game: RIBBON_GAMES.HG_SS, description: 'Defeat Red on Mt. Silver.', gen: 4 },
@@ -118,7 +118,7 @@ export const RIBBONS = [
   { id: 'gen6_skillful_battler', name: 'Skillful Battler Ribbon', game: RIBBON_GAMES.XY, description: 'Beat Battle Maison Chatelaine (Regular).', gen: 6 },
   { id: 'gen6_expert_battler', name: 'Expert Battler Ribbon', game: RIBBON_GAMES.XY, description: 'Beat Battle Maison Chatelaine (Super).', gen: 6 },
   { id: 'gen6_training', name: 'Training Ribbon', game: RIBBON_GAMES.XY, description: 'Complete all Super Training.', gen: 6 },
-  { id: 'gen6_best_friends', name: 'Best Friends Ribbon', game: RIBBON_GAMES.XY, description: 'Max affection in Amie/Refresh.', gen: 6, isRecurring: true },
+  { id: 'gen6_best_friends', name: 'Best Friends Ribbon', game: RIBBON_GAMES.XY, description: 'Max affection in Amie/Refresh.', gen: 6, isRecurring: true, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'sword-shield', 'brilliant-diamond-shining-pearl', 'scarlet-violet'] },
   { id: 'gen6_hoenn_champion', name: 'Hoenn Champion Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Defeat the Hoenn Champion in ORAS.', gen: 6 },
   { id: 'gen6_contest_memory', name: 'Contest Memory Ribbon', game: RIBBON_GAMES.XY, description: 'A Ribbon awarded to a Pokémon that has overcome many challenges in Contests in the distant past.', gen: 6, isAutomated: true },
   { id: 'gen6_battle_memory', name: 'Battle Memory Ribbon', game: RIBBON_GAMES.XY, description: 'A Ribbon awarded to a Pokémon that has overcome many challenges in Battle Towers in the distant past.', gen: 6, isAutomated: true },
@@ -136,7 +136,7 @@ export const RIBBONS = [
   { id: 'gen7_battle_tree_master', name: 'Master Battle Tree Ribbon', game: RIBBON_GAMES.SM_USUM, description: 'Beat Battle Tree Legend (50).', gen: 7 },
 
   // --- Generation 8 ---
-  { id: 'gen8_master_rank', name: 'Master Rank Ribbon', game: RIBBON_GAMES.SW_SH, description: 'Reach Master Ball Tier in Ranked.', gen: 8, versionGroup: 'sword-shield', isRecurring: true },
+  { id: 'gen8_master_rank', name: 'Master Rank Ribbon', game: RIBBON_GAMES.SW_SH, description: 'Reach Master Ball Tier in Ranked.', gen: 8, versionGroups: ['sword-shield', 'scarlet-violet'], isRecurring: true },
   { id: 'gen8_galar_champion', name: 'Galar Champion Ribbon', game: RIBBON_GAMES.SW_SH, description: 'Defeat The Champion Cup.', gen: 8, versionGroup: 'sword-shield' },
   { id: 'gen8_tower_master', name: 'Tower Master Ribbon', game: RIBBON_GAMES.SW_SH, description: 'Defeat Leon in one of the higher tiers of the Battle Tower.', gen: 8, versionGroup: 'sword-shield' },
   { id: 'gen8_hisui', name: 'Hisui Ribbon', game: RIBBON_GAMES.PLA, description: 'Pose for a Photograph in Jubilife Village.', gen: 8, versionGroup: 'legends-arceus' },
@@ -155,10 +155,18 @@ export const RIBBONS = [
  * Checks if a Pokemon can obtain a specific ribbon based on its origin and the ribbon's gen.
  */
 export function isEligible(pokemonState, ribbon) {
-  // If the ribbon requires the pokemon to be in a specific game it's not available in, return false.
+  // Support both single versionGroup and multiple versionGroups (array)
+  const groups = Array.isArray(ribbon.versionGroups)
+    ? ribbon.versionGroups
+    : (ribbon.versionGroup ? [ribbon.versionGroup] : []);
+
+  // If the ribbon requires the pokemon to be in specific games it's not available in, return false.
   // Only filter if we have availability data; otherwise default to allowing it (handles legacy entries).
-  if (ribbon.versionGroup && pokemonState.availableGames && pokemonState.availableGames.size > 0 && !pokemonState.availableGames.has(ribbon.versionGroup)) {
-    return false;
+  if (groups.length > 0 && pokemonState.availableGames && pokemonState.availableGames.size > 0) {
+    const isAvailableInAtLeastOne = groups.some(group => pokemonState.availableGames.has(group));
+    if (!isAvailableInAtLeastOne) {
+      return false;
+    }
   }
 
   // A Pokemon can only earn ribbons from its origin generation or later.
