@@ -19,7 +19,7 @@ export function initShinyHuntingGuide(container) {
           </p>
           <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl border border-blue-100 dark:border-blue-800">
             <p class="text-blue-800 dark:text-blue-200 italic">
-              "The most famous example is the <span class="font-bold">Red Gyarados</span> at the Lake of Rage, which served as many players' first introduction to this rare phenomenon."
+              The most famous example is the <span class="font-bold">Red Gyarados</span> at the Lake of Rage, which served as many players' first introduction to this rare phenomenon.
             </p>
           </div>
         </section>
@@ -34,12 +34,12 @@ export function initShinyHuntingGuide(container) {
             <div class="space-y-4">
               <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">Classic Odds (Gen II - V)</h3>
               <div class="text-4xl font-black text-red-500">1 in 8,192</div>
-              <p class="text-gray-600 dark:text-gray-400">In the early days, finding a Shiny was a monumental task, determined by specific Individual Values (DVs) or Personality Values.</p>
+              <p class="text-gray-600 dark:text-gray-400">In the early games, shinies were much rarer and tied to hidden value checks (DVs/PIDs).</p>
             </div>
             <div class="space-y-4">
               <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">Modern Odds (Gen VI+)</h3>
               <div class="text-4xl font-black text-green-500">1 in 4,096</div>
-              <p class="text-gray-600 dark:text-gray-400">Starting with Pokémon X and Y, the base rate was doubled, making these rare creatures slightly more accessible to the average trainer.</p>
+              <p class="text-gray-600 dark:text-gray-400">Starting in X/Y, base odds improved, making shinies more realistic for regular play.</p>
             </div>
           </div>
         </section>
@@ -56,7 +56,7 @@ export function initShinyHuntingGuide(container) {
                 <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
                 Random / Static Encounters
               </h4>
-              <p class="text-sm text-gray-600 dark:text-gray-400">The most basic method. Each encounter is a simple roll of the dice. Some static encounters are "Shiny Locked" and can never be shiny!</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">The baseline method. Each encounter is an independent shiny check. Some static encounters are "Shiny Locked" and can never be shiny!</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -137,8 +137,8 @@ export function initShinyHuntingGuide(container) {
 
         <!-- CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to start your hunt?</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our specialized calculator to see your exact odds for any method across all generations!</p>
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to start?</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the calculator to check exact odds for each method and game.</p>
           <button id="guide-cta-btn" class="tool-cta border-none cursor-pointer" style="background-color: #f59e0b; align-self: center">
             Try it now!
           </button>
@@ -151,3 +151,4 @@ export function initShinyHuntingGuide(container) {
         window.location.hash = '#/shiny-odds';
     });
 }
+

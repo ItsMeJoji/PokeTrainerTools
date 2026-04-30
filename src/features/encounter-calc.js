@@ -208,6 +208,7 @@ export async function initEncounterCalc(appContainer) {
 
   // Array to exclude specific games from the dropdown.
   const EXCLUDED_GAMES = [
+    'red-japan', 'green', 'green-japan',
     'sword', 'shield',
     'lets-go-pikachu', 'lets-go-eevee',
     'brilliant-diamond', 'shining-pearl',

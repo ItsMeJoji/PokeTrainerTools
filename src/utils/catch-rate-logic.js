@@ -18,8 +18,16 @@ export function calculateGen34(baseRate, currentHP, maxHP, ballBonus, statusBonu
         return { a: a, b: 65535, catchPercentage: 100 };
     }
 
-    // Calculate shake probability 'b'
-    const b = a === 0 ? 0 : Math.floor(Math.round(65536 / Math.round(Math.sqrt(Math.round(Math.sqrt(Math.round(255 / a)))))));
+    // Calculate shake probability 'b' using Gen 3/4's integer-floor sequence:
+    // b = floor(1048560 / floor(sqrt(floor(sqrt(floor(16711680 / a)))))))
+    const b = a === 0
+        ? 0
+        : (() => {
+            const first = Math.floor(16711680 / a);
+            const second = Math.floor(Math.sqrt(first));
+            const third = Math.floor(Math.sqrt(second));
+            return Math.floor(1048560 / third);
+        })();
 
     // Calculate probability of capture 
     const pPerShake = b / 65536;
@@ -274,7 +282,6 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
 
     // Handle Raid Encounter Logic
     if (raidEncounter) {
-        // Research indicates Raid Battles assume 1 HP and No Status for calculation logic
         currentHP = 0;
         maxHP = 100; // Normalized for calculation
         statusBonus = 1;
@@ -290,9 +297,6 @@ export function calculateGen8(baseRate, currentHP, maxHP, ballBonus, statusBonus
         } else {
             // Guest logic
             if (gigantamaxRaid) {
-                // Research indicates that for guest players in Gigantamax raids,
-                // the effective catch rate is normalized regardless of the species' base rate.
-                // We map the species' base catch rate to the effective catch rate from the provided table.
                 const gmaxLookup = {
                     3: 4354 / 4096,   // Melmetal, Urshifu
                     25: 524 / 4096,  // Snorlax

@@ -566,7 +566,7 @@ export async function initShinyBingo(appContainer) {
           <p id="bingo-status" class="mt-4 text-sm font-medium text-gray-500 dark:text-gray-400 text-left"></p>
         </div>
 
-        <div id="bingo-export-area" class="p-4 sm:p-8 bg-[radial-gradient(circle_at_top,#fef3c7,transparent_35%),linear-gradient(180deg,#fffdf5_0%,#ffffff_35%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,#4b5563,transparent_25%),linear-gradient(180deg,#111827_0%,#0f172a_40%,#020617_100%)]">
+        <div id="bingo-export-area" class="shiny-bingo-results p-4 sm:p-8 bg-[radial-gradient(circle_at_top,#fef3c7,transparent_35%),linear-gradient(180deg,#fffdf5_0%,#ffffff_35%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,#4b5563,transparent_25%),linear-gradient(180deg,#111827_0%,#0f172a_40%,#020617_100%)]">
           <div class="mb-4 grid grid-cols-5 border border-white/40">
             ${['B', 'I', 'N', 'G', 'O'].map(letter => `
               <div class="flex items-center justify-center min-h-16 sm:min-h-20 text-3xl sm:text-5xl font-black tracking-[0.25em] text-slate-700 border-r last:border-r-0 border-slate-200/80 bg-white/70 shadow-[0_8px_20px_rgba(148,163,184,0.16)] dark:text-white dark:border-white/40 dark:bg-white/5 dark:shadow-none">
@@ -578,8 +578,8 @@ export async function initShinyBingo(appContainer) {
         </div>
       </div>
 
-      <div id="bingo-cell-editor" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="w-full max-w-md rounded-2xl sm:rounded-3xl bg-white dark:bg-gray-800 shadow-2xl border border-gray-100 dark:border-gray-700 overflow-visible">
+      <div id="bingo-cell-editor" class="shiny-bingo-editor-overlay hidden fixed inset-0 z-50 items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="shiny-bingo-editor-panel w-full max-w-md rounded-2xl sm:rounded-3xl bg-white dark:bg-gray-800 shadow-2xl border border-gray-100 dark:border-gray-700 overflow-visible">
           <div class="rounded-t-2xl sm:rounded-t-3xl flex items-start justify-between gap-4 p-4 sm:p-5 border-b border-gray-100 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
             <div>
               <h3 class="text-lg sm:text-xl font-black text-gray-900 dark:text-white">Set Bingo Space</h3>
@@ -626,8 +626,24 @@ export async function initShinyBingo(appContainer) {
   let editingCellIndex = null;
   let editorPokemonDropdown = null;
   let editorSelectedPokemon = null;
+  let hasRenderedBoard = false;
+  let editorCloseTimeout = null;
+
+  function showBoardLoadingState() {
+    boardContainer.innerHTML = `
+      <div class="col-span-full py-14 flex items-center justify-center">
+        <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-gray-400">
+          <i class="fas fa-spinner fa-spin text-3xl"></i>
+          <p class="text-sm font-medium">Generating bingo targets...</p>
+        </div>
+      </div>
+    `;
+  }
 
   async function generateBoard() {
+    showBoardLoadingState();
+    statusText.textContent = 'Generating bingo board...';
+
     const filteredPokemon = getFilteredPokemon(allPokemon, gameSelect.value);
 
     if (filteredPokemon.length === 0) {
@@ -640,6 +656,12 @@ export async function initShinyBingo(appContainer) {
     const selectedPokemon = sampleUnique(filteredPokemon, Math.min(25, filteredPokemon.length));
     boardState = await Promise.all(selectedPokemon.map(pokemon => buildBoardCell(pokemon, gameSelect.value === 'all' ? null : gameSelect.value)));
     renderBoard();
+    if (!hasRenderedBoard && boardState.length > 0) {
+      hasRenderedBoard = true;
+      requestAnimationFrame(() => {
+        exportArea.classList.add('is-visible');
+      });
+    }
 
     const gameLabel = getSelectedGame(gameSelect.value).label;
     statusText.textContent = `Showing ${boardState.length} targets from ${gameLabel}. Click any tile to set that space manually.`;
@@ -677,13 +699,24 @@ export async function initShinyBingo(appContainer) {
 
     editorModal.classList.remove('hidden');
     editorModal.classList.add('flex');
+    if (editorCloseTimeout) {
+      clearTimeout(editorCloseTimeout);
+      editorCloseTimeout = null;
+    }
+    requestAnimationFrame(() => {
+      editorModal.classList.add('is-visible');
+    });
   }
 
   function closeEditor() {
     editingCellIndex = null;
     editorSelectedPokemon = null;
-    editorModal.classList.add('hidden');
-    editorModal.classList.remove('flex');
+    editorModal.classList.remove('is-visible');
+    editorCloseTimeout = setTimeout(() => {
+      editorModal.classList.add('hidden');
+      editorModal.classList.remove('flex');
+      editorCloseTimeout = null;
+    }, 220);
   }
 
   async function exportBoardAsPng() {
@@ -772,6 +805,7 @@ export async function initShinyBingo(appContainer) {
   });
 
   statusText.textContent = 'Loading Pokemon pool...';
+  showBoardLoadingState();
   allPokemon = await getPokemonListUpToGeneration(9);
   await Promise.all(['pla', 'sv', 'plza'].map(loadGamePokemonAvailability));
   await generateBoard();

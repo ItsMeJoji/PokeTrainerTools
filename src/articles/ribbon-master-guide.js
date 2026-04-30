@@ -7,7 +7,7 @@ export function initRibbonMasterGuide(container) {
     <div class="anim-fade-in text-left max-w-4xl mx-auto px-4 py-8">
       <div class="mb-12 text-center">
         <h1 class="mb-4 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg">Ribbon Master Guide</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-400 font-medium">The ultimate challenge for the most dedicated trainers.</p>
+        <p class="text-xl text-gray-600 dark:text-gray-400 font-medium">A long-term challenge for trainers who enjoy completion goals.</p>
       </div>
       
       <div class="space-y-12">
@@ -27,7 +27,7 @@ export function initRibbonMasterGuide(container) {
             </div>
             <div class="p-5 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl border border-indigo-100 dark:border-indigo-800">
               <h3 class="font-bold text-indigo-800 dark:text-indigo-200 mb-2">The Community</h3>
-              <p class="text-sm text-indigo-900/70 dark:text-indigo-300">Thousands of trainers share their journeys on <span class="font-bold">r/pokemonribbons</span>, documenting decades-long adventures across every console.</p>
+              <p class="text-sm text-indigo-900/70 dark:text-indigo-300">Many trainers like to share progress and advice on the <span class="font-bold">r/pokemonribbons</span> subreddit.</p>
             </div>
           </div>
         </section>
@@ -39,7 +39,7 @@ export function initRibbonMasterGuide(container) {
             Choosing Your Candidate
           </h2>
           <div class="space-y-6">
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Most Ribbon Masters begin in <span class="font-bold text-gray-600 dark:text-gray-400">Generation 3</span> (GameCube or GBA) to maximize the number of ribbons. The "Truest" Ribbon Masters often start as <span class="font-bold text-indigo-500">Shadow Pokémon</span> from Colosseum or XD: Gale of Darkness.</p>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Most Ribbon Master runs start in <span class="font-bold text-gray-600 dark:text-gray-400">Generation 3</span> (GameCube or GBA) to maximize total ribbon count. Some players begin with <span class="font-bold text-indigo-500">Shadow Pokemon</span> from Colosseum or XD for access to exclusive ribbons.</p>
             
             <div class="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-2xl">
               <h4 class="font-bold text-gray-800 dark:text-white mb-3">Common Starting Points:</h4>
@@ -67,21 +67,34 @@ export function initRibbonMasterGuide(container) {
           <div class="space-y-8">
             <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-900">
               <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-gray-800"></div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 3 & 4: The Contest Era</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">The most time-consuming phase. You must win 20 contests in Hoenn and 20 super contests in Sinnoh. These eventually merge into the prestigious <span class="font-bold text-indigo-500 italic">Contest Memory Ribbon</span> in Gen 6.</p>
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 3 & 4: The Tower & Contest Era</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">This is usually the longest phase. You need 20 contests in Hoenn and 20 Super Contests in Sinnoh. You will also need to complete the Battle Towers in each of these Generations, consisting of 2 Ribons in Generation 3 and 6 Ribbons in Generation 4. In Gen 6, these consolidate into the <span class="font-bold italic">Contest Memory Ribbon</span> and <span class="font-bold italic">Battle Memory Ribbon</span>.</p>
             </div>
 
             <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-900">
               <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-gray-800"></div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 4 & 5: The Tower Barrier</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Gen 4 features 5 brutal Battle Tower ribbons. Gen 5 is unique—it has <span class="font-bold">no ribbons</span>, serving only as a bridge for your Pokémon to reach the 3DS era via Poké Transporter.</p>
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 5: A Rest Stop</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Gen 5 has <span class="font-bold">no ribbons</span>, so it mainly acts as a transfer bridge to the 3DS era. You could go Pokestar Studios to obtain a special Star animation that plays when entering battles.</p>
             </div>
 
             <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-900">
               <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-gray-800"></div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 6 - 9: The Modern Age</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Focus shifts to the Battle Maison, Battle Tree, and eventually the Ranked Battle Master Ball Ribbon in Sword/Shield and Scarlet/Violet. Don't forget the weekly ribbons from certain NPCs!</p>
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 6 & 7: Even More Battles</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">You'll be battling at the <span class="font-bold">Battle Maison</span>, <span class="font-bold">Battle Tree</span>, and <span class="font-bold">Battle Royal</span> as the last major Battle Facilities of the series. Don't forget the weekly ribbons from certain NPCs and other Miscellaneous Ribbons.</p>
             </div>
+
+            <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-900">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-gray-800"></div>
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 9: Final Stretch</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Currently, the <span class="font-bold">last step</span> in a Ribbon Master's journey. Completing contests in BDSP, conquering the Battle Tower in either BDSP or SWSH, and finally winning in Master Rank on the Online Rank Ladder will complete your hardest ribbons. But don't forget to get the newest additions to RM Journeys, <span class="font-bold">Marks</span>! There are currently 3 obtainable Marks to get in Generation 8.</p>
+            </div>
+
+            <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-900">
+              <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-gray-800"></div>
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 10: The Future </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">With the release of Winds and Waves, that will begin Generation 10, and hopefully that will mean more Ribbons and Marks to obtain. Only time will tell.</p>
+            </div>
+
           </div>
         </section>
 
@@ -95,23 +108,23 @@ export function initRibbonMasterGuide(container) {
             </div>
             <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
               <span class="text-xs font-black text-indigo-500 uppercase">Tip 02</span>
-              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Some ribbons (like the Footprint Ribbon) change their acquisition method based on level or friendship.</p>
+              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Some ribbons (like the Footprint Ribbon) change their acquisition method based on <span class="font-bold">level</span> or <span class="font-bold">friendship</span>.</p>
             </div>
             <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
               <span class="text-xs font-black text-indigo-500 uppercase">Tip 03</span>
-              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Level check! The earlier Tower Ribbons do not adjust your Pokemon's level to 50, meaning you could get locked out of getting some ribbons.</p>
+              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Level check! The earlier Tower Ribbons do not adjust your Pokemon's level to 50, meaning you could get <span class="font-bold">locked out</span> of getting some ribbons.</p>
             </div>
             <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
               <span class="text-xs font-black text-indigo-500 uppercase">Tip 04</span>
-              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The Master Rank Ribbon can be obtained in Sword and Shield, even if the servers aren't as active. The community has Galar Fight Nights to help you get it!</p>
+              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The Master Rank Ribbon can be obtained in Sword and Shield or Scarlet and Violet, even if the servers aren't as active. The r/pokemonribbons community has <span class="font-bold">Galar/Paldea Fight Nights</span> to help you get it!</p>
             </div>
           </div>
         </section>
 
         <!-- Ribbon Tracker CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to start your journey?</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our Ribbon Tracker to manage multiple candidates and ensure no ribbon is left behind!</p>
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to start?</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the Ribbon Tracker to manage candidates and keep your checklist organized.</p>
           <button id="guide-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #6366f1; align-self: center">
             Ribbon Tracker Tool
           </button>
@@ -124,3 +137,4 @@ export function initRibbonMasterGuide(container) {
     window.location.hash = '#/ribbon-tracker';
   });
 }
+

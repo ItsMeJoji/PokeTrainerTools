@@ -65,7 +65,7 @@ export async function initCatchRateCalc(appContainer) {
                       <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                   </div>
                   <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                      <div class="p-2 border-b border-gray-100 dark:border-gray-600">
+                      <div class="p-2 border-b border-gray-100 dark:border-gray-600 sticky top-0 bg-white dark:bg-gray-700 z-10">
                           <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Pokemon...">
                       </div>
                       <div class="items-list py-1"></div>
@@ -106,7 +106,7 @@ export async function initCatchRateCalc(appContainer) {
                     <svg class="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
                   <div class="dropdown-list hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                      <div class="p-2 border-b border-gray-100 dark:border-gray-600">
+                      <div class="p-2 border-b border-gray-100 dark:border-gray-600 sticky top-0 bg-white dark:bg-gray-700 z-10">
                           <input type="text" class="search-input w-full p-2 text-sm bg-gray-50 dark:bg-gray-800 border-none rounded-md focus:ring-0 dark:text-white" placeholder="Search Poké Balls...">
                       </div>
                       <div class="items-list py-1"></div>
@@ -1041,7 +1041,7 @@ export async function initCatchRateCalc(appContainer) {
       </div>
       ` : ''}
       <div class="grid grid-cols-2 gap-2 pt-1">
-        <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage < 1 ? 'Less than 1%' : result.catchPercentage + '%'}</span>
+        <span class="font-bold text-red-600 dark:text-red-400">Total Probability:</span> <span class="text-right font-bold text-red-600 dark:text-red-400">${result.catchPercentage}%</span>
       </div>
     `;
 
@@ -1074,7 +1074,7 @@ export async function initCatchRateCalc(appContainer) {
         catchMessage.textContent = `The ${selectedBall.displayName} shook ${shakes} times... but it broke free!`;
       }
 
-      catchPercentage.textContent = result.catchPercentage < 1 ? 'Less than 1%' : `${result.catchPercentage}%`;
+      catchPercentage.textContent = `${result.catchPercentage}%`;
       // Collapse Menu
       selectionDetails.open = false;
 

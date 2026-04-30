@@ -266,6 +266,40 @@ button:focus-visible {
   transform: translateY(0) scale(1);
 }
 
+.shiny-bingo-editor-overlay {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.shiny-bingo-editor-overlay.is-visible {
+  opacity: 1;
+}
+
+.shiny-bingo-editor-panel {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.shiny-bingo-editor-overlay.is-visible .shiny-bingo-editor-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.shiny-bingo-results {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(-8px);
+  transition: opacity 320ms ease, transform 320ms ease, max-height 420ms ease;
+}
+
+.shiny-bingo-results.is-visible {
+  opacity: 1;
+  max-height: 2000px;
+  transform: translateY(0);
+}
+
 #bingo-cell-editor .dropdown-list {
   max-height: 20rem;
 }

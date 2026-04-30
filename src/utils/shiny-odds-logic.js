@@ -34,6 +34,7 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraPara
     if (gen < 1) return { fraction: '0/0', percentage: '0', rolls: 0 };
 
     const game = extraParams.game || '';
+    const luckyPower = !!extraParams.luckyPower;
     let baseOdds = gen >= 6 ? 4096 : 8192;
     let rolls = 1;
 
@@ -81,6 +82,11 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraPara
         }
     }
 
+    // Lucky Power 3/S (BW2): +1 roll for Random and Static encounters only.
+    if ((game === 'black-2' || game === 'white-2') && luckyPower && (method === 'random' || method === 'static')) {
+        rolls += 1;
+    }
+
     // Method Adjustments
     if (method === 'masuda') {
         if (gen === 4) rolls += 4; // 1+4 = 5/8192
@@ -96,6 +102,12 @@ export function calculateShinyOdds(gen, method, hasShinyCharm = false, extraPara
     }
 
     if (method === 'pokeradar-gen4') {
+        const chain = Math.min(extraParams.chain || 0, 40);
+        let n = Math.ceil(65535 / (8200 - chain * 200));
+        let probability = n / 65536;
+        let oneInX = Math.round(1 / probability);
+        return formatResult(1, oneInX);
+    } else if (method === 'pokeradar-bdsp') {
         const chain = Math.min(extraParams.chain || 0, 40);
         let n = Math.ceil(65535 / (8200 - chain * 200));
         let probability = n / 65536;

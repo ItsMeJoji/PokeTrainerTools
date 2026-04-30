@@ -44,7 +44,7 @@ const VERSION_SPRITE_MAP = {
   'white-2': ['generation-v', 'black-white'],
 };
 
-const EXCLUDED_VERSIONS = new Set(['green']);
+const EXCLUDED_VERSIONS = new Set(['red-japan', 'green', 'green-japan']);
 
 // Some Pokemon are stored under a different form name in the API
 const POKEMON_API_NAME_OVERRIDES = {

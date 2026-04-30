@@ -40,6 +40,11 @@ export async function initShinyOddsCalc(appContainer) {
                     <label for="shiny-charm-toggle" class="text-sm font-bold text-yellow-800 dark:text-yellow-400 cursor-pointer select-none">Shiny Charm obtained?</label>
                 </div>
 
+                <div id="lucky-power-container" class="hidden flex items-center space-x-3 p-4 bg-lime-50 dark:bg-lime-900/20 rounded-xl border border-lime-100 dark:border-lime-800/50 transition-all duration-300">
+                    <input id="lucky-power-toggle" type="checkbox" class="w-5 h-5 text-lime-600 bg-gray-100 border-gray-300 rounded focus:ring-lime-500 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="lucky-power-toggle" class="text-sm font-bold text-lime-800 dark:text-lime-400 cursor-pointer select-none">Lucky Power 3/S active? (BW2)</label>
+                </div>
+
                 <div id="sparkling-power-container" class="hidden flex items-center space-x-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl border border-orange-100 dark:border-orange-800/50 transition-all duration-300">
                     <label for="sparkling-power-global" class="text-sm font-bold text-orange-800 dark:text-orange-400 cursor-pointer select-none">Sparkling Power:</label>
                     <select id="sparkling-power-global" class="bg-white dark:bg-gray-700 border border-orange-200 dark:border-orange-800/50 text-orange-900 dark:text-white text-sm rounded-lg block p-1.5 focus:ring-orange-500 focus:border-orange-500">
@@ -72,6 +77,8 @@ export async function initShinyOddsCalc(appContainer) {
     const gameDropdown = document.getElementById('game-dropdown');
     const charmContainer = document.getElementById('shiny-charm-container');
     const charmToggle = document.getElementById('shiny-charm-toggle');
+    const luckyPowerContainer = document.getElementById('lucky-power-container');
+    const luckyPowerToggle = document.getElementById('lucky-power-toggle');
     const sparklingContainer = document.getElementById('sparkling-power-container');
     const sparklingSelect = document.getElementById('sparkling-power-global');
     const researchContainer = document.getElementById('research-level-container');
@@ -137,6 +144,14 @@ export async function initShinyOddsCalc(appContainer) {
             charmToggle.checked = false;
         }
 
+        // Show/Hide Lucky Power 3/S (Only for BW2)
+        if (game === 'black-2' || game === 'white-2') {
+            luckyPowerContainer.classList.remove('hidden');
+        } else {
+            luckyPowerContainer.classList.add('hidden');
+            luckyPowerToggle.checked = false;
+        }
+
         // Show/Hide Global Sparkling Power (Only for SV)
         if (game === 'scarlet' || game === 'violet') {
             sparklingContainer.classList.remove('hidden');
@@ -195,7 +210,8 @@ export async function initShinyOddsCalc(appContainer) {
             { id: 'breeding', name: 'Breeding', description: 'Breeding Pokémon in the Day Care. In Gen 2, having a Shiny parent significantly boosts odds.', minGen: 2, maxGen: 2, inputs: [{ type: 'checkbox', id: 'shinyParent', label: 'Shiny Parent?' }] },
             { id: 'odd-egg', name: 'Odd Egg', description: 'A special egg containing a baby Pokémon with a 1/10 shiny chance in Pokémon Crystal.', allowedVersions: ['gold'] },
             { id: 'masuda', name: 'Breeding (Masuda Method)', description: 'Breeding two Pokémon with different real-world language origins.', minGen: 4, hasInput: false, excludedVersions: ['lets-go-pikachu', 'lets-go-eevee', 'legends-arceus', 'legends-za'] },
-            { id: 'pokeradar-gen4', name: 'Poké Radar (Gen 4)', description: 'Chaining Pokémon using the Poké Radar. Odds max out at a chain of 40.', minGen: 4, maxGen: 4, inputs: [{ type: 'number', id: 'chain', label: 'Chain Length (0-40)', max: 40 }], allowedVersions: ['diamond'] },
+            { id: 'pokeradar-gen4', name: 'Poké Radar (Gen 4)', description: 'Chaining Pokémon using the Poké Radar. Odds max out at a chain of 40 and represent shiny patch odds (not shiny rolls).', minGen: 4, maxGen: 4, inputs: [{ type: 'number', id: 'chain', label: 'Chain Length (0-40)', max: 40 }], allowedVersions: ['diamond'] },
+            { id: 'pokeradar-bdsp', name: 'Poké Radar (BDSP)', description: 'Chaining Pokémon using the Poké Radar in BDSP. Odds max out at a chain of 40 and represent shiny patch odds (not shiny rolls).', minGen: 8, maxGen: 8, inputs: [{ type: 'number', id: 'chain', label: 'Chain Length (0-40)', max: 40 }], allowedVersions: ['brilliant-diamond'] },
             { id: 'friendsafari', name: 'Friend Safari', description: 'Encounters in the Friend Safari have a flat boosted shiny rate.', minGen: 6, maxGen: 6, allowedVersions: ['x'] },
             { id: 'chainfishing', name: 'Chain Fishing', description: 'Consecutive successful fishing attempts increase odds. Maxes at chain 20.', minGen: 6, maxGen: 6, inputs: [{ type: 'number', id: 'chain', label: 'Chain Length (0-20)', max: 20 }] },
             { id: 'pokeradar-gen6', name: 'Poké Radar (Gen 6)', description: 'Chaining with the Poké Radar in Kalos. Odds max out at a chain of 40.', minGen: 6, maxGen: 6, inputs: [{ type: 'number', id: 'chain', label: 'Chain Length (0-40)', max: 40 }], allowedVersions: ['x'] },
@@ -211,7 +227,7 @@ export async function initShinyOddsCalc(appContainer) {
             },
             {
                 id: 'sv-outbreak', name: 'Outbreaks', description: 'Scarlet/Violet odds based on outbreak kills.', minGen: 9, maxGen: 9, allowedVersions: ['scarlet'], inputs: [
-                    { type: 'number', id: 'kills', label: 'Outbreak Kills (0-60+)', max: 60 }
+                    { type: 'number', id: 'kills', label: 'Outbreak KOs (0-60+)', max: 60 }
                 ]
             },
             { id: 'tera-raid', name: 'Tera Raid', description: 'The odds for Tera Raids are fixed and not affected by the Shiny Charm or Sparkling Power.', minGen: 9, maxGen: 9, allowedVersions: ['scarlet'] },
@@ -235,6 +251,9 @@ export async function initShinyOddsCalc(appContainer) {
             .map((m, index) => {
                 // Add version and global sparkling power/research level to parameters
                 const params = { game: game };
+                if (game === 'black-2' || game === 'white-2') {
+                    params.luckyPower = luckyPowerToggle.checked;
+                }
                 if (game === 'scarlet' || game === 'violet') {
                     params.sparkling = parseInt(sparklingSelect.value) || 0;
                 }
@@ -258,6 +277,7 @@ export async function initShinyOddsCalc(appContainer) {
 
                 const odds = calculateShinyOdds(gen, m.id, hasCharm, params);
                 const isOpen = index === 0 ? 'open' : '';
+                const rollsLabel = (m.id === 'pokeradar-gen4' || m.id === 'pokeradar-bdsp') ? 'Shiny Patch Odds' : 'Shiny Rolls';
 
                 let inputHtml = '';
                 if (m.inputs) {
@@ -326,7 +346,7 @@ export async function initShinyOddsCalc(appContainer) {
                                     <span class="text-lg font-bold text-gray-900 dark:text-white percentage-display">${odds.percentage}%</span>
                                 </div>
                                 <div>
-                                    <span class="block text-xs uppercase font-bold text-gray-400 mb-1">Shiny Rolls</span>
+                                    <span class="block text-xs uppercase font-bold text-gray-400 mb-1">${rollsLabel}</span>
                                     <span class="text-lg font-bold text-gray-900 dark:text-white rolls-display">${odds.rolls} <span class="text-xs font-normal text-gray-500">(1/${odds.base} base)</span></span>
                                 </div>
                                 <div class="hidden fraction-display">${odds.fraction}</div> 
@@ -341,6 +361,7 @@ export async function initShinyOddsCalc(appContainer) {
 
     // gameSelect.addEventListener('change', updateUI); // Removed in favor of setupSearchableDropdown callback
     charmToggle.addEventListener('change', updateUI);
+    luckyPowerToggle.addEventListener('change', updateUI);
     sparklingSelect.addEventListener('change', updateUI);
     researchSelect.addEventListener('change', updateUI);
 
@@ -360,6 +381,9 @@ export async function initShinyOddsCalc(appContainer) {
 
             // Collect all inputs for this method
             const extraParams = { game: game };
+            if (game === 'black-2' || game === 'white-2') {
+                extraParams.luckyPower = luckyPowerToggle.checked;
+            }
 
             // Global Sparkling for SV
             if (game === 'scarlet' || game === 'violet') {

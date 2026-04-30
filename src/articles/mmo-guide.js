@@ -39,7 +39,7 @@ export function initMmoGuide(container) {
             </div>
             <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-800">
               <h3 class="text-xl font-bold text-red-900 dark:text-red-200 mb-2">Multi-Battles (KO2, KO3, KO4)</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Engaging multiple Pokémon at once skips steps in the internal RNG generator. A 4-way battle creates a drastically different Wave 2 than four 1-way battles.</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Engaging multiple Pokemon at once advances RNG differently. A 4-way battle can produce a very different Wave 2 than four single battles.</p>
             </div>
           </div>
         </section>
@@ -89,8 +89,8 @@ export function initMmoGuide(container) {
 
         <!-- MMO Tracker CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to track your paths?</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our MMO Permutations tool to systematically check every possible path and find your shiny!</p>
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Ready to track paths?</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the MMO Permutations tool to check paths efficiently and avoid duplicates.</p>
           <button id="mmo-tool-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #3b82f6; align-self: center">
             MMO Permutations Tool
           </button>
@@ -103,3 +103,4 @@ export function initMmoGuide(container) {
     window.location.hash = '#/mmo-permutations';
   });
 }
+

@@ -15,7 +15,7 @@ export function initSosHuntingGuide(container) {
             What is SOS Chaining?
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
-            Introduced in <span class="font-bold text-gray-800 dark:text-gray-200">Generation VII</span> (Pokémon Sun, Moon, Ultra Sun, and Ultra Moon), SOS Battles occur when a wild Pokémon calls for help when its HP is low. Chain-calling these allies increases the odds of finding Shiny Pokémon, Pokémon with Hidden Abilities, and Pokémon with max IVs.
+            Introduced in <span class="font-bold text-gray-800 dark:text-gray-200">Generation VII</span>, SOS Battles occur when a wild Pokémon calls for help when its HP is low. Chain-calling these allies increases the odds of finding Shiny Pokémon, Pokémon with Hidden Abilities, and Pokémon with max IVs.
           </p>
         </section>
 
@@ -59,7 +59,7 @@ export function initSosHuntingGuide(container) {
         <!-- SOS Move Tracker CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
           <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Track Wild Pokémon PP</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our SOS Move Tracker to monitor exactly when you need to swap out the calling Pokémon so it doesn't Struggle to death!</p>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the SOS Move Tracker to know when to swap callers before Struggle becomes a risk.</p>
           <button id="sos-tracker-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #8b5cf6; align-self: center">
             SOS Move Tracker
           </button>
@@ -95,8 +95,8 @@ export function initSosHuntingGuide(container) {
 
         <!-- CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Calculate Your Specific Odds</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use our Shiny Odds Calculator to see your exact chances for SOS Chaining depending on your game and items!</p>
+          <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Calculate Your Odds</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the Shiny Odds Calculator to estimate your SOS odds based on game and modifiers.</p>
           <button id="sos-cta-btn" class="tool-cta border-none cursor-pointer" style="background-color: #f59e0b; align-self: center">
             Shiny Odds Calculator
           </button>
@@ -113,3 +113,4 @@ export function initSosHuntingGuide(container) {
     window.location.hash = '#/sos-tracker';
   });
 }
+
