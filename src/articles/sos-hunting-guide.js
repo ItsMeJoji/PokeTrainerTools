@@ -106,11 +106,11 @@ export function initSosHuntingGuide(container) {
   `;
 
   document.getElementById('sos-cta-btn').addEventListener('click', () => {
-    window.location.hash = '#/shiny-odds';
+    window.location.pathname = '/shiny-odds';
   });
 
   document.getElementById('sos-tracker-cta-btn').addEventListener('click', () => {
-    window.location.hash = '#/sos-tracker';
+    window.location.pathname = '/sos-tracker';
   });
 }
 

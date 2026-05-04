@@ -168,7 +168,7 @@ export async function initRibbonTracker(appContainer) {
         </summary>
         <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
           <div class="mb-6">
-            <a href="#/info/ribbon-master-guide" class="inline-flex items-center text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-6 py-2 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+            <a href="/info/ribbon-master-guide" class="inline-flex items-center text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-6 py-2 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
               <i class="fas fa-question-circle mr-2"></i> Ribbon Master Guide
             </a>
           </div>

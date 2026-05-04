@@ -349,7 +349,7 @@ function renderTracker() {
             </summary>
             <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
               <div class="mb-6">
-                <a href="#/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
+                <a href="/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
                   <i class="fas fa-info-circle mr-2"></i> SOS Chaining Guide
                 </a>
               </div>

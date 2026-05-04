@@ -148,7 +148,7 @@ export function initShinyHuntingGuide(container) {
   `;
 
     document.getElementById('guide-cta-btn').addEventListener('click', () => {
-        window.location.hash = '#/shiny-odds';
+        window.location.pathname = '/shiny-odds';
     });
 }
 

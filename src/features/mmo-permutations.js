@@ -74,7 +74,7 @@ export function initMmoPermutations(container) {
             </div>
           </div>
           <div class="px-4 py-3 bg-gray-100/50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 flex justify-center">
-            <a href="#/info/mmo-guide" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+            <a href="/info/mmo-guide" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
               Learn more about Massive Mass Outbreak Mechanics
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>

@@ -134,7 +134,6 @@ export function initRibbonMasterGuide(container) {
     `;
 
   document.getElementById('guide-cta-btn').addEventListener('click', () => {
-    window.location.hash = '#/ribbon-tracker';
+    window.location.pathname = '/ribbon-tracker';
   });
 }
-

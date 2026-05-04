@@ -100,7 +100,7 @@ export function initMmoGuide(container) {
   `;
 
   document.getElementById('mmo-tool-cta-btn').addEventListener('click', () => {
-    window.location.hash = '#/mmo-permutations';
+    window.location.pathname = '/mmo-permutations';
   });
 }
 

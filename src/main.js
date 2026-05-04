@@ -28,6 +28,32 @@ getVersions();
 // Initialize theme
 initTheme();
 
+function navigateTo(pathname) {
+  if (window.location.pathname !== pathname) {
+    window.history.pushState({}, '', pathname);
+  }
+  renderPage();
+}
+
+function setupPathRouting() {
+  if (window.location.hash.startsWith('#/')) {
+    const legacyPath = window.location.hash.slice(1);
+    window.history.replaceState({}, '', legacyPath);
+  }
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('/')) return;
+    if (link.target === '_blank' || link.hasAttribute('download')) return;
+
+    event.preventDefault();
+    navigateTo(href);
+  });
+}
+
 const renderNavbar = () => {
   const isDark = document.documentElement.classList.contains('dark');
   const today = new Date();
@@ -35,7 +61,7 @@ const renderNavbar = () => {
   document.querySelector('#navbar').innerHTML = `
     <nav class="w-full flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
       <div class="flex gap-4 items-center">
-        <a href="#/" class="flex items-center gap-2">
+        <a href="/" class="flex items-center gap-2">
           <img src="${pokeballSprite}" class="w-12 h-12 md:w-8 md:h-8 object-contain" alt="PokéTrainer Tools Logo" />
           <span class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</span>
         </a>
@@ -57,15 +83,15 @@ const renderNavbar = () => {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="dropdown-menu">
-            <a href="#/pokemon-lookup" class="dropdown-item">Pokemon Lookup</a>
-            <a href="#/encounter" class="dropdown-item">Encounter Calculator</a>
-            <a href="#/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
-            <a href="#/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
-            <a href="#/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
-            <a href="#/mmo-permutations" class="dropdown-item">MMO Permutations</a>
-            <a href="#/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
-            <a href="#/shiny-bingo" class="dropdown-item">Shiny Bingo Generator</a>
-            ${isAprilFools ? '<a href="#/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
+            <a href="/pokemon-lookup" class="dropdown-item">Pokemon Lookup</a>
+            <a href="/encounter" class="dropdown-item">Encounter Calculator</a>
+            <a href="/catch-rate" class="dropdown-item">Catch Rate Calculator</a>
+            <a href="/shiny-odds" class="dropdown-item">Shiny Odds Calculator</a>
+            <a href="/sos-tracker" class="dropdown-item">SOS Move Tracker</a>
+            <a href="/mmo-permutations" class="dropdown-item">MMO Permutations</a>
+            <a href="/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
+            <a href="/shiny-bingo" class="dropdown-item">Shiny Bingo Generator</a>
+            ${isAprilFools ? '<a href="/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
           </div>
         </div>
         <div class="dropdown h-full w-full md:w-auto">
@@ -74,10 +100,10 @@ const renderNavbar = () => {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="dropdown-menu">
-            <a href="#/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
-            <a href="#/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
-            <a href="#/info/mmo-guide" class="dropdown-item">MMO Permutation Guide</a>
-            <a href="#/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
+            <a href="/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
+            <a href="/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
+            <a href="/info/mmo-guide" class="dropdown-item">MMO Permutation Guide</a>
+            <a href="/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
           </div>
         </div>
         <div class="theme-switch-wrapper py-2 md:py-0">
@@ -201,14 +227,14 @@ function getRandomRibbonMarkImage() {
 }
 
 const renderPage = () => {
-  const hash = window.location.hash || '#/';
+  const path = window.location.pathname || '/';
   const app = document.querySelector('#app');
-  const isRibbonTrackerPage = hash === '#/ribbon-tracker';
+  const isRibbonTrackerPage = path === '/ribbon-tracker';
 
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
   const content = (() => {
-    if (hash === '#/' || hash === '') {
+    if (path === '/' || path === '') {
       // Logic for random shiny
       const homeContent = `
         <div class="flex flex-col items-center">
@@ -226,7 +252,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Pokémon Lookup</h3>
                 <p>Find every location where any Pokémon can be encountered across all games, complete with encounter rates and level ranges!</p>
-                <a href="#/pokemon-lookup" class="tool-cta" style="background-color: #6366f1">Try it now!</a>
+                <a href="/pokemon-lookup" class="tool-cta" style="background-color: #6366f1">Try it now!</a>
               </div>
             </div>
 
@@ -240,7 +266,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Encounter Calculator</h3>
                 <p>Plan your hunt by discovering exactly which Pokémon appear in any game, location, and area!</p>
-                <a href="#/encounter" class="tool-cta">Try it now!</a>
+                <a href="/encounter" class="tool-cta">Try it now!</a>
               </div>
             </div>
 
@@ -254,7 +280,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Catch Rate Calculator</h3>
                 <p>Never waste a Poke Ball again! Calculate your precise capture probabilities across all generations!</p>
-                <a href="#/catch-rate" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
+                <a href="/catch-rate" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
             </div>
 
@@ -268,7 +294,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Shiny Odds Calculator</h3>
                 <p>Check your shiny hunting efficiency! Calculate odds for various methods across all generations!</p>
-                <a href="#/shiny-odds" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
+                <a href="/shiny-odds" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
             </div>
 
@@ -282,7 +308,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Ribbon Tracker</h3>
                 <p>Track every ribbon and mark for your battle-hardened companions across all generations!</p>
-                <a href="#/ribbon-tracker" class="tool-cta" style="background-color: #3b82f6">Try it now!</a>
+                <a href="/ribbon-tracker" class="tool-cta" style="background-color: #3b82f6">Try it now!</a>
               </div>
             </div>
 
@@ -307,7 +333,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Shiny Bingo Generator</h3>
                 <p>Generate a shiny-hunting bingo board, set your targets, and export your challenge card as a PNG.</p>
-                <a href="#/shiny-bingo" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
+                <a href="/shiny-bingo" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
             </div>
           </div>
@@ -318,16 +344,16 @@ const renderPage = () => {
       // Better to do it after or use a placeholder then replace.
       return homeContent;
     }
-    else if (hash === '#/encounter') {
+    else if (path === '/encounter') {
       // Encounter Calc handles its own initial innerHTML but we'll wrap it
       return `<div id="encounter-calc-container"></div>`;
-    } else if (hash === '#/catch-rate') {
+    } else if (path === '/catch-rate') {
       return `<div id="catch-rate-calc-container"></div>`;
-    } else if (hash === '#/shiny-odds') {
+    } else if (path === '/shiny-odds') {
       return `<div id="shiny-odds-calc-container"></div>`;
-    } else if (hash === '#/pokemon-lookup') {
+    } else if (path === '/pokemon-lookup') {
       return `<div id="pokemon-lookup-container"></div>`;
-    } else if (hash === '#/privacy') {
+    } else if (path === '/privacy') {
       return `
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
           <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">Privacy Policy</h1>
@@ -350,7 +376,7 @@ const renderPage = () => {
           </div>
         </div>
       `;
-    } else if (hash === '#/contact') {
+    } else if (path === '/contact') {
       return `
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
           <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">Get in Touch with Me!</h1>
@@ -384,31 +410,31 @@ const renderPage = () => {
           </div>
         </div>
       `;
-    } else if (hash === '#/info/shiny-hunting') {
+    } else if (path === '/info/shiny-hunting') {
       return `<div id="shiny-hunting-guide-container"></div>`;
-    } else if (hash === '#/info/sos-hunting') {
+    } else if (path === '/info/sos-hunting') {
       return `<div id="sos-hunting-guide-container"></div>`;
-    } else if (hash === '#/info/mmo-guide') {
+    } else if (path === '/info/mmo-guide') {
       return `<div id="mmo-guide-container"></div>`;
-    } else if (hash === '#/sos-tracker') {
+    } else if (path === '/sos-tracker') {
       return `<div id="sos-move-tracker-container"></div>`;
-    } else if (hash === '#/mmo-permutations') {
+    } else if (path === '/mmo-permutations') {
       return `<div id="mmo-permutations-container"></div>`;
-    } else if (hash === '#/ribbon-tracker') {
+    } else if (path === '/ribbon-tracker') {
       return `<div id="ribbon-tracker-container"></div>`;
-    } else if (hash === '#/shiny-bingo') {
+    } else if (path === '/shiny-bingo') {
       return `<div id="shiny-bingo-container"></div>`;
-    } else if (hash === '#/info/ribbon-master-guide') {
+    } else if (path === '/info/ribbon-master-guide') {
       return `<div id="ribbon-master-guide-container"></div>`;
-    } else if (hash === '#/rng-version') {
+    } else if (path === '/rng-version') {
       const today = new Date();
       if (today.getMonth() === 3 && today.getDate() === 1) {
         return `<div id="rng-version-container"></div>`;
       } else {
-        return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+        return `<h1>404 - Page Not Found</h1><a href="/">Go Home</a>`;
       }
     } else {
-      return `<h1>404 - Page Not Found</h1><a href="#/">Go Home</a>`;
+      return `<h1>404 - Page Not Found</h1><a href="/">Go Home</a>`;
     }
   })();
 
@@ -440,8 +466,8 @@ const renderPage = () => {
 
           <!-- Right Column -->
           <div class="flex justify-center md:justify-end gap-6 text-gray-600 dark:text-gray-400 font-medium">
-            <a href="#/privacy" class="hover:text-blue-500 transition-colors">Privacy Policy</a>
-            <a href="#/contact" class="hover:text-blue-500 transition-colors">Contact</a>
+            <a href="/privacy" class="hover:text-blue-500 transition-colors">Privacy Policy</a>
+            <a href="/contact" class="hover:text-blue-500 transition-colors">Contact</a>
           </div>
         </div>
 
@@ -457,7 +483,7 @@ const renderPage = () => {
     </div>
   `;
 
-  if (hash === '#/' || hash === '') {
+  if (path === '/' || path === '') {
     // Shiny Odds card: random shiny sprite
     getRandomShinyPokemon().then(sprite => {
       const overlay = document.querySelector('#shiny-tool-overlay');
@@ -492,31 +518,31 @@ const renderPage = () => {
         <img src="${ribbonImage}" class="relative z-10 w-24 h-24 object-contain anim-rustle-periodic drop-shadow-lg" alt="Random ribbon or mark" />
       `;
     }
-  } else if (hash === '#/encounter') {
+  } else if (path === '/encounter') {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
-  } else if (hash === '#/catch-rate') {
+  } else if (path === '/catch-rate') {
     initCatchRateCalc(document.querySelector('#catch-rate-calc-container'));
-  } else if (hash === '#/shiny-odds') {
+  } else if (path === '/shiny-odds') {
     initShinyOddsCalc(document.querySelector('#shiny-odds-calc-container'));
-  } else if (hash === '#/pokemon-lookup') {
+  } else if (path === '/pokemon-lookup') {
     initPokemonLookup(document.querySelector('#pokemon-lookup-container'));
-  } else if (hash === '#/info/shiny-hunting') {
+  } else if (path === '/info/shiny-hunting') {
     initShinyHuntingGuide(document.querySelector('#shiny-hunting-guide-container'));
-  } else if (hash === '#/info/sos-hunting') {
+  } else if (path === '/info/sos-hunting') {
     initSosHuntingGuide(document.querySelector('#sos-hunting-guide-container'));
-  } else if (hash === '#/info/mmo-guide') {
+  } else if (path === '/info/mmo-guide') {
     initMmoGuide(document.querySelector('#mmo-guide-container'));
-  } else if (hash === '#/sos-tracker') {
+  } else if (path === '/sos-tracker') {
     initSosMoveTracker(document.querySelector('#sos-move-tracker-container'));
-  } else if (hash === '#/mmo-permutations') {
+  } else if (path === '/mmo-permutations') {
     initMmoPermutations(document.querySelector('#mmo-permutations-container'));
-  } else if (hash === '#/ribbon-tracker') {
+  } else if (path === '/ribbon-tracker') {
     initRibbonTracker(document.querySelector('#ribbon-tracker-container'));
-  } else if (hash === '#/shiny-bingo') {
+  } else if (path === '/shiny-bingo') {
     initShinyBingo(document.querySelector('#shiny-bingo-container'));
-  } else if (hash === '#/info/ribbon-master-guide') {
+  } else if (path === '/info/ribbon-master-guide') {
     initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
-  } else if (hash === '#/rng-version') {
+  } else if (path === '/rng-version') {
     const today = new Date();
     if (today.getMonth() === 3 && today.getDate() === 1) {
       initRNGPage('rng-version-container');
@@ -528,11 +554,12 @@ const renderPage = () => {
 initGoogleAuth().then(() => {
   const state = handleRedirectCallback();
   if (state === 'sync_ribbons') {
-    window.location.hash = '#/ribbon-tracker';
+    navigateTo('/ribbon-tracker');
   }
 });
 
+setupPathRouting();
 renderNavbar();
 renderPage();
 
-window.addEventListener('hashchange', renderPage);
+window.addEventListener('popstate', renderPage);

@@ -10,6 +10,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8770034306180587"
     crossorigin="anonymous"></script>
+  <script>
+    // GitHub Pages SPA redirect decode (paired with public/404.html)
+    (function (l) {
+      if (!l.search) return;
+
+      var params = new URLSearchParams(l.search);
+      var p = params.get('p');
+      if (!p) return;
+
+      var q = params.get('q');
+      var routePath = p.replace(/~and~/g, '&');
+      var query = q ? ('?' + q.replace(/~and~/g, '&')) : '';
+
+      // Keep repo prefix when opened from project pages URL.
+      var repoBasePath = '/PokeTrainerTools';
+      var isGithubIoHost = l.hostname.endsWith('.github.io');
+      var isProjectPages = isGithubIoHost && l.pathname.toLowerCase().startsWith(repoBasePath.toLowerCase() + '/');
+      var basePrefix = isProjectPages ? repoBasePath : '';
+
+      window.history.replaceState(null, '', basePrefix + routePath + query + l.hash);
+    }(window.location));
+  </script>
 </head>
 
 <body class="bg-white dark:bg-black text-black dark:text-white">
