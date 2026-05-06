@@ -222,8 +222,8 @@ export async function initRibbonTracker(appContainer) {
         <div class="ribbon-detail-panel bg-white dark:bg-gray-800 w-full max-w-3xl h-[100dvh] sm:h-auto max-h-[100dvh] sm:max-h-[90vh] rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col min-w-0">
           <div class="relative p-4 pr-14 border-b dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
             <h3 id="detail-pokemon-name" class="text-xl font-bold text-gray-800 dark:text-white"></h3>
-            <button id="close-detail" class="absolute top-3 right-3 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 shadow-sm">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button id="close-detail" class="absolute top-3 right-3 p-1 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 shadow-sm">
+              <svg class="w-2 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
           </div>
           <div id="ribbon-grid-container" class="p-4 sm:p-6 overflow-y-auto overflow-x-hidden flex-1 min-w-0">
