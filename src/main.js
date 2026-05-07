@@ -29,10 +29,28 @@ getVersions();
 initTheme();
 
 function navigateTo(pathname) {
-  if (window.location.pathname !== pathname) {
-    window.history.pushState({}, '', pathname);
+  const normalizedPath = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  if (window.location.pathname !== normalizedPath) {
+    window.history.pushState({}, '', normalizedPath);
   }
   renderPage();
+}
+
+function normalizeRoutePath(rawPath) {
+  const path = rawPath || '/';
+  const noTrailingSlash = path.length > 1 ? path.replace(/\/+$/, '') : path;
+  const repoBasePath = '/PokeTrainerTools';
+
+  // Support both custom domain and project pages URLs.
+  if (noTrailingSlash.toLowerCase().startsWith(repoBasePath.toLowerCase() + '/')) {
+    return noTrailingSlash.slice(repoBasePath.length);
+  }
+
+  if (noTrailingSlash.toLowerCase() === repoBasePath.toLowerCase()) {
+    return '/';
+  }
+
+  return noTrailingSlash;
 }
 
 function setupPathRouting() {
@@ -227,7 +245,7 @@ function getRandomRibbonMarkImage() {
 }
 
 const renderPage = () => {
-  const path = window.location.pathname || '/';
+  const path = normalizeRoutePath(window.location.pathname);
   const app = document.querySelector('#app');
   const isRibbonTrackerPage = path === '/ribbon-tracker';
 
