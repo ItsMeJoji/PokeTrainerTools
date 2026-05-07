@@ -4,11 +4,9 @@
   <meta charset="utf-8">
   <title>PokeTrainer Tools</title>
   <script>
-    // GitHub Pages SPA redirect:
-    // /some/route?x=1 -> /?p=/some/route&q=x=1
     (function () {
       var l = window.location;
-      var repoBasePath = '/PokeTrainerTools';
+      var repoBasePath = '';
       var isGithubIoHost = l.hostname.endsWith('.github.io');
       var isProjectPages = isGithubIoHost && l.pathname.toLowerCase().startsWith(repoBasePath.toLowerCase() + '/');
       var segmentCount = isProjectPages ? 1 : 0;
