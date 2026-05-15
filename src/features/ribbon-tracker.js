@@ -218,12 +218,12 @@ export async function initRibbonTracker(appContainer) {
       </div>
 
       <!-- Detail View (Modal-like or separate section) -->
-      <div id="ribbon-detail-view" class="ribbon-detail-overlay hidden fixed inset-0 z-50 items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm">
-        <div class="ribbon-detail-panel bg-white dark:bg-gray-800 w-full max-w-3xl h-[100dvh] sm:h-auto max-h-[100dvh] sm:max-h-[90vh] rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col min-w-0">
-          <div class="relative p-4 pr-14 border-b dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
-            <h3 id="detail-pokemon-name" class="text-xl font-bold text-gray-800 dark:text-white"></h3>
-            <button id="close-detail" class="absolute top-3 right-3 p-1 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 shadow-sm">
-              <svg class="w-2 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <div id="ribbon-detail-view" class="ribbon-detail-overlay hidden fixed inset-0 z-[1000] items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="ribbon-detail-panel w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col min-w-0 max-h-[92dvh] sm:max-h-[90vh]">
+          <div class="relative rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-5 pr-14 border-b border-gray-100 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
+            <h3 id="detail-pokemon-name" class="text-left text-lg sm:text-xl font-black text-gray-900 dark:text-white"></h3>
+            <button id="close-detail" class="absolute top-2 right-2 inline-flex items-center justify-center w-6 h-6 !p-0 text-xs leading-none rounded-sm bg-black/5 dark:bg-white/5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+              X
             </button>
           </div>
           <div id="ribbon-grid-container" class="p-4 sm:p-6 overflow-y-auto overflow-x-hidden flex-1 min-w-0">
@@ -233,7 +233,7 @@ export async function initRibbonTracker(appContainer) {
       </div>
 
       <!-- Global Smart Tooltip -->
-      <div id="smart-tooltip" class="fixed z-[100] pointer-events-none opacity-0 invisible transition-opacity duration-200 w-48 p-2 bg-gray-900 border border-gray-700 text-white text-xs rounded shadow-2xl text-center">
+      <div id="smart-tooltip" class="fixed z-[1010] pointer-events-none opacity-0 invisible transition-opacity duration-200 w-48 p-2 bg-gray-900 border border-gray-700 text-white text-xs rounded shadow-2xl text-center">
         <div id="smart-tooltip-title" class="font-bold mb-1"></div>
         <div id="smart-tooltip-desc" class="text-gray-300 text-[10px] leading-tight"></div>
         <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 border-b border-r border-gray-700 transform rotate-45"></div>
@@ -245,6 +245,15 @@ export async function initRibbonTracker(appContainer) {
   let selectedSpecies = null;
   let isFetchingAvailability = false;
   let tooltipTimeoutId = null;
+  const categoryBulkSelectionByEntry = {};
+
+  const closeNavbarOverlays = () => {
+    document.querySelectorAll('.dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
+    document.querySelectorAll('.dropdown button.active').forEach(button => {
+      button.classList.remove('active');
+      button.setAttribute('aria-expanded', 'false');
+    });
+  };
 
   // --- Initial Data Load ---
   updateDropdownLoading('ribbon-pokemon-dropdown', "Loading Pok\u00e9mon");
@@ -456,14 +465,15 @@ export async function initRibbonTracker(appContainer) {
     nameHeader.innerHTML = `
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 w-full pr-2">
         <div 
+          id="detail-species-sprite-wrap"
           onclick="window.openSpeciesEdit(${idx})"
           class="group relative w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900/50' : 'border-gray-100 dark:border-gray-700'} shadow-sm shrink-0 cursor-pointer overflow-hidden transition-all hover:border-indigo-400 dark:hover:border-indigo-500"
         >
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain transition-transform group-hover:scale-110">
+          <img id="detail-species-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain transition-transform group-hover:scale-110">
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
             <i class="fas fa-pencil-alt text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md text-xs translate-y-1 group-hover:translate-y-0 duration-200"></i>
           </div>
-          ${entry.isShiny ? '<i class="fas fa-star text-[8px] text-yellow-400 absolute top-1 right-1 animate-pulse"></i>' : ''}
+          <i id="detail-species-shiny-badge" class="fas fa-star text-[8px] text-yellow-400 absolute top-1 right-1 animate-pulse ${entry.isShiny ? '' : 'hidden'}"></i>
         </div>
         
         <div class="flex flex-col flex-1 min-w-0">
@@ -476,19 +486,12 @@ export async function initRibbonTracker(appContainer) {
                   onkeyup="if(event.key === 'Enter') this.blur()"
                   class="bg-black/5 dark:bg-white/5 border border-transparent focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 font-black text-xl sm:text-2xl text-gray-800 dark:text-white px-3 py-1.5 rounded-xl w-full hover:bg-black/5 dark:hover:bg-white/5 cursor-text transition-all truncate"
                 >
-                <i class="fas fa-edit absolute right-3 top-1/2 -translate-y-1/2 text-gray-400/50 group-hover/edit:text-blue-500 transition-colors pointer-events-none text-xs"></i>
               </div>
             </div>
             
-            <button onclick="window.toggleEntryShiny(${idx})" 
-              class="self-start sm:self-auto flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 transition-all active:scale-95 mb-[2px] ${entry.isShiny ? 'bg-yellow-50 border-yellow-200 text-yellow-700 dark:bg-yellow-900/20 dark:border-yellow-700/50 dark:text-yellow-400' : 'bg-gray-50 border-gray-100 text-gray-400 dark:bg-gray-900/30 dark:border-gray-800 dark:text-gray-600'}"
-            >
-              <i class="fas fa-star ${entry.isShiny ? 'drop-shadow-sm' : ''}"></i>
-              <span class="text-[10px] font-black uppercase tracking-widest">Shiny</span>
-            </button>
           </div>
           
-          <div id="detail-name-container" class="flex flex-col sm:flex-row sm:items-center gap-2 mt-2 ml-1">
+          <div id="detail-name-container" class="w-full flex flex-col sm:flex-row sm:items-center gap-2 mt-2 ml-1">
             <span class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] font-black">${entry.speciesName} Journey</span>
             <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-gray-200 dark:bg-gray-800"></div>
             <div class="relative group/game">
@@ -606,10 +609,34 @@ export async function initRibbonTracker(appContainer) {
       return a.localeCompare(b, undefined, { numeric: true });
     });
 
+    const categoryBulkSelection = {};
+
     gridContainer.innerHTML = sortedCategories.map(genCategory => {
       const gamesObj = grouped[genCategory];
       const isRecurring = genCategory === 'Recurring Ribbons';
       const isOptionalExtras = genCategory === 'Optional Extras';
+      const isGenerationCategory = genCategory.startsWith('Generation ');
+      const isMarksCategory = genCategory === 'Marks';
+      const supportsBulkToggle = isGenerationCategory || isMarksCategory;
+      const ribbonsInCategory = Object.values(gamesObj).flat();
+      const selectableStandardRibbonIds = ribbonsInCategory
+        .filter(ribbon => !ribbon.isAutomated && !ribbon.isOptionalExtra)
+        .map(ribbon => ribbon.id);
+      const selectableOptionalRibbonIds = ribbonsInCategory
+        .filter(ribbon => ribbon.isOptionalExtra)
+        .map(ribbon => ribbon.id);
+      const totalSelectableInCategory = selectableStandardRibbonIds.length + selectableOptionalRibbonIds.length;
+      const selectedStandardInCategory = selectableStandardRibbonIds.filter(id => entry.collectedRibbons.includes(id)).length;
+      const selectedOptionalInCategory = selectableOptionalRibbonIds.filter(id => entry.optionalRibbons.includes(id)).length;
+      const allSelectableEarned = totalSelectableInCategory > 0
+        && (selectedStandardInCategory + selectedOptionalInCategory) === totalSelectableInCategory;
+
+      if (supportsBulkToggle && totalSelectableInCategory > 0) {
+        categoryBulkSelection[genCategory] = {
+          standardRibbonIds: selectableStandardRibbonIds,
+          optionalRibbonIds: selectableOptionalRibbonIds
+        };
+      }
 
       // Calculate totals for this generation/category
       let earnedInGen = 0;
@@ -629,13 +656,21 @@ export async function initRibbonTracker(appContainer) {
         <div class="mb-6 min-w-0">
           <div class="flex items-center justify-between gap-3 mb-3 pb-1 border-b dark:border-gray-700/50 min-w-0">
             <h3 class="text-xs font-black text-gray-800 dark:text-gray-200 uppercase tracking-[0.2em] min-w-0">${genCategory}</h3>
-            ${isOptionalExtras
-              ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
-              : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
-              <span class="text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
-              <span class="text-[9px] font-black text-gray-300 dark:text-gray-600">/</span>
-              <span class="text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
-            </div>`}
+            <div class="flex items-center gap-2">
+              ${supportsBulkToggle && totalSelectableInCategory > 0
+                ? `<button
+                  onclick="window.toggleCategoryRibbons(${idx}, '${genCategory.replace(/'/g, "\\'")}')"
+                  class="inline-flex items-center px-2 py-0.5 h-[18px] leading-none text-[9px] font-black whitespace-nowrap rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+                >${allSelectableEarned ? 'Deselect All' : 'Select All'}</button>`
+                : ''}
+              ${isOptionalExtras
+                ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
+                : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
+                <span class="text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
+                <span class="text-[9px] font-black text-gray-300 dark:text-gray-600">/</span>
+                <span class="text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
+              </div>`}
+            </div>
           </div>
           
           ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
@@ -673,7 +708,10 @@ export async function initRibbonTracker(appContainer) {
         </div>
       `;
     }).join('');
+    categoryBulkSelectionByEntry[idx] = categoryBulkSelection;
 
+    closeNavbarOverlays();
+    document.body.classList.add('overflow-hidden', 'ribbon-modal-open');
     detailView.classList.remove('hidden');
     detailView.classList.add('flex');
     requestAnimationFrame(() => {
@@ -689,6 +727,7 @@ export async function initRibbonTracker(appContainer) {
     window.hideRibbonTooltip();
     detailView.classList.remove('is-visible');
     detailPanel.classList.remove('is-visible');
+    document.body.classList.remove('overflow-hidden', 'ribbon-modal-open');
 
     window.setTimeout(() => {
       detailView.classList.add('hidden');
@@ -708,6 +747,56 @@ export async function initRibbonTracker(appContainer) {
     saveEntries(entry.id);
     window.openRibbonDetail(entryIdx); // Re-render detail
     renderEntriesList(); // Update count on list
+  };
+
+  window.toggleCategoryRibbons = (entryIdx, genCategory) => {
+    window.hideRibbonTooltip();
+    const entry = entries[entryIdx];
+    if (!entry) return;
+
+    const selection = categoryBulkSelectionByEntry?.[entryIdx]?.[genCategory];
+    if (!selection) return;
+
+    const standardRibbonIds = Array.isArray(selection.standardRibbonIds) ? selection.standardRibbonIds : [];
+    const optionalRibbonIds = Array.isArray(selection.optionalRibbonIds) ? selection.optionalRibbonIds : [];
+
+    if (!Array.isArray(entry.optionalRibbons)) {
+      entry.optionalRibbons = [];
+    }
+
+    const hasAllStandard = standardRibbonIds.every(id => entry.collectedRibbons.includes(id));
+    const hasAllOptional = optionalRibbonIds.every(id => entry.optionalRibbons.includes(id));
+    const hasAllSelected = (standardRibbonIds.length + optionalRibbonIds.length) > 0
+      && hasAllStandard
+      && hasAllOptional;
+
+    if (hasAllSelected) {
+      const standardRibbonIdSet = new Set(standardRibbonIds);
+      const optionalRibbonIdSet = new Set(optionalRibbonIds);
+      entry.collectedRibbons = entry.collectedRibbons.filter(id => !standardRibbonIdSet.has(id));
+      entry.optionalRibbons = entry.optionalRibbons.filter(id => !optionalRibbonIdSet.has(id));
+    } else {
+      const collectedRibbonSet = new Set(entry.collectedRibbons);
+      const optionalRibbonSet = new Set(entry.optionalRibbons);
+
+      standardRibbonIds.forEach(id => {
+        if (!collectedRibbonSet.has(id)) {
+          entry.collectedRibbons.push(id);
+          collectedRibbonSet.add(id);
+        }
+      });
+
+      optionalRibbonIds.forEach(id => {
+        if (!optionalRibbonSet.has(id)) {
+          entry.optionalRibbons.push(id);
+          optionalRibbonSet.add(id);
+        }
+      });
+    }
+
+    saveEntries(entry.id);
+    window.openRibbonDetail(entryIdx);
+    renderEntriesList();
   };
 
   window.toggleOptionalRibbon = (entryIdx, ribbonId) => {
@@ -757,9 +846,15 @@ export async function initRibbonTracker(appContainer) {
     const originalContent = nameContainer.innerHTML;
 
     nameContainer.innerHTML = `
-      <div class="flex flex-col gap-2">
-        <div class="w-full">
-          ${getSearchableDropdownHtml('detail-species-dropdown', null, 'Search Pokemon...')}
+      <div class="w-full flex flex-col gap-2">
+        <div class="w-full flex items-center gap-2 min-w-0">
+          <div class="flex-1 min-w-0">
+            ${getSearchableDropdownHtml('detail-species-dropdown', null, 'Search Pokemon...')}
+          </div>
+          <button id="edit-shiny-toggle-btn" class="shrink-0 inline-flex items-center gap-1 !px-2.5 !py-2 !text-[10px] !font-black !rounded-lg transition-all shadow-sm active:scale-95 uppercase tracking-[0.1em] ${entry.isShiny ? 'bg-yellow-50 border border-yellow-700 text-yellow-500 dark:bg-yellow-900/20 dark:border-yellow-700/50 dark:text-yellow-400' : 'bg-gray-100 border border-gray-200 text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'}">
+            <i class="fas fa-star"></i>
+            <span>Shiny</span>
+          </button>
         </div>
         <div class="flex items-center gap-3 mt-2">
           <button id="confirm-species-btn" class="!px-3 !py-1 !text-[10px] !font-black !rounded-full bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-black dark:text-white transition-all shadow-sm active:scale-95 uppercase tracking-wider">CONFIRM</button>
@@ -771,7 +866,7 @@ export async function initRibbonTracker(appContainer) {
     let tempSelectedSpecies = null;
     const dropdown = setupSearchableDropdown('detail-species-dropdown', pokemonList, (p) => {
       tempSelectedSpecies = p;
-    }, false); // dark mode = false as it's handled by tailwind classes
+    }, 'Select Pokemon');
 
     // Pre-select current species
     const currentSpecies = pokemonList.find(p => p.id === entry.speciesId);
@@ -779,6 +874,45 @@ export async function initRibbonTracker(appContainer) {
 
     const cancelBtn = document.getElementById('cancel-species-btn');
     const confirmBtn = document.getElementById('confirm-species-btn');
+    const editShinyBtn = document.getElementById('edit-shiny-toggle-btn');
+    const detailSprite = document.getElementById('detail-species-sprite');
+    const detailSpriteWrap = document.getElementById('detail-species-sprite-wrap');
+    const detailShinyBadge = document.getElementById('detail-species-shiny-badge');
+
+    const applyEditShinyButtonState = () => {
+      const enabledClasses = ['bg-yellow-50', 'border-yellow-700', 'text-yellow-500', 'dark:bg-yellow-900/20', 'dark:border-yellow-700/50', 'dark:text-yellow-400'];
+      const disabledClasses = ['bg-gray-100', 'border-gray-200', 'text-gray-500', 'dark:bg-gray-800', 'dark:border-gray-700', 'dark:text-gray-300'];
+      editShinyBtn.classList.remove(...enabledClasses, ...disabledClasses);
+      editShinyBtn.classList.add(...(entry.isShiny ? enabledClasses : disabledClasses));
+    };
+
+    applyEditShinyButtonState();
+
+    editShinyBtn.onclick = async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      entry.isShiny = !entry.isShiny;
+      await saveEntries(entry.id);
+      renderEntriesList();
+      applyEditShinyButtonState();
+
+      if (detailSprite) {
+        detailSprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png`;
+      }
+
+      if (detailShinyBadge) {
+        detailShinyBadge.classList.toggle('hidden', !entry.isShiny);
+      }
+
+      if (detailSpriteWrap) {
+        detailSpriteWrap.classList.remove('border-yellow-200', 'dark:border-yellow-900/50', 'border-gray-100', 'dark:border-gray-700');
+        if (entry.isShiny) {
+          detailSpriteWrap.classList.add('border-yellow-200', 'dark:border-yellow-900/50');
+        } else {
+          detailSpriteWrap.classList.add('border-gray-100', 'dark:border-gray-700');
+        }
+      }
+    };
 
     cancelBtn.onclick = (e) => {
       e.stopPropagation();
@@ -787,7 +921,10 @@ export async function initRibbonTracker(appContainer) {
 
     confirmBtn.onclick = async (e) => {
       e.stopPropagation();
-      if (!tempSelectedSpecies) return;
+      if (!tempSelectedSpecies) {
+        nameContainer.innerHTML = originalContent;
+        return;
+      }
 
       // Show loading state if re-fetching availability
       confirmBtn.innerText = 'FETCHING...';

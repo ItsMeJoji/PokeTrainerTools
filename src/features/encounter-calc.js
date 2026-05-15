@@ -313,12 +313,13 @@ export async function initEncounterCalc(appContainer) {
     try {
       const locations = await getLocationsForVersion(selectedVersion);
       const locationItems = locations.map(loc => ({
-        name: loc.name,
+        name: loc.name, // API location slug (used for encounter fetch)
+        locationName: loc.name,
         displayName: loc.displayName
       }));
 
       setupSearchableDropdown(locationDropdown, locationItems, (loc) => {
-        selectedLocation = loc.name;
+        selectedLocation = loc.locationName || loc.name;
         startBtn.disabled = false;
       }, "Choose a location");
 

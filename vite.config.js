@@ -20,6 +20,7 @@ const spaRoutes = [
     '/contact',
     '/privacy',
 ];
+const sitemapRoutes = spaRoutes.map((route) => `${route}/`);
 
 const routeSeo = {
     '/pokemon-lookup': {
@@ -154,8 +155,8 @@ export default defineConfig({
         staticRoutePages(spaRoutes),
         Sitemap({
             hostname: 'https://poketrainer.tools',
-            dynamicRoutes: spaRoutes,
-            exclude: ['/404'],
+            dynamicRoutes: sitemapRoutes,
+            exclude: ['/404', '/404/'],
         }),
     ],
     base: '/',

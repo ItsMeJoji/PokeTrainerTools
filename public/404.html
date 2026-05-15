@@ -2,24 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>PokeTrainer Tools</title>
-  <script>
-    (function () {
-      var l = window.location;
-      var repoBasePath = '';
-      var isGithubIoHost = l.hostname.endsWith('.github.io');
-      var isProjectPages = isGithubIoHost && l.pathname.toLowerCase().startsWith(repoBasePath.toLowerCase() + '/');
-      var segmentCount = isProjectPages ? 1 : 0;
-
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
-        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    }());
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>404 - Page Not Found | PokeTrainer Tools</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0b0b0b;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    main {
+      max-width: 680px;
+      padding: 24px;
+      text-align: center;
+    }
+    a {
+      color: #60a5fa;
+    }
+  </style>
 </head>
-<body></body>
+<body>
+  <main>
+    <h1>404 - Page Not Found</h1>
+    <p>The page you requested does not exist.</p>
+    <p><a href="/">Go to Home</a></p>
+  </main>
+</body>
 </html>

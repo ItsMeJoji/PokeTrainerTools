@@ -5,18 +5,15 @@ const LOCAL_POKEAPI_HOSTNAMES = ['localhost', '127.0.0.1'];
 const LOCAL_POKEAPI_URL = 'http://localhost:8000/api/v2/';
 const DEFAULT_POKEAPI_URL = 'https://pokeapi.co/api/v2/';
 
-//const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
-const useLocalApi = false;
+const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
+//const useLocalApi = false;
 const apiUrl = useLocalApi ? LOCAL_POKEAPI_URL : DEFAULT_POKEAPI_URL;
 const parsedApiUrl = new URL(apiUrl);
 
 console.info('[PokeAPI] Using base URL:', apiUrl, '(cache disabled:', useLocalApi, ')');
 
 if (useLocalApi) {
-    localForage.ready()
-        .then(() => localForage.clear())
-        .then(() => console.info('[PokeAPI] Cleared localForage cache for local API mode.'))
-        .catch(error => console.warn('[PokeAPI] Failed to clear local cache:', error));
+    console.info('[PokeAPI] Local API mode enabled. Preserving localForage for faster verified location loads.');
 }
 
 const P = new Pokedex({
@@ -33,6 +30,66 @@ const resultCache = {
     locations: {}, // versionName -> locations
     encounters: {}, // version-location -> encounters
 };
+const LOCATION_CACHE_PREFIX = 'verified_locations_v5';
+const LOCATION_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+const locationCacheReady = localForage.ready().catch(() => undefined);
+const PATH_DEBUG = true;
+const ENCOUNTER_DEBUG = false;
+const RESOURCE_RETRY_LIMIT = 2;
+const RESOURCE_RETRY_DELAY_MS = 120;
+const LOCATION_FETCH_CONCURRENCY = 12;
+const AREA_FETCH_CONCURRENCY = 8;
+
+function logPathDebug(...args) {
+    if (!PATH_DEBUG) return;
+    console.info('[PathDebug]', ...args);
+}
+
+function logEncounterDebug(...args) {
+    if (!ENCOUNTER_DEBUG) return;
+    console.info('[EncounterDebug]', ...args);
+}
+
+function getLocationCacheKey(versionName) {
+    return `${LOCATION_CACHE_PREFIX}:${parsedApiUrl.host}${parsedApiUrl.pathname}:${versionName}`;
+}
+
+async function getCachedLocations(versionName) {
+    try {
+        await locationCacheReady;
+        const payload = await localForage.getItem(getLocationCacheKey(versionName));
+        if (!payload || !Array.isArray(payload.locations) || typeof payload.savedAt !== 'number') {
+            return null;
+        }
+        if (Date.now() - payload.savedAt > LOCATION_CACHE_TTL_MS) {
+            return null;
+        }
+        // Guard against stale/partial caches in local snapshots.
+        if (versionName === 'x' || versionName === 'y') {
+            const hasBerryFields = payload.locations.some(loc => loc?.name === 'kalos-berry-fields');
+            const hasFriendSafari = payload.locations.some(loc => loc?.name === 'friend-safari');
+            const hasReasonableCoverage = payload.locations.length >= 30;
+            if (!hasBerryFields || !hasFriendSafari || !hasReasonableCoverage) {
+                return null;
+            }
+        }
+        return payload.locations;
+    } catch (error) {
+        return null;
+    }
+}
+
+async function setCachedLocations(versionName, locations) {
+    try {
+        await locationCacheReady;
+        await localForage.setItem(getLocationCacheKey(versionName), {
+            savedAt: Date.now(),
+            locations
+        });
+    } catch (error) {
+        // Non-fatal cache write failure.
+    }
+}
 
 function formatEncounterConditionLabels(conditionValues, methodNameRaw) {
     if (!Array.isArray(conditionValues) || conditionValues.length === 0) {
@@ -88,6 +145,56 @@ function normalizePokeApiPath(rawPath) {
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchResourceWithRetry(path, { retries = RESOURCE_RETRY_LIMIT, retryDelayMs = RESOURCE_RETRY_DELAY_MS, fallback = null } = {}) {
+    let lastError = null;
+    for (let attempt = 0; attempt <= retries; attempt += 1) {
+        try {
+            return await P.resource(path);
+        } catch (error) {
+            lastError = error;
+            if (attempt < retries) {
+                await sleep(retryDelayMs * (attempt + 1));
+            }
+        }
+    }
+
+    if (typeof fallback === 'function') {
+        try {
+            return await fallback();
+        } catch (fallbackError) {
+            lastError = fallbackError;
+        }
+    }
+
+    if (PATH_DEBUG) {
+        console.warn('[PathDebug] resource fetch failed', { path, message: lastError?.message || String(lastError) });
+    }
+    return null;
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+    if (!Array.isArray(items) || items.length === 0) return [];
+    const safeLimit = Math.max(1, Math.min(limit || 1, items.length));
+    const results = new Array(items.length);
+    let cursor = 0;
+
+    async function worker() {
+        while (true) {
+            const currentIndex = cursor;
+            cursor += 1;
+            if (currentIndex >= items.length) return;
+            results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+        }
+    }
+
+    await Promise.all(Array.from({ length: safeLimit }, () => worker()));
+    return results;
+}
+
 const MAINLINE_VERSIONS = [
     'red', 'blue', 'yellow',
     'gold', 'silver', 'crystal',
@@ -136,68 +243,121 @@ export async function getVersions() {
  */
 export async function getLocationsForVersion(versionName) {
     if (resultCache.locations[versionName]) return resultCache.locations[versionName];
+    const cached = await getCachedLocations(versionName);
+    if (cached) {
+        logPathDebug(`getLocationsForVersion(${versionName}) using cached list`, { count: cached.length });
+        resultCache.locations[versionName] = cached;
+        return cached;
+    }
 
     try {
         const version = await P.getVersionByName(versionName);
         const versionGroup = await P.getVersionGroupByName(version.version_group.name);
         const groupVersionNames = versionGroup.versions.map(v => v.name);
 
-        const locationRefs = [];
-        for (const regionRef of versionGroup.regions) {
-            const region = await P.getRegionByName(regionRef.name);
-            locationRefs.push(...region.locations);
-        }
-
-        const locations = await Promise.all(
-            locationRefs.map(ref => P.getLocationByName(ref.name).catch(() => null))
+        const regions = await Promise.all(
+            versionGroup.regions.map(regionRef => P.getRegionByName(regionRef.name).catch(() => null))
         );
+        const locationRefs = regions
+            .filter(Boolean)
+            .flatMap(region => region.locations || []);
+        logPathDebug(`getLocationsForVersion(${versionName}) location refs`, {
+            total: locationRefs.length,
+            sample: locationRefs.slice(0, 10).map(ref => normalizePokeApiPath(ref.url))
+        });
+
+        const locations = await mapWithConcurrency(locationRefs, LOCATION_FETCH_CONCURRENCY, async ref => {
+            const path = normalizePokeApiPath(ref.url);
+            logPathDebug(`location pull`, { versionName, name: ref.name, path });
+            return fetchResourceWithRetry(path, {
+                fallback: () => P.getLocationByName(ref.name).catch(() => null)
+            });
+        });
 
         const areaRefs = locations
             .filter(loc => loc && loc.areas)
             .flatMap(loc => loc.areas.map(area => ({ ...area, locationName: loc.name })));
+        logPathDebug(`getLocationsForVersion(${versionName}) area refs`, {
+            total: areaRefs.length,
+            sample: areaRefs.slice(0, 12).map(ref => normalizePokeApiPath(ref.url))
+        });
 
-        // Fetch area details in chunks
-        const areaDetails = [];
-        const chunkSize = 20;
-        for (let i = 0; i < areaRefs.length; i += chunkSize) {
-            const chunk = areaRefs.slice(i, i + chunkSize);
-            const details = await Promise.all(
-                chunk.map(ref => P.getLocationAreaByName(ref.name).catch(() => null))
+        const areaDetails = await mapWithConcurrency(areaRefs, AREA_FETCH_CONCURRENCY, async ref => {
+            const path = normalizePokeApiPath(ref.url);
+            logPathDebug(`location-area pull`, { versionName, area: ref.name, locationName: ref.locationName, path });
+            return fetchResourceWithRetry(path);
+        });
+
+        const validLocationNames = new Set();
+        for (let i = 0; i < areaDetails.length; i += 1) {
+            const area = areaDetails[i];
+            const ref = areaRefs[i];
+            if (!area || !ref || !Array.isArray(area.pokemon_encounters)) continue;
+            const hasEncounterForGroup = area.pokemon_encounters.some(encounter =>
+                encounter.version_details.some(vd => groupVersionNames.includes(vd.version.name))
             );
-            areaDetails.push(...details);
+            if (hasEncounterForGroup) {
+                validLocationNames.add(ref.locationName);
+            }
         }
 
-        const validLocationNames = new Set(
-            areaDetails
-                .filter(area => {
-                    if (!area || !area.pokemon_encounters) return false;
-                    return area.pokemon_encounters.some(encounter =>
-                        encounter.version_details.some(vd => groupVersionNames.includes(vd.version.name))
-                    );
-                })
-                .map(area => {
-                    const ref = areaRefs.find(r => r.name === area.name);
-                    return ref ? ref.locationName : null;
-                })
-                .filter(name => name !== null)
+        const locationByName = new Map(
+            locations
+                .filter(Boolean)
+                .map(loc => [loc.name, loc])
         );
 
-        if (validLocationNames.size === 0) {
-            locations.forEach(loc => {
-                if (loc && (loc.areas.length > 0 || loc.name.includes('route') || loc.name.includes('cave'))) {
-                    validLocationNames.add(loc.name);
+        const finalResult = Array.from(validLocationNames)
+            .map(name => {
+                const loc = locationByName.get(name);
+                const englishName = loc?.names?.find?.(n => n?.language?.name === 'en')?.name;
+                return {
+                    name: name,
+                    displayName: englishName || name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                };
+            })
+            .sort((a, b) => a.displayName.localeCompare(b.displayName));
+        logPathDebug(`getLocationsForVersion(${versionName}) verified locations (before safety checks)`, {
+            count: finalResult.length,
+            names: finalResult.map(loc => loc.name)
+        });
+
+        // Safety net: some local snapshots can miss Friend Safari from derived sets even though
+        // area data exists. Verify it directly and include if it has XY encounters.
+        if ((versionName === 'x' || versionName === 'y') && !finalResult.some(loc => loc.name === 'friend-safari')) {
+            const friendSafariLocation = locations.find(loc => loc?.name === 'friend-safari');
+            if (friendSafariLocation?.areas?.length) {
+                const friendAreas = await mapWithConcurrency(friendSafariLocation.areas, AREA_FETCH_CONCURRENCY, areaRef =>
+                    fetchResourceWithRetry(normalizePokeApiPath(areaRef.url))
+                );
+                const hasFriendSafariEncounters = friendAreas.some(area =>
+                    area?.pokemon_encounters?.some(encounter =>
+                        encounter.version_details?.some(vd => groupVersionNames.includes(vd.version.name))
+                    )
+                );
+                if (hasFriendSafariEncounters) {
+                    finalResult.push({
+                        name: 'friend-safari',
+                        displayName: 'Friend Safari'
+                    });
+                    finalResult.sort((a, b) => a.displayName.localeCompare(b.displayName));
                 }
-            });
+            }
         }
 
-        const finalResult = Array.from(validLocationNames)
-            .map(name => ({
-                name: name,
-                displayName: name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-            }))
-            .sort((a, b) => a.displayName.localeCompare(b.displayName));
+        if (versionName === 'x' || versionName === 'y') {
+            const route7Locations = finalResult.filter(loc =>
+                loc.name.includes('route-7') || loc.displayName.includes('Route 7') || loc.displayName.includes('Berry')
+            );
+            logEncounterDebug(`${versionName} location candidates near route-7/berry`, route7Locations.map(l => l.name));
+        }
+        logPathDebug(`getLocationsForVersion(${versionName}) final verified locations`, {
+            count: finalResult.length,
+            names: finalResult.map(loc => loc.name)
+        });
 
         resultCache.locations[versionName] = finalResult;
+        await setCachedLocations(versionName, finalResult);
         return finalResult;
     } catch (error) {
         console.error(`Error fetching locations for version ${versionName}:`, error);
@@ -267,11 +427,8 @@ export async function getEncounters(versionName, locationName, options = {}) {
 
     try {
         const location = await P.getLocationByName(locationName);
-        const areas = await Promise.all(
-            location.areas.map(areaRef =>
-                P.resource(normalizePokeApiPath(areaRef.url))
-                    .catch(() => P.getLocationAreaByName(areaRef.name).catch(() => null))
-            )
+        const areas = await mapWithConcurrency(location.areas, AREA_FETCH_CONCURRENCY, areaRef =>
+            fetchResourceWithRetry(normalizePokeApiPath(areaRef.url))
         );
 
         const encountersByArea = {};
@@ -306,10 +463,35 @@ export async function getEncounters(versionName, locationName, options = {}) {
                         const methodNameFormatted = methodNameRaw.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
                         if (methodNameRaw === 'walk') {
-                            if (conditionValues.includes('radar-on') ||
-                                conditionValues.includes('swarm-yes') ||
-                                (conditionValues.some(c => c.startsWith('radio-')) && !conditionValues.includes('radio-off')) ||
-                                (conditionValues.some(c => c.startsWith('slot2-')) && !conditionValues.includes('slot2-none'))) {
+                            // Only filter conditional walk encounters when a UI option is not selected.
+                            // This prevents unrelated games (e.g., XY) from losing valid area data.
+                            const hasRadar = conditionValues.includes('radar-on');
+                            const hasSwarm = conditionValues.includes('swarm-yes');
+                            const slot2Cond = conditionValues.find(c => c.startsWith('slot2-') && c !== 'slot2-none');
+                            const radioCond = conditionValues.find(c => c.startsWith('radio-') && c !== 'radio-off');
+
+                            if (hasRadar && !options.radar) {
+                                if (versionName === 'x' || versionName === 'y') {
+                                    logEncounterDebug(`${versionName} filtered radar encounter`, { locationName, area: area.name, pokemon: encounter.pokemon.name, conditionValues });
+                                }
+                                continue;
+                            }
+                            if (hasSwarm && !options.swarm) {
+                                if (versionName === 'x' || versionName === 'y') {
+                                    logEncounterDebug(`${versionName} filtered swarm encounter`, { locationName, area: area.name, pokemon: encounter.pokemon.name, conditionValues });
+                                }
+                                continue;
+                            }
+                            if (slot2Cond && options.slot2 !== slot2Cond) {
+                                if (versionName === 'x' || versionName === 'y') {
+                                    logEncounterDebug(`${versionName} filtered slot2 encounter`, { locationName, area: area.name, pokemon: encounter.pokemon.name, conditionValues, selectedSlot2: options.slot2 });
+                                }
+                                continue;
+                            }
+                            if (radioCond && options.radio !== radioCond) {
+                                if (versionName === 'x' || versionName === 'y') {
+                                    logEncounterDebug(`${versionName} filtered radio encounter`, { locationName, area: area.name, pokemon: encounter.pokemon.name, conditionValues, selectedRadio: options.radio });
+                                }
                                 continue;
                             }
 
@@ -397,6 +579,17 @@ export async function getEncounters(versionName, locationName, options = {}) {
         }
 
         resultCache.encounters[cacheKey] = finalGrouped;
+        const areaCount = Object.keys(finalGrouped).length;
+        const methodCount = Object.values(finalGrouped).reduce((sum, methods) => sum + Object.keys(methods).length, 0);
+        const encounterCount = Object.values(finalGrouped).reduce(
+            (sum, methods) => sum + Object.values(methods).reduce((inner, rows) => inner + rows.length, 0),
+            0
+        );
+        logPathDebug('encounters summary', { versionName, locationName, areaCount, methodCount, encounterCount });
+
+        if (versionName === 'x' || versionName === 'y') {
+            logEncounterDebug(`${versionName} built methods for ${locationName}`, Object.keys(finalGrouped));
+        }
         return finalGrouped;
     } catch (error) {
         console.error(`Error fetching encounters for ${locationName} in ${versionName}:`, error);

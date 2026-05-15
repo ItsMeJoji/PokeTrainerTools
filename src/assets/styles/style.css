@@ -214,6 +214,30 @@ button:focus-visible {
   max-height: 24rem;
 }
 
+/* Force-hide navbar dropdowns while Ribbon modal is open. This avoids any
+   stacking-context edge cases where nav menus can render above the modal. */
+body.ribbon-modal-open #navbar .dropdown-menu,
+body.ribbon-modal-open #navbar .dropdown-menu.show {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-10px) !important;
+  max-height: 0 !important;
+}
+
+body.ribbon-modal-open #navbar .dropdown button.active {
+  background-color: transparent !important;
+}
+
+body.ribbon-modal-open #nav-content {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body.ribbon-modal-open #navbar {
+  visibility: hidden !important;
+}
+
 .dropdown-item {
   padding: 12px 16px;
   text-decoration: none;
@@ -1163,7 +1187,7 @@ details summary::-webkit-details-marker {
 
 @keyframes dots {
   to {
-    width: 1.25em;
+    width: 1em;
   }
 }
 

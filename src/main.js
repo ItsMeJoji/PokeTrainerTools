@@ -457,7 +457,7 @@ const renderPage = () => {
   })();
 
   app.innerHTML = `
-    <div class="${isRibbonTrackerPage ? 'w-full px-0 sm:px-4 lg:px-6 py-4 sm:py-8 min-h-[80vh]' : 'container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl min-h-[80vh]'}">
+    <div class="anim-fade-in ${isRibbonTrackerPage ? 'w-full px-0 sm:px-4 lg:px-6 py-4 sm:py-8 min-h-[80vh]' : 'container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-5xl min-h-[80vh]'}">
       ${content}
     </div>
     
