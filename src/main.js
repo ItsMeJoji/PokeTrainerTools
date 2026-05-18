@@ -29,7 +29,7 @@ getVersions();
 initTheme();
 
 function navigateTo(pathname) {
-  const normalizedPath = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  const normalizedPath = pathname === '/' ? '/' : `${pathname.replace(/\/+$/, '')}/`;
   if (window.location.pathname !== normalizedPath) {
     window.history.pushState({}, '', normalizedPath);
   }

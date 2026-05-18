@@ -102,7 +102,7 @@ function toRouteHtml(indexHtml, route) {
         heading: 'PokeTrainer Tools',
     };
 
-    const canonical = `https://poketrainer.tools${route}`;
+    const canonical = `https://poketrainer.tools${route}/`;
     const escapedDescription = meta.description.replace(/"/g, '&quot;');
     const fallbackContent = `
     <main style="max-width: 960px; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;">
