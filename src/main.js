@@ -14,6 +14,7 @@ import { initShinyBingo } from './features/shiny-bingo.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
+import profileImage from './assets/images/profile-image.png'
 import P from './utils/pokeapi.js'
 import { getVersions } from './utils/pokeapi.js'
 import { initRNGPage } from './features/rng-version.js'
@@ -402,7 +403,7 @@ const renderPage = () => {
           <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
               <div class="col-span-1 flex justify-center md:justify-start">
-                <img src="/src/assets/images/profile-image.png" alt="ItsMeJoji" class="w-32 h-32 md:w-full md:h-auto aspect-square object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-700">
+                <img src="${profileImage}" alt="ItsMeJoji" class="w-32 h-32 md:w-full md:h-auto aspect-square object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-700">
               </div>
               <div class="col-span-1 md:col-span-3 space-y-4 text-gray-600 dark:text-gray-400">
                 <p class="text-lg">
