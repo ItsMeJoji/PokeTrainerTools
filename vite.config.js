@@ -149,6 +149,39 @@ function staticRoutePages(routes) {
     };
 }
 
+function enforceTrailingSlashInSitemap() {
+    let outDir = 'dist';
+
+    return {
+        name: 'enforce-trailing-slash-in-sitemap',
+        apply: 'build',
+        configResolved(config) {
+            outDir = config.build.outDir;
+        },
+        async closeBundle() {
+            const sitemapPath = path.join(outDir, 'sitemap.xml');
+            let xml;
+
+            try {
+                xml = await readFile(sitemapPath, 'utf-8');
+            } catch {
+                return;
+            }
+
+            const patched = xml.replace(/<loc>(https:\/\/poketrainer\.tools(?:\/[^<]*)?)<\/loc>/g, (match, url) => {
+                if (url === 'https://poketrainer.tools/' || url.endsWith('/')) {
+                    return `<loc>${url}</loc>`;
+                }
+                return `<loc>${url}/</loc>`;
+            });
+
+            if (patched !== xml) {
+                await writeFile(sitemapPath, patched, 'utf-8');
+            }
+        },
+    };
+}
+
 export default defineConfig({
     plugins: [
         tailwindcss(),
@@ -158,6 +191,7 @@ export default defineConfig({
             dynamicRoutes: sitemapRoutes,
             exclude: ['/404', '/404/'],
         }),
+        enforceTrailingSlashInSitemap(),
     ],
     base: '/',
 })
