@@ -4,6 +4,9 @@ import Sitemap from 'vite-plugin-sitemap';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+const siteUrl = 'https://poketrainer.tools';
+const seoImageUrl = `${siteUrl}/poketrainer-tools-logo.png`;
+
 const spaRoutes = [
     '/pokemon-lookup',
     '/encounter',
@@ -17,6 +20,7 @@ const spaRoutes = [
     '/info/sos-hunting',
     '/info/mmo-guide',
     '/info/ribbon-master-guide',
+    '/about',
     '/contact',
     '/privacy',
 ];
@@ -83,6 +87,11 @@ const routeSeo = {
         description: 'A complete Ribbon Master progression guide across generations.',
         heading: 'Ribbon Master Guide',
     },
+    '/about': {
+        title: 'About Us | PokeTrainer Tools',
+        description: 'Learn about PokeTrainer Tools and the credits behind the site, logo, data, and Pokemon resources.',
+        heading: 'About Us',
+    },
     '/contact': {
         title: 'Contact | PokeTrainer Tools',
         description: 'Contact the creator of PokeTrainer Tools with feedback and corrections.',
@@ -95,6 +104,38 @@ const routeSeo = {
     },
 };
 
+function escapeAttribute(value) {
+    return value.replace(/"/g, '&quot;');
+}
+
+function removeExistingSeoTags(html) {
+    return html
+        .replace(/\n?\s*<meta\s+name="description"\s+content="[^"]*"\s*\/?>/gi, '')
+        .replace(/\n?\s*<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/gi, '')
+        .replace(/\n?\s*<meta\s+property="og:[^"]+"\s+content="[^"]*"\s*\/?>/gi, '')
+        .replace(/\n?\s*<meta\s+name="twitter:[^"]+"\s+content="[^"]*"\s*\/?>/gi, '');
+}
+
+function createSeoTags(meta, canonical) {
+    const title = escapeAttribute(meta.title);
+    const description = escapeAttribute(meta.description);
+
+    return [
+        `  <meta name="description" content="${description}" />`,
+        `  <link rel="canonical" href="${canonical}" />`,
+        '  <meta property="og:type" content="website" />',
+        `  <meta property="og:title" content="${title}" />`,
+        `  <meta property="og:description" content="${description}" />`,
+        `  <meta property="og:url" content="${canonical}" />`,
+        `  <meta property="og:image" content="${seoImageUrl}" />`,
+        '  <meta property="og:image:alt" content="PokéTrainer Tools logo" />',
+        '  <meta name="twitter:card" content="summary_large_image" />',
+        `  <meta name="twitter:title" content="${title}" />`,
+        `  <meta name="twitter:description" content="${description}" />`,
+        `  <meta name="twitter:image" content="${seoImageUrl}" />`,
+    ].join('\n');
+}
+
 function toRouteHtml(indexHtml, route) {
     const meta = routeSeo[route] || {
         title: 'PokeTrainer Tools',
@@ -102,8 +143,7 @@ function toRouteHtml(indexHtml, route) {
         heading: 'PokeTrainer Tools',
     };
 
-    const canonical = `https://poketrainer.tools${route}/`;
-    const escapedDescription = meta.description.replace(/"/g, '&quot;');
+    const canonical = `${siteUrl}${route}/`;
     const fallbackContent = `
     <main style="max-width: 960px; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;">
       <h1>${meta.heading}</h1>
@@ -112,12 +152,12 @@ function toRouteHtml(indexHtml, route) {
     </main>
   `;
 
-    let html = indexHtml.replace(/<title>[\s\S]*?<\/title>/i, `<title>${meta.title}</title>`);
+    let html = removeExistingSeoTags(indexHtml).replace(/<title>[\s\S]*?<\/title>/i, `<title>${meta.title}</title>`);
 
     if (html.includes('</head>')) {
         html = html.replace(
             '</head>',
-            `  <meta name="description" content="${escapedDescription}">\n  <link rel="canonical" href="${canonical}">\n</head>`
+            `${createSeoTags(meta, canonical)}\n</head>`
         );
     }
 
@@ -187,7 +227,7 @@ export default defineConfig({
         tailwindcss(),
         staticRoutePages(spaRoutes),
         Sitemap({
-            hostname: 'https://poketrainer.tools',
+            hostname: siteUrl,
             dynamicRoutes: sitemapRoutes,
             exclude: ['/404', '/404/'],
         }),

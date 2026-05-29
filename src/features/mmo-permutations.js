@@ -54,14 +54,14 @@ export function initMmoPermutations(container) {
         <details class="group mb-6 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
           <summary class="flex justify-between items-center font-bold p-4 cursor-pointer text-gray-800 dark:text-gray-200 list-none">
             <span class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <svg class="w-5 h-5 text-[#facc15]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               How to Read the Permutations
             </span>
             <svg class="w-5 h-5 opacity-70 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </summary>
           <div class="p-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400 space-y-4 text-left">
             <div class="flex items-start gap-3">
-              <span class="mt-0.5 px-2 py-0.5 rounded font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shrink-0">C1, C2...</span>
+              <span class="mt-0.5 px-2 py-0.5 rounded font-bold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 shrink-0">C1, C2...</span>
               <p><strong>Catch Pokémon one-by-one.</strong> E.g., <span class="font-bold text-gray-800 dark:text-gray-200">C2</span> means you should catch 2 Pokémon individually, without triggering a multi-battle.</p>
             </div>
             <div class="flex items-start gap-3">
@@ -74,7 +74,7 @@ export function initMmoPermutations(container) {
             </div>
           </div>
           <div class="px-4 py-3 bg-gray-100/50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 flex justify-center">
-            <a href="/info/mmo-guide" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+            <a href="/info/mmo-guide" class="text-xs font-bold brand-link hover:underline flex items-center gap-1">
               Learn more about Massive Mass Outbreak Mechanics
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
@@ -105,10 +105,10 @@ export function initMmoPermutations(container) {
           <div class="w-full sm:w-auto">
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-left sm:text-center">Wave</label>
             <div class="flex items-center bg-gray-100 dark:bg-gray-900 rounded-lg p-1 w-full sm:w-fit">
-              <button class="wave-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentWave === 1 ? 'bg-white dark:bg-gray-700 shadow text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-wave="1">
+              <button class="wave-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentWave === 1 ? 'bg-white dark:bg-gray-700 shadow text-[#ef4444] dark:text-red-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-wave="1">
                 Wave 1
               </button>
-              <button class="wave-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentWave === 2 ? 'bg-white dark:bg-gray-700 shadow text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-wave="2">
+              <button class="wave-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentWave === 2 ? 'bg-white dark:bg-gray-700 shadow text-[#ef4444] dark:text-red-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-wave="2">
                 Wave 2
               </button>
             </div>
@@ -119,7 +119,7 @@ export function initMmoPermutations(container) {
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-left sm:text-center">Total Spawns</label>
             <div class="flex items-center bg-gray-100 dark:bg-gray-900 rounded-lg p-1 w-full sm:w-fit">
               ${(currentWave === 1 ? [8, 9, 10] : [6, 7]).map(s => `
-                <button class="spawn-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentSpawns === s ? 'bg-white dark:bg-gray-700 shadow text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-spawns="${s}">
+                <button class="spawn-toggle flex-1 sm:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all ${currentSpawns === s ? 'bg-white dark:bg-gray-700 shadow text-[#ef4444] dark:text-red-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}" data-spawns="${s}">
                   ${s}
                 </button>
               `).join('')}
@@ -139,10 +139,10 @@ export function initMmoPermutations(container) {
       <div class="mb-6">
         <div class="flex justify-between text-sm font-medium mb-2">
           <span class="text-gray-600 dark:text-gray-400">Completion</span>
-          <span id="mmo-completion-text" class="text-blue-600 dark:text-blue-400">${completedSet.size} / ${perms.length} (${Math.round((completedSet.size / perms.length) * 100)}%)</span>
+          <span id="mmo-completion-text" class="text-[#ef4444] dark:text-red-300">${completedSet.size} / ${perms.length} (${Math.round((completedSet.size / perms.length) * 100)}%)</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-          <div id="mmo-completion-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: ${Math.round((completedSet.size / perms.length) * 100)}%"></div>
+          <div id="mmo-completion-bar" class="bg-[#ef4444] h-2.5 rounded-full transition-all duration-500" style="width: ${Math.round((completedSet.size / perms.length) * 100)}%"></div>
         </div>
       </div>
 
@@ -167,7 +167,7 @@ export function initMmoPermutations(container) {
       if (cCount > 0) groupedPerm.push(`C${cCount}`);
 
       return `
-            <button class="perm-row flex flex-col items-start p-3 rounded-xl border-2 transition-all duration-200 ${isCompleted ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800 opacity-60' : 'bg-gray-50 border-gray-200 hover:border-blue-300 dark:bg-gray-900 dark:border-gray-700 dark:hover:border-blue-500 shadow-sm hover:shadow'}" data-perm="${permString}">
+            <button class="perm-row flex flex-col items-start p-3 rounded-xl border-2 transition-all duration-200 ${isCompleted ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800 opacity-60' : 'bg-gray-50 border-gray-200 hover:border-yellow-300 dark:bg-gray-900 dark:border-gray-700 dark:hover:border-yellow-500 shadow-sm hover:shadow'}" data-perm="${permString}">
               <div class="flex items-center justify-between w-full mb-2">
                 <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Path #${index + 1}</span>
                 <div class="check-container">
@@ -177,7 +177,7 @@ export function initMmoPermutations(container) {
               <div class="flex flex-wrap gap-1">
                 ${groupedPerm.map(action => {
         let colorClass = 'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200 border border-gray-300 dark:border-gray-500';
-        if (action.startsWith('C')) colorClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800';
+        if (action.startsWith('C')) colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800';
         if (action === 'KO2') colorClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800';
         if (action === 'KO3') colorClass = 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300 border border-orange-200 dark:border-orange-800';
         if (action === 'KO4') colorClass = 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border border-red-200 dark:border-red-800';
@@ -246,7 +246,7 @@ export function initMmoPermutations(container) {
 
         // UI update for row
         const rowClassesCompleted = ['bg-green-50', 'border-green-200', 'dark:bg-green-900/20', 'dark:border-green-800', 'opacity-60'];
-        const rowClassesIncomplete = ['bg-gray-50', 'border-gray-200', 'hover:border-blue-300', 'dark:bg-gray-900', 'dark:border-gray-700', 'dark:hover:border-blue-500', 'shadow-sm', 'hover:shadow'];
+        const rowClassesIncomplete = ['bg-gray-50', 'border-gray-200', 'hover:border-yellow-300', 'dark:bg-gray-900', 'dark:border-gray-700', 'dark:hover:border-yellow-500', 'shadow-sm', 'hover:shadow'];
 
         if (isNowCompleted) {
           row.classList.remove(...rowClassesIncomplete);

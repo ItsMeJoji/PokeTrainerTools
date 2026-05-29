@@ -159,7 +159,7 @@ export async function initRibbonTracker(appContainer) {
       <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
         <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
           <div class="flex items-center space-x-3">
-            <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+            <span class="w-1.5 h-6 brand-marker-yellow rounded-full"></span>
             <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
           </div>
           <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +168,7 @@ export async function initRibbonTracker(appContainer) {
         </summary>
         <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
           <div class="mb-6">
-            <a href="/info/ribbon-master-guide" class="inline-flex items-center text-sm font-bold text-indigo-500 hover:text-indigo-600 transition-colors bg-indigo-50 dark:bg-indigo-900/20 px-6 py-2 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+            <a href="/info/ribbon-master-guide" class="inline-flex items-center text-sm font-bold brand-link transition-colors brand-panel-red px-6 py-2 rounded-full shadow-sm">
               <i class="fas fa-question-circle mr-2"></i> Ribbon Master Guide
             </a>
           </div>
@@ -179,14 +179,14 @@ export async function initRibbonTracker(appContainer) {
       <!-- Pokemon Entry Creator -->
       <div id="entry-creator" class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
         <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-          <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+          <span class="w-1.5 h-6 brand-marker-red rounded-full"></span>
           Start a New Journey
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">What's your Pokemon's name?</label>
             <div class="flex gap-2">
-              <input type="text" id="pokemon-nickname" placeholder="e.g. My Shiny Pikachu" class="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+              <input type="text" id="pokemon-nickname" placeholder="e.g. My Shiny Pikachu" class="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
               <label class="flex items-center gap-2 cursor-pointer bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 group">
                 <input type="checkbox" id="is-shiny-checkbox" class="hidden peer">
                 <i class="fas fa-star text-gray-300 peer-checked:text-yellow-400 group-hover:scale-110 transition-transform"></i>
@@ -199,13 +199,13 @@ export async function initRibbonTracker(appContainer) {
           </div>
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Origin Game</label>
-            <select id="origin-game" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <select id="origin-game" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="" disabled selected>Select a Game...</option>
               ${ORIGIN_GAMES.map(game => `<option value="${game.id}">${game.name}</option>`).join('')}
             </select>
           </div>
           <div class="flex items-end">
-            <button id="add-entry" class="w-full px-6 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-bold rounded-lg shadow-lg transition-transform active:scale-95">
+            <button id="add-entry" class="w-full px-6 py-2.5 bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white font-bold rounded-lg shadow-lg transition-transform active:scale-95">
               Begin Journey
             </button>
           </div>
@@ -274,11 +274,11 @@ export async function initRibbonTracker(appContainer) {
     
     switch(status) {
       case 'syncing':
-        icon.classList.add('fa-sync-alt', 'fa-spin', 'text-blue-400');
+        icon.classList.add('fa-sync-alt', 'fa-spin', 'text-yellow-400');
         tooltip.innerText = 'Syncing with Google Drive...';
         break;
       case 'synced':
-        icon.classList.add('fa-cloud', 'text-blue-500');
+        icon.classList.add('fa-cloud', 'text-[#ef4444]');
         tooltip.innerText = `Last synced: ${new Date().toLocaleTimeString()}`;
         break;
       case 'error':
@@ -367,9 +367,9 @@ export async function initRibbonTracker(appContainer) {
     }
 
     entriesList.innerHTML = entries.map((entry, idx) => `
-      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-blue-300 transition-all cursor-pointer group" onclick="window.openRibbonDetail(${idx})">
+      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-yellow-300 transition-all cursor-pointer group" onclick="window.openRibbonDetail(${idx})">
         <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900' : 'border-blue-100 dark:border-blue-900'} relative">
+          <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900' : 'border-red-100 dark:border-red-900'} relative">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain">
             ${entry.isShiny ? '<i class="fas fa-star text-[10px] text-yellow-400 absolute top-0 right-0 animate-pulse"></i>' : ''}
           </div>
@@ -424,7 +424,7 @@ export async function initRibbonTracker(appContainer) {
                       <span class="hidden sm:inline">MASTER</span>
                     </div>
                   ` : ''}
-                  <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}">${collectedCount} / ${eligibleCount}</div>
+                  <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
                 </div>
                 <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
               `;
@@ -467,7 +467,7 @@ export async function initRibbonTracker(appContainer) {
         <div 
           id="detail-species-sprite-wrap"
           onclick="window.openSpeciesEdit(${idx})"
-          class="group relative w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900/50' : 'border-gray-100 dark:border-gray-700'} shadow-sm shrink-0 cursor-pointer overflow-hidden transition-all hover:border-indigo-400 dark:hover:border-indigo-500"
+          class="group relative w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900/50' : 'border-gray-100 dark:border-gray-700'} shadow-sm shrink-0 cursor-pointer overflow-hidden transition-all hover:border-yellow-400 dark:hover:border-yellow-500"
         >
           <img id="detail-species-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain transition-transform group-hover:scale-110">
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -484,7 +484,7 @@ export async function initRibbonTracker(appContainer) {
                 <input type="text" value="${entry.nickname}" id="nickname-edit-input"
                   onblur="window.saveNickname(${idx})"
                   onkeyup="if(event.key === 'Enter') this.blur()"
-                  class="bg-black/5 dark:bg-white/5 border border-transparent focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 font-black text-xl sm:text-2xl text-gray-800 dark:text-white px-3 py-1.5 rounded-xl w-full hover:bg-black/5 dark:hover:bg-white/5 cursor-text transition-all truncate"
+                  class="bg-black/5 dark:bg-white/5 border border-transparent focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 font-black text-xl sm:text-2xl text-gray-800 dark:text-white px-3 py-1.5 rounded-xl w-full hover:bg-black/5 dark:hover:bg-white/5 cursor-text transition-all truncate"
                 >
               </div>
             </div>
@@ -497,7 +497,7 @@ export async function initRibbonTracker(appContainer) {
             <div class="relative group/game">
               <select 
                 onchange="window.updateEntryOriginGame(${idx}, this.value)"
-                class="appearance-none bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[10px] text-gray-700 dark:text-gray-200 uppercase tracking-[0.2em] font-black py-0.5 px-2 pr-6 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-all focus:ring-2 focus:ring-blue-500/30"
+                class="appearance-none bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[10px] text-gray-700 dark:text-gray-200 uppercase tracking-[0.2em] font-black py-0.5 px-2 pr-6 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-all focus:ring-2 focus:ring-red-500/30"
               >
                 ${ORIGIN_GAMES.map(g => `<option value="${g.id}" ${g.id === entry.originGameId ? 'selected' : ''}>${g.name}</option>`).join('')}
               </select>
@@ -675,7 +675,7 @@ export async function initRibbonTracker(appContainer) {
           
           ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
         return `
-            <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-indigo-200 dark:border-indigo-800'}">
+            <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-yellow-200 dark:border-yellow-800'}">
               ${isRecurring ? '' : `<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 break-words pr-1">${gameCategory}</h4>`}
               <div class="grid grid-cols-[repeat(auto-fit,minmax(2.25rem,2.25rem))] sm:grid-cols-[repeat(auto-fit,minmax(2.5rem,2.5rem))] justify-start gap-2 sm:gap-3 pb-2 min-w-0 max-w-full overflow-x-hidden">
                 ${eligibleRibbons.map(ribbon => {
@@ -693,11 +693,11 @@ export async function initRibbonTracker(appContainer) {
                       ontouchstart="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}', true)"
                       onmouseenter="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}')"
                       onmouseleave="window.hideRibbonTooltip()"
-                      class="relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-indigo-400 bg-indigo-50 dark:border-indigo-500/50 dark:bg-indigo-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'}"
+                      class="relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'}"
                     >
                       ${ribbonImageUrl
               ? `<img src="${ribbonImageUrl}" alt="${ribbon.name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain ${isEarned ? '' : 'grayscale'}">`
-              : `<i class="fas ${iconClass} ${isEarned ? 'text-indigo-500 dark:text-indigo-400 drop-shadow-sm' : 'text-gray-400 dark:text-gray-500'}"></i>`}
+              : `<i class="fas ${iconClass} ${isEarned ? 'text-[#ef4444] dark:text-red-300 drop-shadow-sm' : 'text-gray-400 dark:text-gray-500'}"></i>`}
                     </div>
                   `;
         }).join('')}
@@ -857,7 +857,7 @@ export async function initRibbonTracker(appContainer) {
           </button>
         </div>
         <div class="flex items-center gap-3 mt-2">
-          <button id="confirm-species-btn" class="!px-3 !py-1 !text-[10px] !font-black !rounded-full bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-black dark:text-white transition-all shadow-sm active:scale-95 uppercase tracking-wider">CONFIRM</button>
+          <button id="confirm-species-btn" class="!px-3 !py-1 !text-[10px] !font-black !rounded-full bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white transition-all shadow-sm active:scale-95 uppercase tracking-wider">CONFIRM</button>
           <button id="cancel-species-btn" class="!px-3 !py-1 !text-[10px] !font-black !rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all active:scale-95 uppercase tracking-wider">CANCEL</button>
         </div>
       </div>

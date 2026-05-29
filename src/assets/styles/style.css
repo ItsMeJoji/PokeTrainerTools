@@ -11,6 +11,15 @@ body {
 }
 
 :root {
+  --brand-red: #ef4444;
+  --brand-red-strong: #dc2626;
+  --brand-red-soft: #fef2f2;
+  --brand-red-border: #fecaca;
+  --brand-yellow: #facc15;
+  --brand-yellow-strong: #f59e0b;
+  --brand-yellow-soft: #fffbeb;
+  --brand-yellow-border: #fde68a;
+
   font-family: "Leelawadee UI", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -83,6 +92,99 @@ body {
 h1 {
   font-size: 2.5rem;
   line-height: 1.1;
+}
+
+.site-name-outline {
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+:root.dark .site-name-outline {
+  text-shadow: none;
+}
+
+.brand-marker-red {
+  background-color: var(--brand-red);
+}
+
+.brand-marker-yellow {
+  background-color: var(--brand-yellow);
+}
+
+.brand-link {
+  color: var(--brand-red-strong);
+}
+
+.brand-link:hover {
+  color: var(--brand-red);
+}
+
+:root.dark .brand-link {
+  color: #fca5a5;
+}
+
+:root.dark .brand-link:hover {
+  color: #fecaca;
+}
+
+.brand-panel-red,
+.brand-panel-yellow {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 1rem;
+}
+
+.brand-panel-red {
+  background-color: var(--brand-red-soft);
+  border-color: var(--brand-red-border);
+}
+
+.brand-panel-yellow {
+  background-color: var(--brand-yellow-soft);
+  border-color: var(--brand-yellow-border);
+}
+
+:root.dark .brand-panel-red {
+  background-color: rgb(127 29 29 / 0.2);
+  border-color: rgb(153 27 27 / 0.7);
+}
+
+:root.dark .brand-panel-yellow {
+  background-color: rgb(113 63 18 / 0.24);
+  border-color: rgb(146 64 14 / 0.7);
+}
+
+.brand-text-red {
+  color: #991b1b;
+}
+
+.brand-text-yellow {
+  color: #92400e;
+}
+
+:root.dark .brand-text-red {
+  color: #fecaca;
+}
+
+:root.dark .brand-text-yellow {
+  color: #fde68a;
+}
+
+.brand-step-badge {
+  background-color: var(--brand-yellow-soft);
+  color: #b45309;
+}
+
+:root.dark .brand-step-badge {
+  background-color: rgb(113 63 18 / 0.45);
+  color: #fde68a;
+}
+
+.brand-timeline {
+  border-color: var(--brand-yellow-border);
+}
+
+:root.dark .brand-timeline {
+  border-color: rgb(146 64 14 / 0.7);
 }
 
 @media (min-width: 640px) {
@@ -1077,7 +1179,7 @@ details summary::-webkit-details-marker {
 
 /* Specific Tool Gradients */
 .bg-encounter {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--brand-yellow) 0%, var(--brand-yellow-strong) 100%);
 }
 
 .bg-catch {
@@ -1089,7 +1191,15 @@ details summary::-webkit-details-marker {
 }
 
 .bg-lookup {
-  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+  background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-strong) 100%);
+}
+
+.bg-ribbon {
+  background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-yellow) 100%);
+}
+
+.bg-bingo {
+  background: linear-gradient(135deg, var(--brand-yellow) 0%, var(--brand-red) 100%);
 }
 
 /* ── Magnifying Glass: Z-motion over Pokemon ─────────────────────── */

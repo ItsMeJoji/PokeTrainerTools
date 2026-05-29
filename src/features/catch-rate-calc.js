@@ -135,7 +135,7 @@ export async function initCatchRateCalc(appContainer) {
           <button id="recalculate-catch" class="hidden text-black px-8 py-3 bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95">
             Recalculate
           </button>
-          <button id="reset-catch" class="hidden text-black px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95">
+          <button id="reset-catch" class="hidden text-black px-8 py-3 bg-[#ef4444] hover:bg-[#dc2626] dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95">
             Reset
           </button>
       </div>
@@ -1012,14 +1012,14 @@ export async function initCatchRateCalc(appContainer) {
     // Populate UI breakdown
     let apricornInfo = '';
     if (heavyBall) {
-      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-blue-600 dark:text-blue-400">${apricornBonus > 0 ? '+' : ''}${apricornBonus} (Added to Base Catch Rate)</span>`;
+      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-[#facc15] dark:text-yellow-300">${apricornBonus > 0 ? '+' : ''}${apricornBonus} (Added to Base Catch Rate)</span>`;
     } else if (apricornBonus !== 1) {
-      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-blue-600 dark:text-blue-400">x${apricornBonus} (Multiplied to Base Catch Rate)</span>`;
+      apricornInfo = `<span class="font-bold">Apricorn Modifier:</span> <span class="text-right text-[#facc15] dark:text-yellow-300">x${apricornBonus} (Multiplied to Base Catch Rate)</span>`;
     }
 
     let critInfo = '';
     if (gen >= 5 && result.critCapture !== undefined) {
-      critInfo = `<p id="crit-capture" class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-2 mb-2">Critical Capture Chance: ${parseFloat(result.critCapture * 100).toFixed(2)}%</p>`;
+      critInfo = `<p id="crit-capture" class="text-sm font-bold text-[#facc15] dark:text-yellow-300 mt-2 mb-2">Critical Capture Chance: ${parseFloat(result.critCapture * 100).toFixed(2)}%</p>`;
     }
 
     breakdownContent.innerHTML = `
@@ -1037,7 +1037,7 @@ export async function initCatchRateCalc(appContainer) {
       </div>
       ${gen >= 5 && result.critCapture !== undefined ? `
       <div class="grid grid-cols-2 gap-2 pt-1 border-b border-gray-100 dark:border-gray-600 pb-2 mb-2">
-        <span class="font-bold text-blue-600">Crit Capture Chance:</span> <span class="text-right text-blue-600">${parseFloat(result.critCapture * 100).toFixed(4)}%</span>
+        <span class="font-bold text-[#facc15]">Crit Capture Chance:</span> <span class="text-right text-[#facc15]">${parseFloat(result.critCapture * 100).toFixed(4)}%</span>
       </div>
       ` : ''}
       <div class="grid grid-cols-2 gap-2 pt-1">

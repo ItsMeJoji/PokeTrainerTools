@@ -11,14 +11,14 @@ export function initShinyHuntingGuide(container) {
         <!-- Section: The Beginning -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
             The Beginning
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
             Shiny Pokémon were first introduced in <span class="font-bold text-gray-800 dark:text-gray-200">Generation II</span> (Pokémon Gold, Silver, and Crystal). These rare variants feature a different color palette and are accompanied by a distinctive flash of stars and a "berdalading" sound when they enter battle.
           </p>
-          <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl border border-blue-100 dark:border-blue-800">
-            <p class="text-blue-800 dark:text-blue-200 italic">
+          <div class="mt-6 p-4 brand-panel-red">
+            <p class="brand-text-red italic">
               The most famous example is the <span class="font-bold">Red Gyarados</span> at the Lake of Rage, which served as many players' first introduction to this rare phenomenon.
             </p>
           </div>
@@ -27,18 +27,18 @@ export function initShinyHuntingGuide(container) {
         <!-- Section: The Odds -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-red-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
             Understanding the Odds
           </h2>
           <div class="grid md:grid-cols-2 gap-8">
             <div class="space-y-4">
               <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">Classic Odds (Gen II - V)</h3>
-              <div class="text-4xl font-black text-red-500">1 in 8,192</div>
+              <div class="text-4xl font-black text-[#ef4444]">1 in 8,192</div>
               <p class="text-gray-600 dark:text-gray-400">In the early games, shinies were much rarer and tied to hidden value checks (DVs/PIDs).</p>
             </div>
             <div class="space-y-4">
               <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">Modern Odds (Gen VI+)</h3>
-              <div class="text-4xl font-black text-green-500">1 in 4,096</div>
+              <div class="text-4xl font-black text-[#facc15]">1 in 4,096</div>
               <p class="text-gray-600 dark:text-gray-400">Starting in X/Y, base odds improved, making shinies more realistic for regular play.</p>
             </div>
           </div>
@@ -47,76 +47,76 @@ export function initShinyHuntingGuide(container) {
         <!-- Section: Hunting Methods -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-yellow-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-yellow rounded-full"></span>
             Hunting Methods
           </h2>
           <div class="grid md:grid-cols-2 gap-x-8 gap-y-10">
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Random / Static Encounters
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">The baseline method. Each encounter is an independent shiny check. Some static encounters are "Shiny Locked" and can never be shiny!</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 The Masuda Method
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Breeding two Pokémon from different language regions (e.g., English and Japanese) significantly boosts egg shiny rates.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Poké Radar Chaining
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Used in Gen IV, VI, and BDSP. Catching/defeating the same species in a row increases odds up to 1/200 at a 40 chain when using the Poké Radar.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Chain Fishing
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Introduced in Gen VI. Successfully reeling in Pokémon consecutive times increases the shiny probability drastically.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 SOS Battles (Gen VII)
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Pokemon calling for help in battle in Alola builds a chain that improves shiny odds and hidden ability chances for the allies that appear.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Catch Combo (Let's Go)
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Catching the same species repeatedly in Let's Go Pikachu/Eevee increases overworld shiny spawns for any species!</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Curry Cooking (Gen VIII)
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Cooking high-quality curry in the Galar wild area can occasionally attract a shiny Pokémon to your camp.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Hyperspace Donuts (Gen VI)
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Traveling through Hoopa's rings in Lumiose City with "Sparkling Power" from one of Ansha's donuts to increase shiny odds.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Sandwich Power (Gen IX)
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Using Herba Mystica in Paldean sandwiches grants "Sparkling Power," vastly increasing specific type shiny spawns.</p>
             </div>
             <div class="space-y-2">
               <h4 class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full brand-marker-yellow"></span>
                 Mass Outbreaks
               </h4>
               <p class="text-sm text-gray-600 dark:text-gray-400">Groups of the same species appear in the overworld. In <span class="font-bold">PLA</span>, massive outbreaks (and massive mass outbreaks) have boosted odds. In <span class="font-bold">SV</span>, defeating 60+ members of an outbreak provides a permanent boost for that specific outbreak.</p>
@@ -127,7 +127,7 @@ export function initShinyHuntingGuide(container) {
         <!-- Section: Shiny Charm -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-purple-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
             The Shiny Charm
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">

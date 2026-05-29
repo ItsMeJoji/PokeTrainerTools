@@ -19,7 +19,7 @@ export async function initRNGPage(containerId) {
         ${currentNumber}
       </div>
 
-      <button id="reroll-btn" class="px-10 py-5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-full text-2xl font-bold shadow-xl transform active:scale-95 transition-all uppercase">
+      <button id="reroll-btn" class="px-10 py-5 bg-[#ef4444] hover:bg-[#dc2626] active:bg-red-700 rounded-full text-2xl font-bold shadow-xl transform active:scale-95 transition-all uppercase">
         Reroll
       </button>
 

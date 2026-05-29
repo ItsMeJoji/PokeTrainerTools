@@ -13,7 +13,7 @@ export async function initShinyOddsCalc(appContainer) {
             <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
                 <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
                     <div class="flex items-center space-x-3">
-                        <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                        <span class="w-1.5 h-6 brand-marker-yellow rounded-full"></span>
                         <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
                     </div>
                     <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@ export async function initShinyOddsCalc(appContainer) {
                 </summary>
                 <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
                     <div class="mb-6">
-                        <a href="/info/shiny-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
+                        <a href="/info/shiny-hunting" class="inline-flex items-center text-sm font-bold brand-link transition-colors brand-panel-red px-6 py-2 rounded-full shadow-sm">
                             <i class="fas fa-info-circle mr-2"></i> Shiny Hunting Guide
                         </a>
                     </div>

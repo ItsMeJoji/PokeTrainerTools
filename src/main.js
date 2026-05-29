@@ -14,6 +14,7 @@ import { initShinyBingo } from './features/shiny-bingo.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
+import trainerToolsLogo from './assets/images/poketrainer-tools-logo.png'
 import profileImage from './assets/images/profile-image.png'
 import P from './utils/pokeapi.js'
 import { getVersions } from './utils/pokeapi.js'
@@ -78,11 +79,13 @@ const renderNavbar = () => {
   const today = new Date();
   const isAprilFools = today.getMonth() === 3 && today.getDate() === 1;
   document.querySelector('#navbar').innerHTML = `
-    <nav class="w-full flex justify-between items-center h-16 px-4 bg-[#1a1a1b] text-white relative">
-      <div class="flex gap-4 items-center">
+    <nav class="w-full flex justify-between items-center h-[5.33rem] px-3 sm:px-4 bg-[#1a1a1b] text-white relative">
+      <div class="flex gap-3 sm:gap-4 items-center min-w-0">
         <a href="/" class="flex items-center gap-2">
-          <img src="${pokeballSprite}" class="w-12 h-12 md:w-8 md:h-8 object-contain" alt="PokéTrainer Tools Logo" />
-          <span class="text-xl font-bold tracking-tight hover:no-underline text-white">PokéTrainer Tools</span>
+          <img src="${trainerToolsLogo}" class="w-16 h-16 md:w-14 md:h-14 object-contain flex-shrink-0" alt="PokéTrainer Tools Logo" />
+          <span class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-normal hover:no-underline whitespace-nowrap">
+            <span class="text-[#ef4444]">Poké</span><span class="text-[#facc15]">Trainer</span> <span class="text-white">Tools</span>
+          </span>
         </a>
       </div>
 
@@ -95,9 +98,9 @@ const renderNavbar = () => {
       </button>
 
       <!-- Navigation Links -->
-      <div id="nav-content" class="hidden md:flex flex-col md:flex-row items-center gap-2 md:gap-6 absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto bg-[#1a1a1b] md:bg-transparent p-4 md:p-0 z-50 shadow-lg md:shadow-none transition-all duration-300">
+      <div id="nav-content" class="hidden md:flex flex-col md:flex-row items-center gap-2 md:gap-6 absolute md:relative top-[5.33rem] md:top-0 left-0 w-full md:w-auto bg-[#1a1a1b] md:bg-transparent p-4 md:p-0 z-50 shadow-lg md:shadow-none transition-all duration-300">
         <div class="dropdown h-full w-full md:w-auto">
-          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-blue-500 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
+          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-[#facc15] transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
             Tools
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
@@ -114,7 +117,7 @@ const renderNavbar = () => {
           </div>
         </div>
         <div class="dropdown h-full w-full md:w-auto">
-          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-blue-400 transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
+          <button class="flex items-center justify-between md:justify-start gap-1 hover:text-[#facc15] transition-colors bg-transparent text-white h-full px-4 border border-transparent cursor-pointer w-full">
             Info
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
@@ -122,7 +125,7 @@ const renderNavbar = () => {
             <a href="/info/shiny-hunting" class="dropdown-item">Shiny Hunting Guide</a>
             <a href="/info/sos-hunting" class="dropdown-item">SOS Chaining Guide</a>
             <a href="/info/mmo-guide" class="dropdown-item">MMO Permutation Guide</a>
-            <a href="/info/ribbon-master-guide" class="dropdown-item text-indigo-400 font-bold italic">Ribbon Master Guide</a>
+            <a href="/info/ribbon-master-guide" class="dropdown-item text-[#facc15] font-bold italic">Ribbon Master Guide</a>
           </div>
         </div>
         <div class="theme-switch-wrapper py-2 md:py-0">
@@ -257,7 +260,7 @@ const renderPage = () => {
       // Logic for random shiny
       const homeContent = `
         <div class="flex flex-col items-center">
-          <h1 class="mb-4 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg text-center">PokéTrainer Tools</h1>
+          <h1 class="site-name-outline mb-4 text-5xl font-extrabold tracking-tight text-black dark:text-white text-shadow-lg text-center"><span class="text-[#ef4444]">Poké</span><span class="text-[#facc15]">Trainer</span> <span class="text-white">Tools</span></h1>
           <p class="mb-12 text-xl text-gray-500 dark:text-gray-400 max-w-2xl text-center">Your ultimate companion for Pokémon training and hunting. Optimize your journey with our specialized calculators.</p>
           
           <div class="tool-previews w-full">
@@ -271,7 +274,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Pokémon Lookup</h3>
                 <p>Find every location where any Pokémon can be encountered across all games, complete with encounter rates and level ranges!</p>
-                <a href="/pokemon-lookup" class="tool-cta" style="background-color: #6366f1">Try it now!</a>
+                <a href="/pokemon-lookup" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
             </div>
 
@@ -285,7 +288,7 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Encounter Calculator</h3>
                 <p>Plan your hunt by discovering exactly which Pokémon appear in any game, location, and area!</p>
-                <a href="/encounter" class="tool-cta">Try it now!</a>
+                <a href="/encounter" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
             </div>
 
@@ -319,7 +322,7 @@ const renderPage = () => {
 
             <!-- Ribbon Tracker -->
             <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.6s">
-              <div class="tool-image bg-blue-600">
+              <div class="tool-image bg-ribbon">
                 <div class="tool-overlay flex items-center justify-center" id="ribbon-tool-overlay">
                   <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
                 </div>
@@ -327,12 +330,12 @@ const renderPage = () => {
               <div class="tool-content">
                 <h3>Ribbon Tracker</h3>
                 <p>Track every ribbon and mark for your battle-hardened companions across all generations!</p>
-                <a href="/ribbon-tracker" class="tool-cta" style="background-color: #3b82f6">Try it now!</a>
+                <a href="/ribbon-tracker" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
             </div>
 
             <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.8s">
-              <div class="tool-image bg-gradient-to-br from-yellow-500 via-amber-400 to-cyan-500">
+              <div class="tool-image bg-bingo">
                 <div class="tool-overlay flex items-center justify-center">
                   <div class="relative">
                     <div class="grid grid-cols-3 gap-2">
@@ -372,6 +375,49 @@ const renderPage = () => {
       return `<div id="shiny-odds-calc-container"></div>`;
     } else if (path === '/pokemon-lookup') {
       return `<div id="pokemon-lookup-container"></div>`;
+    } else if (path === '/about') {
+      return `
+        <div class="anim-fade-in text-left max-w-4xl mx-auto">
+          <h1 class="mb-8 font-extrabold tracking-tight text-black dark:text-white">About Us</h1>
+
+          <div class="space-y-10">
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+                <div class="col-span-1 flex justify-center md:justify-start">
+                  <img src="${profileImage}" alt="ItsMeJoji" class="w-32 h-32 md:w-full md:h-auto aspect-square object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-700">
+                </div>
+                <div class="col-span-1 md:col-span-3 space-y-4 text-gray-600 dark:text-gray-400">
+                  <h2 class="text-2xl font-bold text-black dark:text-white">About Me</h2>
+                  <p>
+                    Hi, I'm Joji! I'm a lifelong Pokémon fan and the creator of PokéTrainer Tools. 
+                    <br><br>
+                    I started this project to create tools I needeed for Pokémon games and decided it could be a resources for the community. 
+                    <br><br>
+                    As a solo developer, I handle everything from coding to design, and I'm always looking for ways to improve and expand the tools based on user feedback. 
+                    <br><br>
+                    If you got suggestions, ideas, or just want to say hi, feel free to reach out to me on <a href="https://twitter.com/ItsMeJoji" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">Twitter</a> or <a href="https://bsky.app/profile/itsmejoji.bsky.social" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">Bluesky</a>!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <h2 class="text-2xl font-bold text-black dark:text-white mb-4">Credits</h2>
+              <div class="space-y-4 text-gray-600 dark:text-gray-400">
+                <p>
+                  Data and sprites are powered in part by <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">PokéAPI</a> and <a href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">Bulbapedia</a>.
+                </p>
+                <p>
+                  Site logo created by <a href="https://x.com/FortRemy" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">FortRemy</a>.
+                </p>
+                <p>
+                  Pokémon, Pokémon character names, and related assets belong to Nintendo, GAME FREAK, Creatures, Inc., and The Pokémon Company.
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      `;
     } else if (path === '/privacy') {
       return `
         <div class="anim-fade-in text-left max-w-3xl mx-auto">
@@ -390,7 +436,7 @@ const renderPage = () => {
               <h2 class="text-2xl font-bold text-black dark:text-white mb-2">Third-Party Advertising and Cookies</h2>
               <p>While we don't collect cookies ourselves, we use Google AdSense to serve advertisements. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the Internet.</p>
               <br>
-              <p>You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" class="text-blue-500 hover:underline">Google Ad Settings</a>.</p>
+              <p>You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" class="brand-link hover:underline">Google Ad Settings</a>.</p>
             </section>
           </div>
         </div>
@@ -484,9 +530,10 @@ const renderPage = () => {
           </div>
 
           <!-- Right Column -->
-          <div class="flex justify-center md:justify-end gap-6 text-gray-600 dark:text-gray-400 font-medium">
-            <a href="/privacy" class="hover:text-blue-500 transition-colors">Privacy Policy</a>
-            <a href="/contact" class="hover:text-blue-500 transition-colors">Contact</a>
+          <div class="flex flex-wrap justify-center md:justify-end gap-6 text-gray-600 dark:text-gray-400 font-medium">
+            <a href="/about" class="hover:text-[#facc15] transition-colors">About Us</a>
+            <a href="/privacy" class="hover:text-[#facc15] transition-colors">Privacy Policy</a>
+            <a href="/contact" class="hover:text-[#facc15] transition-colors">Contact</a>
           </div>
         </div>
 

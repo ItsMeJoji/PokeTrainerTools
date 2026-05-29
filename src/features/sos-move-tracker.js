@@ -340,7 +340,7 @@ function renderTracker() {
           <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
             <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
               <div class="flex items-center space-x-3">
-                <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                <span class="w-1.5 h-6 brand-marker-red rounded-full"></span>
                 <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
               </div>
               <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,7 +349,7 @@ function renderTracker() {
             </summary>
             <div class="p-6 bg-gray-50/50 dark:bg-gray-900/20">
               <div class="mb-6">
-                <a href="/info/sos-hunting" class="inline-flex items-center text-sm font-bold text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 dark:bg-blue-900/20 px-6 py-2 rounded-full border border-blue-200 dark:border-blue-800 shadow-sm">
+                <a href="/info/sos-hunting" class="inline-flex items-center text-sm font-bold brand-link transition-colors brand-panel-red px-6 py-2 rounded-full shadow-sm">
                   <i class="fas fa-info-circle mr-2"></i> SOS Chaining Guide
                 </a>
               </div>
@@ -357,7 +357,7 @@ function renderTracker() {
             </div>
           </details>
         </div>
-        <button id="btn-transformed" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors flex items-center gap-2 whitespace-nowrap" style="display: none;">
+        <button id="btn-transformed" class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors flex items-center gap-2 whitespace-nowrap" style="display: none;">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
           Transformed!
         </button>
@@ -404,7 +404,7 @@ function renderTracker() {
                        <div class="move-options-container items-list py-1"></div>
                      </div>
                    </div>
-                   <button class="override-btn flex-shrink-0 text-gray-400 hover:text-blue-500 transition-colors p-1" title="Override Move Details">
+                   <button class="override-btn flex-shrink-0 text-gray-400 hover:text-[#ef4444] transition-colors p-1" title="Override Move Details">
                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                    </button>
                 </div>
@@ -424,21 +424,21 @@ function renderTracker() {
               </button>
 
               <!-- Override Overlay (Hidden by default) -->
-              <div class="override-overlay absolute inset-0 bg-white dark:bg-gray-800 p-4 rounded-lg flex flex-col justify-center z-10 hidden border-2 border-blue-500 transition-all duration-300">
+              <div class="override-overlay absolute inset-0 bg-white dark:bg-gray-800 p-4 rounded-lg flex flex-col justify-center z-10 hidden border-2 border-[#ef4444] transition-all duration-300">
                 <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Manual PP Override</h4>
                 <div class="flex gap-2 mb-4 text-left">
                   <div class="flex-1">
                     <label class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Current</label>
-                    <input type="number" class="override-current bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="0">
+                    <input type="number" class="override-current bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="0">
                   </div>
                   <div class="flex-1">
                     <label class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Max</label>
-                    <input type="number" class="override-max bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="1">
+                    <input type="number" class="override-max bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-mono" min="1">
                   </div>
                 </div>
                 <div class="flex justify-between gap-2">
                   <button class="cancel-override-btn flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white rounded-lg py-1.5 text-sm font-bold transition-colors shadow-sm">Cancel</button>
-                  <button class="save-override-btn flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-1.5 text-sm font-bold transition-colors shadow-sm">Save</button>
+                  <button class="save-override-btn flex-1 bg-[#ef4444] hover:bg-[#dc2626] text-white rounded-lg py-1.5 text-sm font-bold transition-colors shadow-sm">Save</button>
                 </div>
               </div>
 
@@ -469,7 +469,7 @@ function setupPokemonDropdown() {
     );
 
     optionsContainer.innerHTML = filteredOptions.map(p => `
-      <div class="dropdown-option dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${p.name}">
+      <div class="dropdown-option dropdown-item px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${p.name}">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" class="w-6 h-6 mr-3 object-contain flex-shrink-0" alt="${p.displayName}" loading="lazy" />
         <span class="truncate font-medium">${p.displayName}</span>
         <span class="ml-auto text-xs text-gray-400">#${p.id}</span>
@@ -579,7 +579,7 @@ function setupMoveDropdown(dropdownEl, slotIndex) {
     );
 
     optionsContainer.innerHTML = filtered.map(m => `
-      <div class="move-option dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${m}">
+      <div class="move-option dropdown-item px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer flex items-center text-sm dark:text-white text-gray-900" data-value="${m}">
         <span class="truncate">${formatMoveName(m)}</span>
       </div>
     `).join('');

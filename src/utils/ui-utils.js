@@ -26,7 +26,7 @@ export function setupSearchableDropdown(dropdown, items, onSelect, placeholder =
             const spriteHtml = item.sprite ? `<img src="${item.sprite}" class="w-6 h-6 mr-2 object-contain flex-shrink-0">` : '';
 
             return `
-        <div data-value="${value}" class="dropdown-item px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer flex items-center text-sm text-gray-900 dark:text-white">
+        <div data-value="${value}" class="dropdown-item px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer flex items-center text-sm text-gray-900 dark:text-white">
           ${spriteHtml}
           <span class="truncate">${displayName}</span>
         </div>

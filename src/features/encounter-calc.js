@@ -48,22 +48,22 @@ export async function initEncounterCalc(appContainer) {
           <div class="grid grid-cols-4 gap-4 mb-4">
             <!-- Radar -->
             <div class="flex items-center">
-              <input id="check-radar" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-radar" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-radar" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Radar</label>
             </div>
             <!-- Swarm -->
             <div class="flex items-center">
-              <input id="check-swarm" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-swarm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-swarm" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Swarm</label>
             </div>
             <!-- Time -->
             <div class="flex items-center">
-              <input id="check-time" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-time" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-time" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Time</label>
             </div>
             <!-- Slot 2 -->
             <div class="flex items-center">
-              <input id="check-slot2" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-slot2" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-slot2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Slot 2</label>
             </div>
           </div>
@@ -72,7 +72,7 @@ export async function initEncounterCalc(appContainer) {
           <div class="space-y-3">
             <!-- Time Dropdown -->
             <div id="time-dropdown-container" class="hidden">
-               <select id="select-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+               <select id="select-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
                 <option value="">Select Time</option>
                 <option value="time-morning">Morning</option>
                 <option value="time-day">Day</option>
@@ -81,7 +81,7 @@ export async function initEncounterCalc(appContainer) {
             </div>
             <!-- Slot 2 Dropdown -->
             <div id="slot2-dropdown-container" class="hidden">
-               <select id="select-slot2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+               <select id="select-slot2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
                 <option value="">Select Cartridge</option>
                 <option value="slot2-ruby">Ruby</option>
                 <option value="slot2-sapphire">Sapphire</option>
@@ -99,17 +99,17 @@ export async function initEncounterCalc(appContainer) {
           <div class="grid grid-cols-3 gap-4 mb-4">
             <!-- Time -->
             <div class="flex items-center">
-              <input id="check-hgss-time" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-hgss-time" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-hgss-time" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Time</label>
             </div>
             <!-- Radio -->
             <div class="flex items-center">
-              <input id="check-radio" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-radio" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Radio</label>
             </div>
             <!-- Swarm -->
             <div class="flex items-center">
-              <input id="check-hgss-swarm" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <input id="check-hgss-swarm" type="checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
               <label for="check-hgss-swarm" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 select-none cursor-pointer">Swarm</label>
             </div>
           </div>
@@ -118,7 +118,7 @@ export async function initEncounterCalc(appContainer) {
           <div class="space-y-3">
             <!-- Time Dropdown (HGSS) -->
             <div id="hgss-time-dropdown-container" class="hidden">
-               <select id="select-hgss-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+               <select id="select-hgss-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
                 <option value="">Select Time</option>
                 <option value="time-morning">Morning</option>
                 <option value="time-day">Day</option>
@@ -127,7 +127,7 @@ export async function initEncounterCalc(appContainer) {
             </div>
             <!-- Radio Dropdown -->
             <div id="radio-dropdown-container" class="hidden">
-               <select id="select-radio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+               <select id="select-radio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
                 <option value="">Select Radio Sound</option>
                 <option value="radio-hoenn">Hoenn Sound</option>
                 <option value="radio-sinnoh">Sinnoh Sound</option>
@@ -142,7 +142,7 @@ export async function initEncounterCalc(appContainer) {
           <button id="start-encounter" class="text-black px-8 py-3 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
             Start Encounter
           </button>
-          <button id="reset-encounter" class="hidden text-black px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-green-800 dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95">
+          <button id="reset-encounter" class="hidden text-black px-8 py-3 bg-[#ef4444] hover:bg-[#dc2626] dark:text-white font-bold rounded-full shadow-lg transform transition active:scale-95">
             Reset Encounter
           </button>
       </div>
@@ -449,7 +449,7 @@ export async function initEncounterCalc(appContainer) {
                   class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-2 transition-opacity duration-200" 
                 />
                 <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">${p.displayName}</span>
-                <span class="text-xs font-mono px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full">${p.rate}%</span>
+                <span class="text-xs font-mono px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-100 rounded-full">${p.rate}%</span>
                 ${p.conditionText ? `<span class="text-[11px] italic text-gray-500 dark:text-gray-400 mt-1 block">${p.conditionText}</span>` : ''}
               </div>
             `).join('')}
@@ -461,7 +461,7 @@ export async function initEncounterCalc(appContainer) {
         <details class="group w-full max-w-5xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6" ${isOpen}>
           <summary class="cursor-pointer list-none p-6 flex items-center justify-between bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <span class="text-2xl font-extrabold text-gray-800 dark:text-white flex items-center gap-3">
-              <span class="w-2 h-8 bg-blue-500 rounded-full"></span>
+              <span class="w-2 h-8 brand-marker-yellow rounded-full"></span>
               ${areaName}
             </span>
             <span class="text-gray-400 transform transition-transform duration-300 group-open:rotate-180">

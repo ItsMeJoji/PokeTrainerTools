@@ -11,7 +11,7 @@ export function initSosHuntingGuide(container) {
         <!-- Section: Introduction -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
             What is SOS Chaining?
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
@@ -22,7 +22,7 @@ export function initSosHuntingGuide(container) {
         <!-- Section: Ideal Setup -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-purple-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-yellow rounded-full"></span>
             The Ideal Setup
           </h2>
           <div class="space-y-4">
@@ -60,7 +60,7 @@ export function initSosHuntingGuide(container) {
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
           <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Track Wild Pokémon PP</h2>
           <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the SOS Move Tracker to know when to swap callers before Struggle becomes a risk.</p>
-          <button id="sos-tracker-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #8b5cf6; align-self: center">
+          <button id="sos-tracker-cta-btn" class="tool-cta border-none cursor-pointer text-white px-8 py-3 rounded-full font-bold shadow-md" style="background-color: #ef4444; align-self: center">
             SOS Move Tracker
           </button>
         </section>
@@ -68,7 +68,7 @@ export function initSosHuntingGuide(container) {
         <!-- Section: Chain Mechanics -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-8 bg-red-500 rounded-full"></span>
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
             Chain Mechanics & Odds
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-6 font-medium">As the chain grows, the rewards increase. The chain resets after 255 calls in Sun and Moon (it loops back to 0), but in Ultra Sun and Ultra Moon, the chain never resets.</p>

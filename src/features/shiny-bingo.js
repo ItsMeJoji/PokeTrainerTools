@@ -558,8 +558,8 @@ export async function initShinyBingo(appContainer) {
             </div>
             <div class="flex items-end">
               <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button id="reroll-bingo-board" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Reroll Board</button>
-                <button id="export-bingo-board" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Export Board</button>
+                <button id="reroll-bingo-board" class="w-full px-5 py-3 bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Reroll Board</button>
+                <button id="export-bingo-board" class="w-full px-5 py-3 bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white font-black rounded-xl shadow-lg transition-transform active:scale-95">Export Board</button>
               </div>
             </div>
           </div>
@@ -601,7 +601,7 @@ export async function initShinyBingo(appContainer) {
             </div>
             <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
               <button id="cancel-bingo-editor" class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold rounded-xl transition-transform active:scale-95">Cancel</button>
-              <button id="save-bingo-editor" class="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-bold rounded-xl transition-transform active:scale-95">Set Space</button>
+              <button id="save-bingo-editor" class="w-full sm:w-auto px-4 py-2.5 bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white font-bold rounded-xl transition-transform active:scale-95">Set Space</button>
             </div>
           </div>
         </div>

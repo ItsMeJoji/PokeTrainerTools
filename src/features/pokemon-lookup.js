@@ -84,7 +84,7 @@ export async function initPokemonLookup(appContainer) {
       <details class="group mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
         <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
           <div class="flex items-center space-x-3">
-            <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+            <span class="w-1.5 h-6 brand-marker-red rounded-full"></span>
             <span class="text-xl font-bold text-gray-900 dark:text-white">How to Use This Tool</span>
           </div>
           <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export async function initPokemonLookup(appContainer) {
         <div id="lookup-choice-container" class="hidden opacity-0 transition-opacity duration-500 flex flex-col items-center gap-4">
           <p class="text-lg font-bold text-gray-700 dark:text-gray-300">Where are you hunting?</p>
           <div class="flex gap-4">
-            <button id="lookup-select-game-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
+            <button id="lookup-select-game-btn" class="px-6 py-2 bg-[#ef4444] hover:bg-[#dc2626] text-black dark:text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
               Select a Game
             </button>
             <button id="lookup-show-everything-btn" class="px-6 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-black dark:text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
@@ -122,14 +122,14 @@ export async function initPokemonLookup(appContainer) {
           <div id="game-select-container">
             ${getSearchableDropdownHtml('lookup-game-dropdown', 'Select Game', 'Search games...')}
           </div>
-          <button id="lookup-go-back-btn" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
+          <button id="lookup-go-back-btn" class="text-sm font-medium brand-link hover:underline">
             Go Back
           </button>
         </div>
 
         <!-- Go Back button for 'Show EVERYTHING!' state -->
         <div id="lookup-everything-back" class="hidden opacity-0 transition-opacity duration-500 flex flex-col items-center">
-          <button id="lookup-everything-back-btn" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
+          <button id="lookup-everything-back-btn" class="text-sm font-medium brand-link hover:underline">
             Go Back
           </button>
         </div>
@@ -358,7 +358,7 @@ export async function initPokemonLookup(appContainer) {
         const encounters = areas[areaName];
         areasHtml += `
           <div class="mb-4 last:mb-0">
-            <h4 class="text-md font-bold text-gray-700 dark:text-gray-300 mb-2 px-2 border-l-4 border-blue-400">${areaName}</h4>
+            <h4 class="text-md font-bold text-gray-700 dark:text-gray-300 mb-2 px-2 border-l-4 border-[#facc15]">${areaName}</h4>
             <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
               <table class="w-full text-xs text-left text-gray-500 dark:text-gray-400">
                 <thead class="bg-gray-50 dark:bg-gray-900/50 text-gray-700 dark:text-gray-400">
@@ -373,7 +373,7 @@ export async function initPokemonLookup(appContainer) {
                     <tr class="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
                       <td class="px-3 py-1.5 font-medium text-gray-800 dark:text-gray-200">${e.method}</td>
                       <td class="px-3 py-1.5">${e.minLevel}${e.minLevel === e.maxLevel ? '' : '-' + e.maxLevel}</td>
-                      <td class="px-3 py-1.5 text-right font-mono text-blue-600 dark:text-blue-400">${e.chance}%</td>
+                      <td class="px-3 py-1.5 text-right font-mono text-[#ef4444] dark:text-red-300">${e.chance}%</td>
                     </tr>
                   `).join('')}
                 </tbody>
@@ -406,7 +406,7 @@ export async function initPokemonLookup(appContainer) {
         <details class="group w-full bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden" ${isOpen}>
           <summary class="cursor-pointer list-none p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <span class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-3">
-              <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+              <span class="w-1.5 h-6 brand-marker-red rounded-full"></span>
               ${spriteHtml}
               ${displayVersion}
             </span>
