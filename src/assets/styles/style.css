@@ -1056,10 +1056,27 @@ details summary::-webkit-details-marker {
 /* Homepage Tool Cards */
 .tool-previews {
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin-top: 4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
   text-align: left;
+}
+
+.tool-previews>a {
+  flex: 0 1 100%;
+}
+
+@media (min-width: 640px) {
+  .tool-previews>a {
+    flex: 0 1 calc(50% - 0.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-previews>a {
+    flex: 0 1 calc(33.333% - 1rem);
+  }
 }
 
 .tool-card {
@@ -1068,18 +1085,27 @@ details summary::-webkit-details-marker {
   background: white;
   border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-decoration: none !important;
 }
 
 :root.dark .tool-card {
   background: #1f2937;
+  border-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .tool-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+:root.dark .tool-card:hover {
+  border-color: rgba(250, 204, 21, 0.2);
 }
 
 /* SOS Move Tracker Styles */
@@ -1105,20 +1131,9 @@ details summary::-webkit-details-marker {
   backdrop-filter: blur(4px);
 }
 
-@media (min-width: 768px) {
-  .tool-card {
-    flex-direction: row;
-    min-height: 250px;
-  }
-
-  .tool-card:nth-child(even) {
-    flex-direction: row-reverse;
-  }
-}
-
 .tool-image {
-  flex: 1;
-  min-height: 200px;
+  width: 100%;
+  height: 12rem;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -1128,53 +1143,37 @@ details summary::-webkit-details-marker {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.25));
 }
 
 .tool-content {
-  flex: 1.5;
-  padding: 2rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .tool-content h3 {
-  font-size: 1.875rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0;
   color: #111827;
+  transition: color 0.2s;
+  text-decoration: none !important;
 }
 
 :root.dark .tool-content h3 {
   color: #f9fafb;
 }
 
-.tool-content p {
-  color: #4b5563;
-  margin-bottom: 2rem;
-  line-height: 1.6;
+.tool-card:hover .tool-content h3 {
+  color: var(--brand-red-strong);
 }
 
-:root.dark .tool-content p {
-  color: #9ca3af;
-}
-
-.tool-cta {
-  align-self: flex-start;
-  font-weight: 700;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  background: #ef4444;
-  color: white;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-
-.tool-cta:hover {
-  background: #dc2626;
-  text-decoration: none;
-  color: white;
+:root.dark .tool-card:hover .tool-content h3 {
+  color: var(--brand-yellow);
 }
 
 /* Specific Tool Gradients */
@@ -1200,6 +1199,51 @@ details summary::-webkit-details-marker {
 
 .bg-bingo {
   background: linear-gradient(135deg, var(--brand-yellow) 0%, var(--brand-red) 100%);
+}
+
+.bg-sos {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+}
+
+.bg-mmo {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+/* Event Calendar Section */
+.calendar-section {
+  width: 100%;
+  margin-top: 4rem;
+  text-align: left;
+}
+
+.calendar-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+:root.dark .calendar-container {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: #374151;
+}
+
+.calendar-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+:root.dark .calendar-container iframe {
+  filter: invert(0.9) hue-rotate(180deg);
 }
 
 /* ── Magnifying Glass: Z-motion over Pokemon ─────────────────────── */
@@ -1366,4 +1410,88 @@ details summary::-webkit-details-marker {
 
 .anim-sparkle {
   animation: sparkle-flash 0.5s ease-out forwards;
+}
+
+/* Ribbon Tracker Checkmark */
+.anim-check-periodic {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  margin-left: -150px;
+  /* Pulls half the width back to dead-center */
+  margin-top: -150px;
+  /* Pulls half the height back to dead-center */
+  z-index: 20;
+
+  /* Green styling for the check icon */
+  stroke: #22c55e;
+  /* Emerald green */
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  /* Infinite sequence animation loop */
+  animation: check-sequence 4.5s ease-in-out infinite;
+}
+
+/* The actual line inside the SVG */
+.checkmark-path {
+  /* 100 is long enough to fully cover the length of this specific path */
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+
+  animation: draw-check 4.5s ease-in-out infinite;
+}
+
+/* --- KEYFRAMES --- */
+
+/* 1. Handles the stroke drawing timing */
+@keyframes draw-check {
+  0% {
+    stroke-dashoffset: 100;
+    /* Hidden at start */
+  }
+
+  15%,
+  75% {
+    stroke-dashoffset: 0;
+    /* Completely drawn by 15%, holds until 75% */
+  }
+
+  85%,
+  100% {
+    stroke-dashoffset: 0;
+    /* Stays drawn while the outer SVG container fades out */
+  }
+}
+
+/* 2. Handles the opacity, fade-out, and the 1-second reset rest */
+@keyframes check-sequence {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  5% {
+    opacity: 1;
+    transform: scale(1);
+    /* Minor pop effect during entry */
+  }
+
+  70% {
+    opacity: 1;
+    /* Stays completely visible during display */
+  }
+
+  77% {
+    opacity: 0;
+    /* Smoothly fades out over ~0.3 seconds */
+  }
+
+  100% {
+    opacity: 0;
+    /* Remains invisible for more than 1 second before looping */
+  }
 }

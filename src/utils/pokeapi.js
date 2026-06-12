@@ -5,8 +5,8 @@ const LOCAL_POKEAPI_HOSTNAMES = ['localhost', '127.0.0.1'];
 const LOCAL_POKEAPI_URL = 'http://localhost:8000/api/v2/';
 const DEFAULT_POKEAPI_URL = 'https://pokeapi.co/api/v2/';
 
-const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
-//const useLocalApi = false;
+//const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
+const useLocalApi = false;
 const apiUrl = useLocalApi ? LOCAL_POKEAPI_URL : DEFAULT_POKEAPI_URL;
 const parsedApiUrl = new URL(apiUrl);
 
@@ -28,7 +28,9 @@ const P = new Pokedex({
 const resultCache = {
     versions: null,
     locations: {}, // versionName -> locations
+    locationLists: {}, // versionName -> lightweight location list
     encounters: {}, // version-location -> encounters
+    encounterConditionValues: {}, // condition value name -> detail
 };
 const LOCATION_CACHE_PREFIX = 'verified_locations_v5';
 const LOCATION_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
@@ -91,43 +93,70 @@ async function setCachedLocations(versionName, locations) {
     }
 }
 
-function formatEncounterConditionLabels(conditionValues, methodNameRaw) {
-    if (!Array.isArray(conditionValues) || conditionValues.length === 0) {
+function getEnglishLocalizedText(entries, preferredKeys) {
+    if (!Array.isArray(entries)) return null;
+    const englishEntry = entries.find(entry => entry?.language?.name === 'en') || entries[0];
+    if (!englishEntry) return null;
+
+    for (const key of preferredKeys) {
+        const value = englishEntry[key];
+        if (typeof value === 'string' && value.trim()) {
+            return value.replace(/\s+/g, ' ').trim();
+        }
+    }
+
+    return null;
+}
+
+function getEncounterConditionValueLabel(raw, detail) {
+    const proseLabel = getEnglishLocalizedText(detail?.prose, ['prose', 'name', 'description']);
+    if (proseLabel) return proseLabel;
+
+    const flavorLabel = getEnglishLocalizedText(detail?.flavor_text_entries, ['flavor_text']);
+    if (flavorLabel) return flavorLabel;
+
+    const descriptionLabel = getEnglishLocalizedText(detail?.descriptions, ['description']);
+    if (descriptionLabel) return descriptionLabel;
+
+    const nameLabel = getEnglishLocalizedText(detail?.names, ['name']);
+    if (nameLabel) return nameLabel;
+
+    if (raw === 'radar-on') {
+        return 'Radar On';
+    }
+    if (raw === 'swarm-yes') {
+        return 'Swarm';
+    }
+    if (raw.startsWith('slot2-')) {
+        const value = raw.replace('slot2-', '');
+        return `Slot 2: ${value.charAt(0).toUpperCase() + value.slice(1)}`;
+    }
+    if (raw.startsWith('radio-')) {
+        const value = raw.replace('radio-', '');
+        return `Radio: ${value.charAt(0).toUpperCase() + value.slice(1)}`;
+    }
+    if (raw.startsWith('time-')) {
+        const value = raw.replace('time-', '');
+        return `Time: ${value.charAt(0).toUpperCase() + value.slice(1)}`;
+    }
+
+    return raw.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+function formatEncounterConditionLabels(conditionValueRefs, methodNameRaw, conditionValueDetails = {}) {
+    if (!Array.isArray(conditionValueRefs) || conditionValueRefs.length === 0) {
         return [];
     }
 
     const labels = [];
-    for (const raw of conditionValues) {
+    for (const conditionValueRef of conditionValueRefs) {
+        const raw = conditionValueRef?.name;
         if (!raw || raw === 'none') continue;
         if (methodNameRaw === 'walk' && ['time-morning', 'time-day', 'time-night'].includes(raw)) {
             continue;
         }
 
-        if (raw === 'radar-on') {
-            labels.push('Radar On');
-            continue;
-        }
-        if (raw === 'swarm-yes') {
-            labels.push('Swarm');
-            continue;
-        }
-        if (raw.startsWith('slot2-')) {
-            const value = raw.replace('slot2-', '');
-            labels.push(`Slot 2: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
-            continue;
-        }
-        if (raw.startsWith('radio-')) {
-            const value = raw.replace('radio-', '');
-            labels.push(`Radio: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
-            continue;
-        }
-        if (raw.startsWith('time-')) {
-            const value = raw.replace('time-', '');
-            labels.push(`Time: ${value.charAt(0).toUpperCase() + value.slice(1)}`);
-            continue;
-        }
-
-        labels.push(raw.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+        labels.push(getEncounterConditionValueLabel(raw, conditionValueDetails[raw]));
     }
 
     return Array.from(new Set(labels));
@@ -174,6 +203,38 @@ async function fetchResourceWithRetry(path, { retries = RESOURCE_RETRY_LIMIT, re
         console.warn('[PathDebug] resource fetch failed', { path, message: lastError?.message || String(lastError) });
     }
     return null;
+}
+
+async function getEncounterConditionValueDetails(conditionValueRefs) {
+    if (!Array.isArray(conditionValueRefs) || conditionValueRefs.length === 0) {
+        return {};
+    }
+
+    const uniqueRefs = Array.from(
+        new Map(
+            conditionValueRefs
+                .filter(ref => ref?.name)
+                .map(ref => [ref.name, ref])
+        ).values()
+    );
+
+    const missingRefs = uniqueRefs.filter(ref => !resultCache.encounterConditionValues[ref.name]);
+    if (missingRefs.length > 0) {
+        await mapWithConcurrency(missingRefs, AREA_FETCH_CONCURRENCY, async ref => {
+            const path = normalizePokeApiPath(ref.url) || `/api/v2/encounter-condition-value/${ref.name}/`;
+            const detail = await fetchResourceWithRetry(path);
+            resultCache.encounterConditionValues[ref.name] = detail || null;
+        });
+    }
+
+    return Object.fromEntries(
+        uniqueRefs.map(ref => [ref.name, resultCache.encounterConditionValues[ref.name]])
+    );
+}
+
+export async function getEncounterConditionLabelsForRefs(conditionValueRefs, methodNameRaw) {
+    const conditionValueDetails = await getEncounterConditionValueDetails(conditionValueRefs);
+    return formatEncounterConditionLabels(conditionValueRefs, methodNameRaw, conditionValueDetails);
 }
 
 async function mapWithConcurrency(items, limit, mapper) {
@@ -372,17 +433,19 @@ export async function getLocationsForVersion(versionName) {
  * @returns {Promise<Array>} List of locations with name and displayName.
  */
 export async function getLocationsListForVersion(versionName) {
+    if (resultCache.locationLists[versionName]) return resultCache.locationLists[versionName];
     if (resultCache.locations[versionName]) return resultCache.locations[versionName];
 
     try {
         const version = await P.getVersionByName(versionName);
         const versionGroup = await P.getVersionGroupByName(version.version_group.name);
 
-        const locationRefs = [];
-        for (const regionRef of versionGroup.regions) {
-            const region = await P.getRegionByName(regionRef.name);
-            locationRefs.push(...region.locations);
-        }
+        const regions = await Promise.all(
+            versionGroup.regions.map(regionRef => P.getRegionByName(regionRef.name).catch(() => null))
+        );
+        const locationRefs = regions
+            .filter(Boolean)
+            .flatMap(region => region.locations || []);
 
         const finalResult = locationRefs
             .map(ref => ({
@@ -391,8 +454,7 @@ export async function getLocationsListForVersion(versionName) {
             }))
             .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
-        // Note: We don't cache this in resultCache.locations because it's not the "full" verified list.
-        // However, for the dropdown, it's perfect.
+        resultCache.locationLists[versionName] = finalResult;
         return finalResult;
     } catch (error) {
         console.error(`Error fetching locations list for version ${versionName}:`, error);
@@ -422,13 +484,33 @@ export async function getVersionGroups() {
  * @returns {Promise<Object>} Grouped encounters: { methodDisplay: [{ name, sprite, rate }] }.
  */
 export async function getEncounters(versionName, locationName, options = {}) {
-    const cacheKey = `${versionName}-${locationName}`;
+    const optionsCacheKey = JSON.stringify({
+        radar: Boolean(options.radar),
+        swarm: Boolean(options.swarm),
+        time: options.time || null,
+        slot2: options.slot2 || null,
+        radio: options.radio || null
+    });
+    const cacheKey = `${versionName}-${locationName}-${optionsCacheKey}`;
     if (resultCache.encounters[cacheKey]) return resultCache.encounters[cacheKey];
 
     try {
         const location = await P.getLocationByName(locationName);
         const areas = await mapWithConcurrency(location.areas, AREA_FETCH_CONCURRENCY, areaRef =>
             fetchResourceWithRetry(normalizePokeApiPath(areaRef.url))
+        );
+        const conditionValueDetails = await getEncounterConditionValueDetails(
+            areas
+                .filter(area => Array.isArray(area?.pokemon_encounters))
+                .flatMap(area =>
+                    area.pokemon_encounters.flatMap(encounter =>
+                        encounter.version_details
+                            .filter(vd => vd.version.name === versionName)
+                            .flatMap(vd =>
+                                vd.encounter_details.flatMap(detail => detail.condition_values || [])
+                            )
+                    )
+                )
         );
 
         const encountersByArea = {};
@@ -457,12 +539,40 @@ export async function getEncounters(versionName, locationName, options = {}) {
                 const versionDetail = encounter.version_details.find(vd => vd.version.name === versionName);
                 if (versionDetail) {
                     for (const detail of versionDetail.encounter_details) {
-                        const conditionValues = detail.condition_values.map(c => c.name);
+                        const conditionValueRefs = detail.condition_values || [];
+                        const conditionValues = conditionValueRefs.map(c => c.name);
                         let methodDisplayNames = [];
                         const methodNameRaw = detail.method.name;
                         const methodNameFormatted = methodNameRaw.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-                        if (methodNameRaw === 'walk') {
+                        const isGen5 = ['black', 'white', 'black-2', 'white-2'].includes(versionName);
+
+                        if (isGen5) {
+                            const hasRadar = conditionValues.includes('radar-on');
+                            const hasSwarm = conditionValues.includes('swarm-yes');
+                            // Skip if conditions don't match UI options (even if non-walk in Gen 5)
+                            if (hasRadar && !options.radar) continue;
+                            if (hasSwarm && !options.swarm) continue;
+
+                            const hasSpring = conditionValues.includes('season-spring');
+                            const hasSummer = conditionValues.includes('season-summer');
+                            const hasAutumn = conditionValues.includes('season-autumn');
+                            const hasWinter = conditionValues.includes('season-winter');
+                            
+                            const methodBase = methodNameRaw === 'walk' ? 'Walk' : methodNameFormatted;
+
+                            if (!hasSpring && !hasSummer && !hasAutumn && !hasWinter) {
+                                methodDisplayNames.push(`${methodBase} - Spring 🌱`);
+                                methodDisplayNames.push(`${methodBase} - Summer ☀️`);
+                                methodDisplayNames.push(`${methodBase} - Autumn 🍂`);
+                                methodDisplayNames.push(`${methodBase} - Winter ❄️`);
+                            } else {
+                                if (hasSpring) methodDisplayNames.push(`${methodBase} - Spring 🌱`);
+                                if (hasSummer) methodDisplayNames.push(`${methodBase} - Summer ☀️`);
+                                if (hasAutumn) methodDisplayNames.push(`${methodBase} - Autumn 🍂`);
+                                if (hasWinter) methodDisplayNames.push(`${methodBase} - Winter ❄️`);
+                            }
+                        } else if (methodNameRaw === 'walk') {
                             // Only filter conditional walk encounters when a UI option is not selected.
                             // This prevents unrelated games (e.g., XY) from losing valid area data.
                             const hasRadar = conditionValues.includes('radar-on');
@@ -510,7 +620,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             methodDisplayNames.push(methodNameFormatted);
                         }
 
-                        const conditionLabels = formatEncounterConditionLabels(conditionValues, methodNameRaw);
+                        const conditionLabels = formatEncounterConditionLabels(conditionValueRefs, methodNameRaw, conditionValueDetails);
                         for (const methodKey of methodDisplayNames) {
                             if (!encountersByArea[areaNameDisplay][methodKey]) {
                                 encountersByArea[areaNameDisplay][methodKey] = new Map();
@@ -559,12 +669,54 @@ export async function getEncounters(versionName, locationName, options = {}) {
 
         const finalGrouped = {};
         const sortedAreaEntries = areaEntries.sort((a, b) => a.id - b.id);
+        const SEASONS = ['Spring 🌱', 'Summer ☀️', 'Autumn 🍂', 'Winter ❄️'];
+
         for (const areaEntry of sortedAreaEntries) {
             const areaName = areaEntry.name;
             const methods = encountersByArea[areaName];
             if (methods && Object.keys(methods).length > 0) {
+                // Pre-process methodOrderByArea to ensure all 4 seasons exist for any base method if one does
+                const orderedMethods = [...methodOrderByArea[areaName]];
+                
+                // Find all base methods that have a season
+                const baseMethodsWithSeasons = new Set();
+                for (const method of orderedMethods) {
+                    for (const season of SEASONS) {
+                        if (method.endsWith(` - ${season}`)) {
+                            baseMethodsWithSeasons.add(method.replace(` - ${season}`, ''));
+                        }
+                    }
+                }
+
+                // Inject missing seasons
+                const finalOrder = [];
+                const seenMethods = new Set();
+                for (const method of orderedMethods) {
+                    let handled = false;
+                    for (const season of SEASONS) {
+                        if (method.endsWith(` - ${season}`)) {
+                            const base = method.replace(` - ${season}`, '');
+                            // If we encounter a seasonal method, emit ALL 4 seasons right then (if not already done)
+                            if (!seenMethods.has(`${base} - Spring 🌱`)) {
+                                SEASONS.forEach(s => {
+                                    const m = `${base} - ${s}`;
+                                    finalOrder.push(m);
+                                    seenMethods.add(m);
+                                    if (!methods[m]) methods[m] = new Map();
+                                });
+                            }
+                            handled = true;
+                            break;
+                        }
+                    }
+                    if (!handled) {
+                        finalOrder.push(method);
+                        seenMethods.add(method);
+                    }
+                }
+
                 finalGrouped[areaName] = {};
-                for (const method of methodOrderByArea[areaName]) {
+                for (const method of finalOrder) {
                     const map = methods[method];
                     finalGrouped[areaName][method] = Array.from(map.entries()).map(([name, data]) => ({
                         name: name,
@@ -572,6 +724,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
                         sprite: spriteMap.get(name).normal,
                         shinySprite: spriteMap.get(name).shiny,
                         rate: data.sumChance,
+                        conditionTexts: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions) : [],
                         conditionText: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions).join(', ') : null
                     })).sort((a, b) => b.rate - a.rate);
                 }

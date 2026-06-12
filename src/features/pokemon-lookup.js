@@ -364,6 +364,7 @@ export async function initPokemonLookup(appContainer) {
                 <thead class="bg-gray-50 dark:bg-gray-900/50 text-gray-700 dark:text-gray-400">
                   <tr>
                     <th class="px-3 py-1.5">Method</th>
+                    <th class="px-3 py-1.5">Conditions</th>
                     <th class="px-3 py-1.5">Level</th>
                     <th class="px-3 py-1.5 text-right">Rate</th>
                   </tr>
@@ -372,8 +373,16 @@ export async function initPokemonLookup(appContainer) {
                   ${encounters.map(e => `
                     <tr class="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
                       <td class="px-3 py-1.5 font-medium text-gray-800 dark:text-gray-200">${e.method}</td>
-                      <td class="px-3 py-1.5">${e.minLevel}${e.minLevel === e.maxLevel ? '' : '-' + e.maxLevel}</td>
-                      <td class="px-3 py-1.5 text-right font-mono text-[#ef4444] dark:text-red-300">${e.chance}%</td>
+                      <td class="px-3 py-1.5">
+                        ${e.chance === 0 ? '<span class="text-gray-400 dark:text-gray-500 italic">No Encounters</span>' :
+                          Array.isArray(e.conditionTexts) && e.conditionTexts.length > 0 ? `
+                          <ul class="list-disc list-outside pl-4 space-y-1 text-[11px] leading-snug italic">
+                            ${e.conditionTexts.map(conditionText => `<li>${escapeHtml(conditionText)}</li>`).join('')}
+                          </ul>
+                        ` : '<span class="text-gray-400 dark:text-gray-500">-</span>'}
+                      </td>
+                      <td class="px-3 py-1.5">${e.chance === 0 ? '-' : (e.minLevel + (e.minLevel === e.maxLevel ? '' : '-' + e.maxLevel))}</td>
+                      <td class="px-3 py-1.5 text-right font-mono text-[#ef4444] dark:text-red-300">${e.chance === 0 ? '-' : e.chance + '%'}</td>
                     </tr>
                   `).join('')}
                 </tbody>

@@ -265,7 +265,7 @@ const renderPage = () => {
           
           <div class="tool-previews w-full">
             <!-- Pokemon Lookup -->
-            <div class="tool-card anim-fade-in shadow-2xl">
+            <a href="/pokemon-lookup" class="tool-card anim-fade-in shadow-2xl">
               <div class="tool-image bg-lookup">
                 <div class="tool-overlay" id="lookup-tool-overlay">
                   <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
@@ -273,13 +273,11 @@ const renderPage = () => {
               </div>
               <div class="tool-content">
                 <h3>Pokémon Lookup</h3>
-                <p>Find every location where any Pokémon can be encountered across all games, complete with encounter rates and level ranges!</p>
-                <a href="/pokemon-lookup" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
-            </div>
+            </a>
 
             <!-- Encounter Calculator -->
-            <div class="tool-card anim-fade-in shadow-2xl">
+            <a href="/encounter" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.1s">
               <div class="tool-image bg-encounter">
                 <div class="tool-overlay">
                   <img src="${grassSprite}" class="anim-rustle-periodic" />
@@ -287,13 +285,11 @@ const renderPage = () => {
               </div>
               <div class="tool-content">
                 <h3>Encounter Calculator</h3>
-                <p>Plan your hunt by discovering exactly which Pokémon appear in any game, location, and area!</p>
-                <a href="/encounter" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
-            </div>
+            </a>
 
             <!-- Catch Rate Calculator -->
-            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.2s">
+            <a href="/catch-rate" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.2s">
               <div class="tool-image bg-catch">
                 <div class="tool-overlay">
                   <img src="${pokeballSprite}" class="anim-pokeball-shake-periodic" />
@@ -301,13 +297,11 @@ const renderPage = () => {
               </div>
               <div class="tool-content">
                 <h3>Catch Rate Calculator</h3>
-                <p>Never waste a Poke Ball again! Calculate your precise capture probabilities across all generations!</p>
-                <a href="/catch-rate" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
-            </div>
+            </a>
 
             <!-- Shiny Odds Calculator -->
-            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.4s">
+            <a href="/shiny-odds" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.3s">
               <div class="tool-image bg-shiny">
                 <div class="tool-overlay" id="shiny-tool-overlay">
                   <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
@@ -315,26 +309,50 @@ const renderPage = () => {
               </div>
               <div class="tool-content">
                 <h3>Shiny Odds Calculator</h3>
-                <p>Check your shiny hunting efficiency! Calculate odds for various methods across all generations!</p>
-                <a href="/shiny-odds" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
               </div>
-            </div>
-
+            </a>
+            
             <!-- Ribbon Tracker -->
-            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.6s">
+            <a href="/ribbon-tracker" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.6s">
               <div class="tool-image bg-ribbon">
+              <svg class="anim-check-periodic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <path class="checkmark-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              </svg>  
                 <div class="tool-overlay flex items-center justify-center" id="ribbon-tool-overlay">
                   <div class="animate-pulse w-24 h-24 bg-white/20 rounded-full"></div>
                 </div>
               </div>
               <div class="tool-content">
                 <h3>Ribbon Tracker</h3>
-                <p>Track every ribbon and mark for your battle-hardened companions across all generations!</p>
-                <a href="/ribbon-tracker" class="tool-cta" style="background-color: #ef4444">Try it now!</a>
               </div>
-            </div>
+            </a>
 
-            <div class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.8s">
+            <!-- SOS Move Tracker -->
+            <a href="/sos-tracker" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.4s">
+              <div class="tool-image bg-sos">
+                <div class="tool-overlay flex items-center justify-center">
+                  <i class="fas fa-crosshairs text-white text-5xl opacity-80 drop-shadow-md"></i>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>SOS Move Tracker</h3>
+              </div>
+            </a>
+
+            <!-- MMO Permutations -->
+            <a href="/mmo-permutations" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.5s">
+              <div class="tool-image bg-mmo">
+                <div class="tool-overlay flex items-center justify-center">
+                  <i class="fas fa-project-diagram text-white text-5xl opacity-80 drop-shadow-md"></i>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>MMO Permutations</h3>
+              </div>
+            </a>
+
+            <!-- Shiny Bingo Generator -->
+            <a href="/shiny-bingo" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.7s">
               <div class="tool-image bg-bingo">
                 <div class="tool-overlay flex items-center justify-center">
                   <div class="relative">
@@ -354,11 +372,26 @@ const renderPage = () => {
               </div>
               <div class="tool-content">
                 <h3>Shiny Bingo Generator</h3>
-                <p>Generate a shiny-hunting bingo board, set your targets, and export your challenge card as a PNG.</p>
-                <a href="/shiny-bingo" class="tool-cta" style="background-color: #f59e0b">Try it now!</a>
+              </div>
+            </a>
+          </div>
+
+          <!-- Separator and Event Calendar Section -->
+          <hr class="w-full border-t border-gray-200 dark:border-gray-800 my-16" />
+          <section class="calendar-section max-w-4xl w-full" style="margin-top: -1rem;">
+            <h2 class="text-3xl font-extrabold tracking-tight text-black dark:text-white mb-2 text-center md:text-left">
+              Upcoming Events Calendar
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 text-center md:text-left">
+              Keep track of key dates, seasonal community gatherings, and general holidays.
+            </p>
+
+            <div class="calendar-container" id="events-calendar-container">
+              <div class="flex items-center justify-center p-8 w-full h-full min-h-[300px]">
+                <span class="anim-loading-dots text-gray-500">Loading events calendar</span>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       `;
 
@@ -581,8 +614,48 @@ const renderPage = () => {
     const ribbonImage = getRandomRibbonMarkImage();
     if (ribbonOverlay && ribbonImage) {
       ribbonOverlay.innerHTML = `
-        <img src="${ribbonImage}" class="relative z-10 w-24 h-24 object-contain anim-rustle-periodic drop-shadow-lg" alt="Random ribbon or mark" />
+        <img src="${ribbonImage}" class="relative z-10 w-24 h-24 object-contain drop-shadow-lg" alt="Random ribbon or mark" />
       `;
+    }
+
+    // Fetch dynamic calendar sources from Google Spreadsheet CSV
+    const calendarContainer = document.querySelector('#events-calendar-container');
+    if (calendarContainer) {
+      fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS-6t0nVQ9R0GieMDcstPUV2oE-351b0m7e7xsJd7ngF2VFeMniyomWBCBPDc5e9g4bNJ2Cs-S4IsPL/pub?gid=0&single=true&output=csv')
+        .then(r => r.text())
+        .then(csv => {
+          const lines = csv.split(/\r?\n/);
+          const srcs = [];
+          lines.forEach(line => {
+            const val = line.trim();
+            if (!val) return;
+            if (val.includes('calendar.google.com/calendar/embed')) {
+              try {
+                if (val.includes('?')) {
+                  const query = val.split('?')[1];
+                  const params = new URLSearchParams(query);
+                  params.getAll('src').forEach(s => srcs.push(s));
+                }
+              } catch (e) {
+                console.error('Failed to parse URL:', e);
+              }
+            } else if (val.includes('@')) {
+              srcs.push(val);
+            }
+          });
+
+          if (srcs.length === 0) {
+            srcs.push('itsmejojitcg@gmail.com');
+          }
+
+          const srcParams = srcs.map(s => `src=${encodeURIComponent(s)}`).join('&');
+          const embedUrl = `https://calendar.google.com/calendar/embed?showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0&ctz=America%2FLos_Angeles&${srcParams}&color=%230F86FE`;
+          calendarContainer.innerHTML = `<iframe src="${embedUrl}" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>`;
+        })
+        .catch(err => {
+          console.error('Error loading calendars:', err);
+          calendarContainer.innerHTML = `<iframe src="https://calendar.google.com/calendar/embed?src=itsmejojitcg%40gmail.com&ctz=America%2FLos_Angeles" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>`;
+        });
     }
   } else if (path === '/encounter') {
     initEncounterCalc(document.querySelector('#encounter-calc-container'));
