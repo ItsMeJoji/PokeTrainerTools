@@ -429,6 +429,12 @@ const renderPage = () => {
                     As a solo developer, I handle everything from coding to design, and I'm always looking for ways to improve and expand the tools based on user feedback. 
                     <br><br>
                     If you got suggestions, ideas, or just want to say hi, feel free to reach out to me on <a href="https://twitter.com/ItsMeJoji" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">Twitter</a> or <a href="https://bsky.app/profile/itsmejoji.bsky.social" target="_blank" rel="noopener noreferrer" class="brand-link hover:underline">Bluesky</a>!
+                    <br><br>
+                    If you'd like to support the site, consider donating via Ko-Fi!
+                    <a href='https://ko-fi.com/D1D2ZYR3P' target='_blank'>
+                      <img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+                    </a>
+                    <br><br>
                   </p>
                 </div>
               </div>
@@ -467,7 +473,7 @@ const renderPage = () => {
 
             <section>
               <h2 class="text-2xl font-bold text-black dark:text-white mb-2">Third-Party Advertising and Cookies</h2>
-              <p>While we don't collect cookies ourselves, we use Google AdSense to serve advertisements. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the Internet.</p>
+              <p>We do not host ads on our site. This means we do not use cookies or other tracking technologies to serve personalized advertisements.</p>
               <br>
               <p>You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" class="brand-link hover:underline">Google Ad Settings</a>.</p>
             </section>
@@ -557,6 +563,9 @@ const renderPage = () => {
                 </a>
                 <a href="https://twitch.tv/itsmejoji" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-md hover:scale-110 transition-all border border-gray-200 dark:border-gray-700" title="Twitch">
                   <i class="fab fa-twitch text-xl"></i>
+                </a>
+                <a href='https://ko-fi.com/D1D2ZYR3P' target='_blank'>
+                  <img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' />
                 </a>
               </div>
             </div>
