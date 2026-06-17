@@ -31,7 +31,7 @@ export async function initEncounterCalc(appContainer) {
       </details>
       
       <!-- Selections Container -->
-      <div id="selection-container" class="space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
+      <div id="selection-container" class="relative z-20 space-y-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transition-all duration-300">
         <!-- Game Selection -->
         <div id="game-select-container">
           ${getSearchableDropdownHtml('game-dropdown', 'Select Game', 'Search games...')}
@@ -438,32 +438,34 @@ export async function initEncounterCalc(appContainer) {
       const methodHtml = Object.entries(methods).map(([method, pokemon]) => `
         <div class="method-section w-full max-w-4xl mb-8 last:mb-0">
           <h3 class="text-xl font-bold mb-4 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2 text-left ml-4">${method}</h3>
-            ${pokemon.length > 0 ? pokemon.map(p => `
-              <div class="pokemon-card relative flex flex-col items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 w-40 sm:w-52 transition-transform hover:scale-105 cursor-pointer select-none">
-                <img 
-                  src="${p.sprite || unknownSprite}" 
-                  data-normal="${p.sprite || unknownSprite}"
-                  data-shiny="${p.shinySprite || 'null'}"
-                  alt="${p.displayName}" 
-                  class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-2 transition-opacity duration-200" 
-                />
-                <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">${p.displayName}</span>
-                <span class="text-xs font-mono px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-100 rounded-full">${p.rate}%</span>
-                ${Array.isArray(p.conditionTexts) && p.conditionTexts.length > 0 ? `
-                  <ul class="mt-2 w-full list-disc list-outside pl-4 space-y-1 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
-                    ${p.conditionTexts.map(conditionText => `<li>${conditionText}</li>`).join('')}
-                  </ul>
-                ` : p.conditionText ? `
-                  <ul class="mt-2 w-full list-disc list-outside pl-4 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
-                    <li>${escapeHtml(p.conditionText)}</li>
-                  </ul>
-                ` : ''}
-              </div>
-            `).join('') : `
-              <div class="flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 w-full max-w-sm">
-                <span class="text-gray-500 dark:text-gray-400 font-medium italic">No encounters</span>
-              </div>
-            `}
+             <div class="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto">
+               ${pokemon.length > 0 ? pokemon.map(p => `
+                 <div class="pokemon-card relative flex flex-col items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 w-40 sm:w-52 transition-transform hover:scale-105 cursor-pointer select-none">
+                   <img 
+                     src="${p.sprite || unknownSprite}" 
+                     data-normal="${p.sprite || unknownSprite}"
+                     data-shiny="${p.shinySprite || 'null'}"
+                     alt="${p.displayName}" 
+                     class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-2 transition-opacity duration-200" 
+                   />
+                   <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">${p.displayName}</span>
+                   <span class="text-xs font-mono px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-100 rounded-full">${p.rate}%</span>
+                   ${Array.isArray(p.conditionTexts) && p.conditionTexts.length > 0 ? `
+                     <ul class="mt-2 w-full list-disc list-outside pl-4 space-y-1 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
+                       ${p.conditionTexts.map(conditionText => `<li>${conditionText}</li>`).join('')}
+                     </ul>
+                   ` : p.conditionText ? `
+                     <ul class="mt-2 w-full list-disc list-outside pl-4 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
+                       <li>${escapeHtml(p.conditionText)}</li>
+                     </ul>
+                   ` : ''}
+                 </div>
+               `).join('') : `
+                 <div class="flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 w-full max-w-sm mx-auto">
+                   <span class="text-gray-500 dark:text-gray-400 font-medium italic">No encounters</span>
+                 </div>
+               `}
+             </div>
           </div>
         </div>
       `).join('');
