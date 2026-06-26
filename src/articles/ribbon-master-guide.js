@@ -36,7 +36,7 @@ export function initRibbonMasterGuide(container) {
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-6 flex items-center gap-3">
             <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
-            Choosing Your Candidate
+            Choosing Your Starting Point
           </h2>
           <div class="space-y-6">
             <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Most Ribbon Master runs start in <span class="font-bold text-gray-600 dark:text-gray-400">Generation 3</span> (GameCube or GBA) to maximize total ribbon count. Some players begin with <span class="font-bold text-[#ef4444] dark:text-red-300">Shadow Pokemon</span> from Colosseum or XD for access to exclusive ribbons.</p>
@@ -46,14 +46,19 @@ export function initRibbonMasterGuide(container) {
               <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 <li class="flex items-start gap-2">
                   <span class="text-[#facc15] font-bold">•</span>
-                  <span><span class="font-bold text-gray-800 dark:text-gray-200">National Ribbon:</span> Only obtainable by Shadow Pokémon in Colosseum/XD.</span>
+                  <span><span class="font-bold text-gray-800 dark:text-gray-200">Kanto:</span> If you're wanting to Ribbon Master a Gen 1 Pokemon, this is the usual starting point.</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-[#facc15] font-bold">•</span>
-                  <span><span class="font-bold text-gray-800 dark:text-gray-200">Earth Ribbon:</span> Reward for 100 consecutive wins at Mt. Battle in the GameCube games.</span>
+                  <span><span class="font-bold text-gray-800 dark:text-gray-200">Hoenn:</span> With a pool of Gen 1 to 3 Pokemon, this is a great starting point for almost any Pokemon.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-[#facc15] font-bold">•</span>
+                  <span><span class="font-bold text-gray-800 dark:text-gray-200">Orre:</span> If you're looking for a more challenging experience, Pokemon Colosseum/XD offer a smaller pool of Pokemon, but have the Exclusive National Ribbon if you get a Shiny Shadow Pokemon.</span>
                 </li>
               </ul>
             </div>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">While these are the starting points if you're trying to get as many ribbons as possible, you can start at any Game and still quailify for Ribbon Master status, as long as you meet the requirements.</p>
           </div>
         </section>
 

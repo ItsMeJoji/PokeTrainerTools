@@ -56,6 +56,31 @@ export function initSosHuntingGuide(container) {
           </div>
         </section>
 
+        <!-- Section: Edge Cases -->
+        <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
+          <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
+            Set-up for Edge Cases
+          </h2>
+          <div class="space-y-4">
+            <p class="text-gray-600 dark:text-gray-400">There are cases where the standard SOS Setup will not work, so here are some alternative setups.</p>
+            
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
+              <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">Mimikyu</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-2">Because of its ability <span class="font-bold">Disguise</span> not being able to get Skill Swapped, we need to use an alternative method.</p>
+              <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 ml-4 space-y-1">
+                <li><span class="font-bold">Mimikyu must be Lv 31 or lower</span> so it can have Mimic.</li>
+                <li><span class="font-bold">Spam Recycle</span> until Mimikyu copies it, and then you can move on.</li>
+                <li><span class="font-bold">Trick your Leppa Berry to Mimikyu</span> so now it will more likely Recycle the Leppa Berry.</li>
+              </ul>
+            <br>
+            <p class="text-gray-600 dark:text-gray-400">You can now proceed with the SOS Hunt. I suggest also bringing a Pokemon with Mold breaker to speed up the process.</p>
+            <br>
+            <p class="text-gray-600 dark:text-gray-400">Take note that Mimikyu might still fail to Recycle correctly and Struggle instead...</p>
+            </div>
+          </div>
+        </section>
+
         <!-- SOS Move Tracker CTA Section -->
         <section class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-center transform transition hover:scale-[1.01] flex flex-col items-center">
           <h2 class="text-3xl font-extrabold text-black dark:text-white mb-4">Track Wild Pokémon PP</h2>

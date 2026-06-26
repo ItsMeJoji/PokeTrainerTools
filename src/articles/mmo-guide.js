@@ -15,10 +15,10 @@ export function initMmoGuide(container) {
             What are Massive Mass Outbreaks?
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg mb-4">
-            Introduced in the <span class="font-bold text-gray-800 dark:text-gray-200">Daybreak Update</span> for Pokémon Legends: Arceus, Massive Mass Outbreaks (MMO) are events where multiple outbreaks appear simultaneously across a map.
+            Introduced in the <span class="font-bold text-gray-800 dark:text-gray-200">Daybreak Update</span> for Pokemon Legends: Arceus, Massive Mass Outbreaks (MMO) is when multiple outbreaks appear simultaneously across a map, usually with a storm occurring.
           </p>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
-            Unlike standard Mass Outbreaks, MMOs have a "Wave 2" system where clearing or thinning out the first wave can trigger a second, higher-tier wave of Pokémon (often evolved forms or Alpha Pokémon).
+            Unlike standard Mass Outbreaks, MMOs can have a "Second Outbreak" chance where clearing out the first Outbreak (by either catching, KOing, or scaring the Pokemon) can trigger a second Outbreak of either Evolved or Alpha Pokemon. Outbreaks are more likely to spawn when indicated with a Sparkle on the Outbreak Icon on the map.
           </p>
         </section>
 
@@ -29,13 +29,13 @@ export function initMmoGuide(container) {
             How the Permutations Work
           </h2>
           <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-            The game determines the spawns for Waves based on <span class="font-bold italic">how</span> you clear the Pokémon in a given Wave. By changing the sequence of catches and multi-battles, you can "seed" different results for the next spawns in a Wave.
+            The game determines the spawns for an Outbreak based on how you clear the Pokemon. By changing the sequence of catches and KOs, you can create different results for the next spawns in a Outbreak. Plus this works on the Second Outbreak as well!
           </p>
           
           <div class="grid md:grid-cols-2 gap-6">
             <div class="brand-panel-yellow p-6">
               <h3 class="text-xl font-bold brand-text-yellow mb-2">Individual Catches (C1, C2, C3, C4)</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Catching Pokémon one-by-one advances the "reserve" queue linearly. This is the most common way to progress an outbreak.</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Catching Pokemon one-by-one advances the "reserve" queue linearly. This is the most common way to progress an outbreak.</p>
             </div>
             <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-800">
               <h3 class="text-xl font-bold text-red-900 dark:text-red-200 mb-2">Multi-Battles (KO2, KO3, KO4)</h3>
@@ -53,24 +53,24 @@ export function initMmoGuide(container) {
           <ol class="space-y-4">
             <li class="flex gap-4">
               <span class="flex-shrink-0 w-8 h-8 brand-step-badge rounded-full flex items-center justify-center font-bold">1</span>
-              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Save at the Jubilife Gate</span>. This is your "backup" save in case the MMO despawns or you want to hunt a different one.</p>
+              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Save at the Jubilife Gate</span>: This is your "backup" save in case the MMO despawns or you want to hunt a different one.</p>
             </li>
             <li class="flex gap-4">
               <span class="flex-shrink-0 w-8 h-8 brand-step-badge rounded-full flex items-center justify-center font-bold">2</span>
-              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Save at the MMO</span>. Once you find an outbreak you want to permutate, fly to it and <span class="font-bold border-b border-[#facc15]">save your game</span> right there. You don't need to go back to Jubilife after every reset!</p>
+              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Save at the MMO</span>: Once you find an outbreak you want to permutate, fly to it and <span class="font-bold border-b border-[#facc15]">save your game</span> right there. You don't need to go back to Jubilife after every reset!</p>
             </li>
             <li class="flex gap-4">
               <span class="flex-shrink-0 w-8 h-8 brand-step-badge rounded-full flex items-center justify-center font-bold">3</span>
-              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Execute a Path</span> from our Permutations tool. If no shiny appears in Wave 1 or Wave 2, <span class="font-bold border-b border-red-500">reset your game</span> to your on-site save.</p>
+              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Do a Permutation</span>: Follow the first Permutation from our Permutations tool. If no shiny appears in Outbreak 1 (or Outbreak 2), <span class="font-bold border-b border-red-500">reset your game</span> to your on-site save.</p>
             </li>
             <li class="flex gap-4">
               <span class="flex-shrink-0 w-8 h-8 brand-step-badge rounded-full flex items-center justify-center font-bold">4</span>
-              <p class="text-gray-600 dark:text-gray-400">Mark that path as <span class="font-bold text-green-600">Completed</span> and try the next one in the list.</p>
+              <p class="text-gray-600 dark:text-gray-400"><span class="font-bold text-gray-800 dark:text-gray-200">Move to the Next</span>: Mark that Permutation as <span class="font-bold text-green-600">Completed</span> and try the next one in the list.</p>
             </li>
           </ol>
         </section>
 
-        <!-- Section: Wave 1 vs Wave 2 -->
+        <!-- Section: Outbreak 1 vs Outbreak 2 -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
             <span class="w-1.5 h-8 brand-marker-yellow rounded-full"></span>
@@ -78,10 +78,10 @@ export function initMmoGuide(container) {
           </h2>
           <div class="space-y-4 text-gray-600 dark:text-gray-400">
             <p>
-              <span class="font-bold">Wave 1</span> typically has 8 to 10 spawns. This is your initial encounter.
+              <span class="font-bold">Outbreak 1</span> typically has 8 to 10 spawns. This is your initial Outbreak, if this ones has a chance of spawning a second. If you're looking for a Shiny Pokemon, this is usually where you want to do the most Permuations.
             </p>
             <p>
-              <span class="font-bold">Wave 2</span> typically has 6 or 7 spawns. These are the "Bonus" spawns triggered by clearing Wave 1. Since these spawns are generated <span class="italic">after</span> you clear the field, your actions in Wave 1 are what determine the exact individuals that appear in Wave 2.
+              <span class="font-bold">Outbreak 2</span> typically has 6 or 7 spawns. This Outbreak is a "bonus" Outbreak triggered by clearing Outbreal 1, but not always guaranteed. It is more likely to occur if the Outbreak Icon has a Sparkle on it.
             </p>
           </div>
         </section>
