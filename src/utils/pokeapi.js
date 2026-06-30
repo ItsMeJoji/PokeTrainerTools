@@ -5,8 +5,7 @@ const LOCAL_POKEAPI_HOSTNAMES = ['localhost', '127.0.0.1'];
 const LOCAL_POKEAPI_URL = 'http://localhost:8000/api/v2/';
 const DEFAULT_POKEAPI_URL = 'https://pokeapi.co/api/v2/';
 
-//const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
-const useLocalApi = false;
+const useLocalApi = LOCAL_POKEAPI_HOSTNAMES.includes(window.location.hostname);
 const apiUrl = useLocalApi ? LOCAL_POKEAPI_URL : DEFAULT_POKEAPI_URL;
 const parsedApiUrl = new URL(apiUrl);
 
@@ -304,6 +303,18 @@ export async function getVersions() {
  */
 export async function getLocationsForVersion(versionName) {
     if (resultCache.locations[versionName]) return resultCache.locations[versionName];
+
+    try {
+        const locationsData = (await import('../data/locations.json')).default;
+        if (locationsData && locationsData[versionName] && locationsData[versionName].length > 0) {
+            logPathDebug(`getLocationsForVersion(${versionName}) using static json data`, { count: locationsData[versionName].length });
+            resultCache.locations[versionName] = locationsData[versionName];
+            return locationsData[versionName];
+        }
+    } catch (e) {
+        console.warn('Failed to load static locations json, falling back to PokeAPI cache/network.', e);
+    }
+
     const cached = await getCachedLocations(versionName);
     if (cached) {
         logPathDebug(`getLocationsForVersion(${versionName}) using cached list`, { count: cached.length });
@@ -558,7 +569,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             const hasSummer = conditionValues.includes('season-summer');
                             const hasAutumn = conditionValues.includes('season-autumn');
                             const hasWinter = conditionValues.includes('season-winter');
-                            
+
                             const methodBase = methodNameRaw === 'walk' ? 'Walk' : methodNameFormatted;
 
                             if (!hasSpring && !hasSummer && !hasAutumn && !hasWinter) {
@@ -677,7 +688,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
             if (methods && Object.keys(methods).length > 0) {
                 // Pre-process methodOrderByArea to ensure all 4 seasons exist for any base method if one does
                 const orderedMethods = [...methodOrderByArea[areaName]];
-                
+
                 // Find all base methods that have a season
                 const baseMethodsWithSeasons = new Set();
                 for (const method of orderedMethods) {

@@ -1,0 +1,8372 @@
+{
+  "red": [
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "kanto-underground-path",
+      "displayName": "Kanto Underground Path"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "kanto-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    }
+  ],
+  "blue": [
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "kanto-underground-path",
+      "displayName": "Kanto Underground Path"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "kanto-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    }
+  ],
+  "yellow": [
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "kanto-underground-path",
+      "displayName": "Kanto Underground Path"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "kanto-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    }
+  ],
+  "gold": [
+    {
+      "name": "azalea-town",
+      "displayName": "Azalea Town"
+    },
+    {
+      "name": "bell-tower",
+      "displayName": "Bell Tower"
+    },
+    {
+      "name": "blackthorn-city",
+      "displayName": "Blackthorn City"
+    },
+    {
+      "name": "burned-tower",
+      "displayName": "Burned Tower"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cherrygrove-city",
+      "displayName": "Cherrygrove City"
+    },
+    {
+      "name": "cianwood-city",
+      "displayName": "Cianwood City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "dark-cave",
+      "displayName": "Dark Cave"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dragons-den",
+      "displayName": "Dragon's Den"
+    },
+    {
+      "name": "ecruteak-city",
+      "displayName": "Ecruteak City"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "goldenrod-city",
+      "displayName": "Goldenrod City"
+    },
+    {
+      "name": "ice-path",
+      "displayName": "Ice Path"
+    },
+    {
+      "name": "ilex-forest",
+      "displayName": "Ilex Forest"
+    },
+    {
+      "name": "lake-of-rage",
+      "displayName": "Lake of Rage"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "mt-mortar",
+      "displayName": "Mt. Mortar"
+    },
+    {
+      "name": "mt-silver",
+      "displayName": "Mt. Silver"
+    },
+    {
+      "name": "national-park",
+      "displayName": "National Park"
+    },
+    {
+      "name": "new-bark-town",
+      "displayName": "New Bark Town"
+    },
+    {
+      "name": "olivine-city",
+      "displayName": "Olivine City"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pewter-city",
+      "displayName": "Pewter City"
+    },
+    {
+      "name": "roaming-johto",
+      "displayName": "Roaming Johto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-26",
+      "displayName": "Route 26"
+    },
+    {
+      "name": "kanto-route-27",
+      "displayName": "Route 27"
+    },
+    {
+      "name": "kanto-route-28",
+      "displayName": "Route 28"
+    },
+    {
+      "name": "johto-route-29",
+      "displayName": "Route 29"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "johto-route-30",
+      "displayName": "Route 30"
+    },
+    {
+      "name": "johto-route-31",
+      "displayName": "Route 31"
+    },
+    {
+      "name": "johto-route-32",
+      "displayName": "Route 32"
+    },
+    {
+      "name": "johto-route-33",
+      "displayName": "Route 33"
+    },
+    {
+      "name": "johto-route-34",
+      "displayName": "Route 34"
+    },
+    {
+      "name": "johto-route-35",
+      "displayName": "Route 35"
+    },
+    {
+      "name": "johto-route-36",
+      "displayName": "Route 36"
+    },
+    {
+      "name": "johto-route-37",
+      "displayName": "Route 37"
+    },
+    {
+      "name": "johto-route-38",
+      "displayName": "Route 38"
+    },
+    {
+      "name": "johto-route-39",
+      "displayName": "Route 39"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "johto-route-42",
+      "displayName": "Route 42"
+    },
+    {
+      "name": "johto-route-43",
+      "displayName": "Route 43"
+    },
+    {
+      "name": "johto-route-44",
+      "displayName": "Route 44"
+    },
+    {
+      "name": "johto-route-45",
+      "displayName": "Route 45"
+    },
+    {
+      "name": "johto-route-46",
+      "displayName": "Route 46"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruins-of-alph",
+      "displayName": "Ruins of Alph"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "johto-sea-route-40",
+      "displayName": "Sea Route 40"
+    },
+    {
+      "name": "johto-sea-route-41",
+      "displayName": "Sea Route 41"
+    },
+    {
+      "name": "slowpoke-well",
+      "displayName": "Slowpoke Well"
+    },
+    {
+      "name": "sprout-tower",
+      "displayName": "Sprout Tower"
+    },
+    {
+      "name": "team-rocket-hq",
+      "displayName": "Team Rocket HQ"
+    },
+    {
+      "name": "tohjo-falls",
+      "displayName": "Tohjo Falls"
+    },
+    {
+      "name": "union-cave",
+      "displayName": "Union Cave"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "violet-city",
+      "displayName": "Violet City"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "whirl-islands",
+      "displayName": "Whirl Islands"
+    }
+  ],
+  "silver": [
+    {
+      "name": "azalea-town",
+      "displayName": "Azalea Town"
+    },
+    {
+      "name": "bell-tower",
+      "displayName": "Bell Tower"
+    },
+    {
+      "name": "blackthorn-city",
+      "displayName": "Blackthorn City"
+    },
+    {
+      "name": "burned-tower",
+      "displayName": "Burned Tower"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cherrygrove-city",
+      "displayName": "Cherrygrove City"
+    },
+    {
+      "name": "cianwood-city",
+      "displayName": "Cianwood City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "dark-cave",
+      "displayName": "Dark Cave"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dragons-den",
+      "displayName": "Dragon's Den"
+    },
+    {
+      "name": "ecruteak-city",
+      "displayName": "Ecruteak City"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "goldenrod-city",
+      "displayName": "Goldenrod City"
+    },
+    {
+      "name": "ice-path",
+      "displayName": "Ice Path"
+    },
+    {
+      "name": "ilex-forest",
+      "displayName": "Ilex Forest"
+    },
+    {
+      "name": "lake-of-rage",
+      "displayName": "Lake of Rage"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "mt-mortar",
+      "displayName": "Mt. Mortar"
+    },
+    {
+      "name": "mt-silver",
+      "displayName": "Mt. Silver"
+    },
+    {
+      "name": "national-park",
+      "displayName": "National Park"
+    },
+    {
+      "name": "new-bark-town",
+      "displayName": "New Bark Town"
+    },
+    {
+      "name": "olivine-city",
+      "displayName": "Olivine City"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pewter-city",
+      "displayName": "Pewter City"
+    },
+    {
+      "name": "roaming-johto",
+      "displayName": "Roaming Johto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-26",
+      "displayName": "Route 26"
+    },
+    {
+      "name": "kanto-route-27",
+      "displayName": "Route 27"
+    },
+    {
+      "name": "kanto-route-28",
+      "displayName": "Route 28"
+    },
+    {
+      "name": "johto-route-29",
+      "displayName": "Route 29"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "johto-route-30",
+      "displayName": "Route 30"
+    },
+    {
+      "name": "johto-route-31",
+      "displayName": "Route 31"
+    },
+    {
+      "name": "johto-route-32",
+      "displayName": "Route 32"
+    },
+    {
+      "name": "johto-route-33",
+      "displayName": "Route 33"
+    },
+    {
+      "name": "johto-route-34",
+      "displayName": "Route 34"
+    },
+    {
+      "name": "johto-route-35",
+      "displayName": "Route 35"
+    },
+    {
+      "name": "johto-route-36",
+      "displayName": "Route 36"
+    },
+    {
+      "name": "johto-route-37",
+      "displayName": "Route 37"
+    },
+    {
+      "name": "johto-route-38",
+      "displayName": "Route 38"
+    },
+    {
+      "name": "johto-route-39",
+      "displayName": "Route 39"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "johto-route-42",
+      "displayName": "Route 42"
+    },
+    {
+      "name": "johto-route-43",
+      "displayName": "Route 43"
+    },
+    {
+      "name": "johto-route-44",
+      "displayName": "Route 44"
+    },
+    {
+      "name": "johto-route-45",
+      "displayName": "Route 45"
+    },
+    {
+      "name": "johto-route-46",
+      "displayName": "Route 46"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruins-of-alph",
+      "displayName": "Ruins of Alph"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "johto-sea-route-40",
+      "displayName": "Sea Route 40"
+    },
+    {
+      "name": "johto-sea-route-41",
+      "displayName": "Sea Route 41"
+    },
+    {
+      "name": "slowpoke-well",
+      "displayName": "Slowpoke Well"
+    },
+    {
+      "name": "sprout-tower",
+      "displayName": "Sprout Tower"
+    },
+    {
+      "name": "team-rocket-hq",
+      "displayName": "Team Rocket HQ"
+    },
+    {
+      "name": "tohjo-falls",
+      "displayName": "Tohjo Falls"
+    },
+    {
+      "name": "union-cave",
+      "displayName": "Union Cave"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "violet-city",
+      "displayName": "Violet City"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "whirl-islands",
+      "displayName": "Whirl Islands"
+    }
+  ],
+  "crystal": [
+    {
+      "name": "azalea-town",
+      "displayName": "Azalea Town"
+    },
+    {
+      "name": "bell-tower",
+      "displayName": "Bell Tower"
+    },
+    {
+      "name": "blackthorn-city",
+      "displayName": "Blackthorn City"
+    },
+    {
+      "name": "burned-tower",
+      "displayName": "Burned Tower"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cherrygrove-city",
+      "displayName": "Cherrygrove City"
+    },
+    {
+      "name": "cianwood-city",
+      "displayName": "Cianwood City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "dark-cave",
+      "displayName": "Dark Cave"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dragons-den",
+      "displayName": "Dragon's Den"
+    },
+    {
+      "name": "ecruteak-city",
+      "displayName": "Ecruteak City"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "goldenrod-city",
+      "displayName": "Goldenrod City"
+    },
+    {
+      "name": "ice-path",
+      "displayName": "Ice Path"
+    },
+    {
+      "name": "ilex-forest",
+      "displayName": "Ilex Forest"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "lake-of-rage",
+      "displayName": "Lake of Rage"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "mt-mortar",
+      "displayName": "Mt. Mortar"
+    },
+    {
+      "name": "mt-silver",
+      "displayName": "Mt. Silver"
+    },
+    {
+      "name": "national-park",
+      "displayName": "National Park"
+    },
+    {
+      "name": "new-bark-town",
+      "displayName": "New Bark Town"
+    },
+    {
+      "name": "olivine-city",
+      "displayName": "Olivine City"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pewter-city",
+      "displayName": "Pewter City"
+    },
+    {
+      "name": "roaming-johto",
+      "displayName": "Roaming Johto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-26",
+      "displayName": "Route 26"
+    },
+    {
+      "name": "kanto-route-27",
+      "displayName": "Route 27"
+    },
+    {
+      "name": "kanto-route-28",
+      "displayName": "Route 28"
+    },
+    {
+      "name": "johto-route-29",
+      "displayName": "Route 29"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "johto-route-30",
+      "displayName": "Route 30"
+    },
+    {
+      "name": "johto-route-31",
+      "displayName": "Route 31"
+    },
+    {
+      "name": "johto-route-32",
+      "displayName": "Route 32"
+    },
+    {
+      "name": "johto-route-33",
+      "displayName": "Route 33"
+    },
+    {
+      "name": "johto-route-34",
+      "displayName": "Route 34"
+    },
+    {
+      "name": "johto-route-35",
+      "displayName": "Route 35"
+    },
+    {
+      "name": "johto-route-36",
+      "displayName": "Route 36"
+    },
+    {
+      "name": "johto-route-37",
+      "displayName": "Route 37"
+    },
+    {
+      "name": "johto-route-38",
+      "displayName": "Route 38"
+    },
+    {
+      "name": "johto-route-39",
+      "displayName": "Route 39"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "johto-route-42",
+      "displayName": "Route 42"
+    },
+    {
+      "name": "johto-route-43",
+      "displayName": "Route 43"
+    },
+    {
+      "name": "johto-route-44",
+      "displayName": "Route 44"
+    },
+    {
+      "name": "johto-route-45",
+      "displayName": "Route 45"
+    },
+    {
+      "name": "johto-route-46",
+      "displayName": "Route 46"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruins-of-alph",
+      "displayName": "Ruins of Alph"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "johto-sea-route-40",
+      "displayName": "Sea Route 40"
+    },
+    {
+      "name": "johto-sea-route-41",
+      "displayName": "Sea Route 41"
+    },
+    {
+      "name": "slowpoke-well",
+      "displayName": "Slowpoke Well"
+    },
+    {
+      "name": "sprout-tower",
+      "displayName": "Sprout Tower"
+    },
+    {
+      "name": "team-rocket-hq",
+      "displayName": "Team Rocket HQ"
+    },
+    {
+      "name": "tohjo-falls",
+      "displayName": "Tohjo Falls"
+    },
+    {
+      "name": "union-cave",
+      "displayName": "Union Cave"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "violet-city",
+      "displayName": "Violet City"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "whirl-islands",
+      "displayName": "Whirl Islands"
+    }
+  ],
+  "ruby": [
+    {
+      "name": "abandoned-ship",
+      "displayName": "Abandoned Ship"
+    },
+    {
+      "name": "ancient-tomb",
+      "displayName": "Ancient Tomb"
+    },
+    {
+      "name": "cave-of-origin",
+      "displayName": "Cave of Origin"
+    },
+    {
+      "name": "desert-ruins",
+      "displayName": "Desert Ruins"
+    },
+    {
+      "name": "dewford-town",
+      "displayName": "Dewford Town"
+    },
+    {
+      "name": "ever-grande-city",
+      "displayName": "Ever Grande City"
+    },
+    {
+      "name": "fiery-path",
+      "displayName": "Fiery Path"
+    },
+    {
+      "name": "fortree-city",
+      "displayName": "Fortree City"
+    },
+    {
+      "name": "granite-cave",
+      "displayName": "Granite Cave"
+    },
+    {
+      "name": "hoenn-pokecenter",
+      "displayName": "Hoenn Pokecenter"
+    },
+    {
+      "name": "island-cave",
+      "displayName": "Island Cave"
+    },
+    {
+      "name": "jagged-pass",
+      "displayName": "Jagged Pass"
+    },
+    {
+      "name": "lavaridge-town",
+      "displayName": "Lavaridge Town"
+    },
+    {
+      "name": "lilycove-city",
+      "displayName": "Lilycove City"
+    },
+    {
+      "name": "meteor-falls",
+      "displayName": "Meteor Falls"
+    },
+    {
+      "name": "mirage-island",
+      "displayName": "Mirage Island"
+    },
+    {
+      "name": "mossdeep-city",
+      "displayName": "Mossdeep City"
+    },
+    {
+      "name": "mt-pyre",
+      "displayName": "Mt. Pyre"
+    },
+    {
+      "name": "new-mauville",
+      "displayName": "New Mauville"
+    },
+    {
+      "name": "pacifidlog-town",
+      "displayName": "Pacifidlog Town"
+    },
+    {
+      "name": "petalburg-city",
+      "displayName": "Petalburg City"
+    },
+    {
+      "name": "petalburg-woods",
+      "displayName": "Petalburg Woods"
+    },
+    {
+      "name": "roaming-hoenn",
+      "displayName": "Roaming Hoenn"
+    },
+    {
+      "name": "hoenn-route-101",
+      "displayName": "Route 101"
+    },
+    {
+      "name": "hoenn-route-102",
+      "displayName": "Route 102"
+    },
+    {
+      "name": "hoenn-route-103",
+      "displayName": "Route 103"
+    },
+    {
+      "name": "hoenn-route-104",
+      "displayName": "Route 104"
+    },
+    {
+      "name": "hoenn-route-105",
+      "displayName": "Route 105"
+    },
+    {
+      "name": "hoenn-route-106",
+      "displayName": "Route 106"
+    },
+    {
+      "name": "hoenn-route-107",
+      "displayName": "Route 107"
+    },
+    {
+      "name": "hoenn-route-108",
+      "displayName": "Route 108"
+    },
+    {
+      "name": "hoenn-route-109",
+      "displayName": "Route 109"
+    },
+    {
+      "name": "hoenn-route-110",
+      "displayName": "Route 110"
+    },
+    {
+      "name": "hoenn-route-111",
+      "displayName": "Route 111"
+    },
+    {
+      "name": "hoenn-route-112",
+      "displayName": "Route 112"
+    },
+    {
+      "name": "hoenn-route-113",
+      "displayName": "Route 113"
+    },
+    {
+      "name": "hoenn-route-114",
+      "displayName": "Route 114"
+    },
+    {
+      "name": "hoenn-route-115",
+      "displayName": "Route 115"
+    },
+    {
+      "name": "hoenn-route-116",
+      "displayName": "Route 116"
+    },
+    {
+      "name": "hoenn-route-117",
+      "displayName": "Route 117"
+    },
+    {
+      "name": "hoenn-route-118",
+      "displayName": "Route 118"
+    },
+    {
+      "name": "hoenn-route-119",
+      "displayName": "Route 119"
+    },
+    {
+      "name": "hoenn-route-120",
+      "displayName": "Route 120"
+    },
+    {
+      "name": "hoenn-route-121",
+      "displayName": "Route 121"
+    },
+    {
+      "name": "hoenn-route-122",
+      "displayName": "Route 122"
+    },
+    {
+      "name": "hoenn-route-123",
+      "displayName": "Route 123"
+    },
+    {
+      "name": "hoenn-route-124",
+      "displayName": "Route 124"
+    },
+    {
+      "name": "hoenn-route-125",
+      "displayName": "Route 125"
+    },
+    {
+      "name": "hoenn-route-126",
+      "displayName": "Route 126"
+    },
+    {
+      "name": "hoenn-route-127",
+      "displayName": "Route 127"
+    },
+    {
+      "name": "hoenn-route-128",
+      "displayName": "Route 128"
+    },
+    {
+      "name": "hoenn-route-129",
+      "displayName": "Route 129"
+    },
+    {
+      "name": "hoenn-route-130",
+      "displayName": "Route 130"
+    },
+    {
+      "name": "hoenn-route-131",
+      "displayName": "Route 131"
+    },
+    {
+      "name": "hoenn-route-132",
+      "displayName": "Route 132"
+    },
+    {
+      "name": "hoenn-route-133",
+      "displayName": "Route 133"
+    },
+    {
+      "name": "hoenn-route-134",
+      "displayName": "Route 134"
+    },
+    {
+      "name": "rustboro-city",
+      "displayName": "Rustboro City"
+    },
+    {
+      "name": "rusturf-tunnel",
+      "displayName": "Rusturf Tunnel"
+    },
+    {
+      "name": "hoenn-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "seafloor-cavern",
+      "displayName": "Seafloor Cavern"
+    },
+    {
+      "name": "shoal-cave",
+      "displayName": "Shoal Cave"
+    },
+    {
+      "name": "sky-pillar",
+      "displayName": "Sky Pillar"
+    },
+    {
+      "name": "slateport-city",
+      "displayName": "Slateport City"
+    },
+    {
+      "name": "sootopolis-city",
+      "displayName": "Sootopolis City"
+    },
+    {
+      "name": "southern-island",
+      "displayName": "Southern Island"
+    },
+    {
+      "name": "team-aqua-hideout",
+      "displayName": "Team Aqua Hideout"
+    },
+    {
+      "name": "team-magma-hideout",
+      "displayName": "Team Magma Hideout"
+    },
+    {
+      "name": "hoenn-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "sapphire": [
+    {
+      "name": "abandoned-ship",
+      "displayName": "Abandoned Ship"
+    },
+    {
+      "name": "ancient-tomb",
+      "displayName": "Ancient Tomb"
+    },
+    {
+      "name": "cave-of-origin",
+      "displayName": "Cave of Origin"
+    },
+    {
+      "name": "desert-ruins",
+      "displayName": "Desert Ruins"
+    },
+    {
+      "name": "dewford-town",
+      "displayName": "Dewford Town"
+    },
+    {
+      "name": "ever-grande-city",
+      "displayName": "Ever Grande City"
+    },
+    {
+      "name": "fiery-path",
+      "displayName": "Fiery Path"
+    },
+    {
+      "name": "fortree-city",
+      "displayName": "Fortree City"
+    },
+    {
+      "name": "granite-cave",
+      "displayName": "Granite Cave"
+    },
+    {
+      "name": "hoenn-pokecenter",
+      "displayName": "Hoenn Pokecenter"
+    },
+    {
+      "name": "island-cave",
+      "displayName": "Island Cave"
+    },
+    {
+      "name": "jagged-pass",
+      "displayName": "Jagged Pass"
+    },
+    {
+      "name": "lavaridge-town",
+      "displayName": "Lavaridge Town"
+    },
+    {
+      "name": "lilycove-city",
+      "displayName": "Lilycove City"
+    },
+    {
+      "name": "meteor-falls",
+      "displayName": "Meteor Falls"
+    },
+    {
+      "name": "mirage-island",
+      "displayName": "Mirage Island"
+    },
+    {
+      "name": "mossdeep-city",
+      "displayName": "Mossdeep City"
+    },
+    {
+      "name": "mt-pyre",
+      "displayName": "Mt. Pyre"
+    },
+    {
+      "name": "new-mauville",
+      "displayName": "New Mauville"
+    },
+    {
+      "name": "pacifidlog-town",
+      "displayName": "Pacifidlog Town"
+    },
+    {
+      "name": "petalburg-city",
+      "displayName": "Petalburg City"
+    },
+    {
+      "name": "petalburg-woods",
+      "displayName": "Petalburg Woods"
+    },
+    {
+      "name": "roaming-hoenn",
+      "displayName": "Roaming Hoenn"
+    },
+    {
+      "name": "hoenn-route-101",
+      "displayName": "Route 101"
+    },
+    {
+      "name": "hoenn-route-102",
+      "displayName": "Route 102"
+    },
+    {
+      "name": "hoenn-route-103",
+      "displayName": "Route 103"
+    },
+    {
+      "name": "hoenn-route-104",
+      "displayName": "Route 104"
+    },
+    {
+      "name": "hoenn-route-105",
+      "displayName": "Route 105"
+    },
+    {
+      "name": "hoenn-route-106",
+      "displayName": "Route 106"
+    },
+    {
+      "name": "hoenn-route-107",
+      "displayName": "Route 107"
+    },
+    {
+      "name": "hoenn-route-108",
+      "displayName": "Route 108"
+    },
+    {
+      "name": "hoenn-route-109",
+      "displayName": "Route 109"
+    },
+    {
+      "name": "hoenn-route-110",
+      "displayName": "Route 110"
+    },
+    {
+      "name": "hoenn-route-111",
+      "displayName": "Route 111"
+    },
+    {
+      "name": "hoenn-route-112",
+      "displayName": "Route 112"
+    },
+    {
+      "name": "hoenn-route-113",
+      "displayName": "Route 113"
+    },
+    {
+      "name": "hoenn-route-114",
+      "displayName": "Route 114"
+    },
+    {
+      "name": "hoenn-route-115",
+      "displayName": "Route 115"
+    },
+    {
+      "name": "hoenn-route-116",
+      "displayName": "Route 116"
+    },
+    {
+      "name": "hoenn-route-117",
+      "displayName": "Route 117"
+    },
+    {
+      "name": "hoenn-route-118",
+      "displayName": "Route 118"
+    },
+    {
+      "name": "hoenn-route-119",
+      "displayName": "Route 119"
+    },
+    {
+      "name": "hoenn-route-120",
+      "displayName": "Route 120"
+    },
+    {
+      "name": "hoenn-route-121",
+      "displayName": "Route 121"
+    },
+    {
+      "name": "hoenn-route-122",
+      "displayName": "Route 122"
+    },
+    {
+      "name": "hoenn-route-123",
+      "displayName": "Route 123"
+    },
+    {
+      "name": "hoenn-route-124",
+      "displayName": "Route 124"
+    },
+    {
+      "name": "hoenn-route-125",
+      "displayName": "Route 125"
+    },
+    {
+      "name": "hoenn-route-126",
+      "displayName": "Route 126"
+    },
+    {
+      "name": "hoenn-route-127",
+      "displayName": "Route 127"
+    },
+    {
+      "name": "hoenn-route-128",
+      "displayName": "Route 128"
+    },
+    {
+      "name": "hoenn-route-129",
+      "displayName": "Route 129"
+    },
+    {
+      "name": "hoenn-route-130",
+      "displayName": "Route 130"
+    },
+    {
+      "name": "hoenn-route-131",
+      "displayName": "Route 131"
+    },
+    {
+      "name": "hoenn-route-132",
+      "displayName": "Route 132"
+    },
+    {
+      "name": "hoenn-route-133",
+      "displayName": "Route 133"
+    },
+    {
+      "name": "hoenn-route-134",
+      "displayName": "Route 134"
+    },
+    {
+      "name": "rustboro-city",
+      "displayName": "Rustboro City"
+    },
+    {
+      "name": "rusturf-tunnel",
+      "displayName": "Rusturf Tunnel"
+    },
+    {
+      "name": "hoenn-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "seafloor-cavern",
+      "displayName": "Seafloor Cavern"
+    },
+    {
+      "name": "shoal-cave",
+      "displayName": "Shoal Cave"
+    },
+    {
+      "name": "sky-pillar",
+      "displayName": "Sky Pillar"
+    },
+    {
+      "name": "slateport-city",
+      "displayName": "Slateport City"
+    },
+    {
+      "name": "sootopolis-city",
+      "displayName": "Sootopolis City"
+    },
+    {
+      "name": "southern-island",
+      "displayName": "Southern Island"
+    },
+    {
+      "name": "team-aqua-hideout",
+      "displayName": "Team Aqua Hideout"
+    },
+    {
+      "name": "team-magma-hideout",
+      "displayName": "Team Magma Hideout"
+    },
+    {
+      "name": "hoenn-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "emerald": [
+    {
+      "name": "abandoned-ship",
+      "displayName": "Abandoned Ship"
+    },
+    {
+      "name": "hoenn-altering-cave",
+      "displayName": "Altering Cave"
+    },
+    {
+      "name": "ancient-tomb",
+      "displayName": "Ancient Tomb"
+    },
+    {
+      "name": "artisan-cave",
+      "displayName": "Artisan Cave"
+    },
+    {
+      "name": "cave-of-origin",
+      "displayName": "Cave of Origin"
+    },
+    {
+      "name": "desert-ruins",
+      "displayName": "Desert Ruins"
+    },
+    {
+      "name": "desert-underpass",
+      "displayName": "Desert Underpass"
+    },
+    {
+      "name": "dewford-town",
+      "displayName": "Dewford Town"
+    },
+    {
+      "name": "ever-grande-city",
+      "displayName": "Ever Grande City"
+    },
+    {
+      "name": "faraway-island",
+      "displayName": "Faraway Island"
+    },
+    {
+      "name": "fiery-path",
+      "displayName": "Fiery Path"
+    },
+    {
+      "name": "fortree-city",
+      "displayName": "Fortree City"
+    },
+    {
+      "name": "granite-cave",
+      "displayName": "Granite Cave"
+    },
+    {
+      "name": "hoenn-battle-frontier",
+      "displayName": "Hoenn Battle Frontier"
+    },
+    {
+      "name": "hoenn-pokecenter",
+      "displayName": "Hoenn Pokecenter"
+    },
+    {
+      "name": "island-cave",
+      "displayName": "Island Cave"
+    },
+    {
+      "name": "jagged-pass",
+      "displayName": "Jagged Pass"
+    },
+    {
+      "name": "lavaridge-town",
+      "displayName": "Lavaridge Town"
+    },
+    {
+      "name": "lilycove-city",
+      "displayName": "Lilycove City"
+    },
+    {
+      "name": "littleroot-town",
+      "displayName": "Littleroot Town"
+    },
+    {
+      "name": "magma-hideout",
+      "displayName": "Magma Hideout"
+    },
+    {
+      "name": "marine-cave",
+      "displayName": "Marine Cave"
+    },
+    {
+      "name": "meteor-falls",
+      "displayName": "Meteor Falls"
+    },
+    {
+      "name": "mirage-island",
+      "displayName": "Mirage Island"
+    },
+    {
+      "name": "mirage-tower",
+      "displayName": "Mirage Tower"
+    },
+    {
+      "name": "mossdeep-city",
+      "displayName": "Mossdeep City"
+    },
+    {
+      "name": "mt-pyre",
+      "displayName": "Mt. Pyre"
+    },
+    {
+      "name": "new-mauville",
+      "displayName": "New Mauville"
+    },
+    {
+      "name": "pacifidlog-town",
+      "displayName": "Pacifidlog Town"
+    },
+    {
+      "name": "petalburg-city",
+      "displayName": "Petalburg City"
+    },
+    {
+      "name": "petalburg-woods",
+      "displayName": "Petalburg Woods"
+    },
+    {
+      "name": "roaming-hoenn",
+      "displayName": "Roaming Hoenn"
+    },
+    {
+      "name": "hoenn-route-101",
+      "displayName": "Route 101"
+    },
+    {
+      "name": "hoenn-route-102",
+      "displayName": "Route 102"
+    },
+    {
+      "name": "hoenn-route-103",
+      "displayName": "Route 103"
+    },
+    {
+      "name": "hoenn-route-104",
+      "displayName": "Route 104"
+    },
+    {
+      "name": "hoenn-route-105",
+      "displayName": "Route 105"
+    },
+    {
+      "name": "hoenn-route-106",
+      "displayName": "Route 106"
+    },
+    {
+      "name": "hoenn-route-107",
+      "displayName": "Route 107"
+    },
+    {
+      "name": "hoenn-route-108",
+      "displayName": "Route 108"
+    },
+    {
+      "name": "hoenn-route-109",
+      "displayName": "Route 109"
+    },
+    {
+      "name": "hoenn-route-110",
+      "displayName": "Route 110"
+    },
+    {
+      "name": "hoenn-route-111",
+      "displayName": "Route 111"
+    },
+    {
+      "name": "hoenn-route-112",
+      "displayName": "Route 112"
+    },
+    {
+      "name": "hoenn-route-113",
+      "displayName": "Route 113"
+    },
+    {
+      "name": "hoenn-route-114",
+      "displayName": "Route 114"
+    },
+    {
+      "name": "hoenn-route-115",
+      "displayName": "Route 115"
+    },
+    {
+      "name": "hoenn-route-116",
+      "displayName": "Route 116"
+    },
+    {
+      "name": "hoenn-route-117",
+      "displayName": "Route 117"
+    },
+    {
+      "name": "hoenn-route-118",
+      "displayName": "Route 118"
+    },
+    {
+      "name": "hoenn-route-119",
+      "displayName": "Route 119"
+    },
+    {
+      "name": "hoenn-route-120",
+      "displayName": "Route 120"
+    },
+    {
+      "name": "hoenn-route-121",
+      "displayName": "Route 121"
+    },
+    {
+      "name": "hoenn-route-122",
+      "displayName": "Route 122"
+    },
+    {
+      "name": "hoenn-route-123",
+      "displayName": "Route 123"
+    },
+    {
+      "name": "hoenn-route-124",
+      "displayName": "Route 124"
+    },
+    {
+      "name": "hoenn-route-125",
+      "displayName": "Route 125"
+    },
+    {
+      "name": "hoenn-route-126",
+      "displayName": "Route 126"
+    },
+    {
+      "name": "hoenn-route-127",
+      "displayName": "Route 127"
+    },
+    {
+      "name": "hoenn-route-128",
+      "displayName": "Route 128"
+    },
+    {
+      "name": "hoenn-route-129",
+      "displayName": "Route 129"
+    },
+    {
+      "name": "hoenn-route-130",
+      "displayName": "Route 130"
+    },
+    {
+      "name": "hoenn-route-131",
+      "displayName": "Route 131"
+    },
+    {
+      "name": "hoenn-route-132",
+      "displayName": "Route 132"
+    },
+    {
+      "name": "hoenn-route-133",
+      "displayName": "Route 133"
+    },
+    {
+      "name": "hoenn-route-134",
+      "displayName": "Route 134"
+    },
+    {
+      "name": "rustboro-city",
+      "displayName": "Rustboro City"
+    },
+    {
+      "name": "rusturf-tunnel",
+      "displayName": "Rusturf Tunnel"
+    },
+    {
+      "name": "hoenn-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "seafloor-cavern",
+      "displayName": "Seafloor Cavern"
+    },
+    {
+      "name": "shoal-cave",
+      "displayName": "Shoal Cave"
+    },
+    {
+      "name": "sky-pillar",
+      "displayName": "Sky Pillar"
+    },
+    {
+      "name": "slateport-city",
+      "displayName": "Slateport City"
+    },
+    {
+      "name": "sootopolis-city",
+      "displayName": "Sootopolis City"
+    },
+    {
+      "name": "southern-island",
+      "displayName": "Southern Island"
+    },
+    {
+      "name": "team-aqua-hideout",
+      "displayName": "Team Aqua Hideout"
+    },
+    {
+      "name": "team-magma-hideout",
+      "displayName": "Team Magma Hideout"
+    },
+    {
+      "name": "terra-cave",
+      "displayName": "Terra Cave"
+    },
+    {
+      "name": "hoenn-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "firered": [
+    {
+      "name": "kanto-altering-cave",
+      "displayName": "Altering Cave"
+    },
+    {
+      "name": "berry-forest",
+      "displayName": "Berry Forest"
+    },
+    {
+      "name": "birth-island",
+      "displayName": "Birth Island"
+    },
+    {
+      "name": "bond-bridge",
+      "displayName": "Bond Bridge"
+    },
+    {
+      "name": "canyon-entrance",
+      "displayName": "Canyon Entrance"
+    },
+    {
+      "name": "cape-brink",
+      "displayName": "Cape Brink"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dilford-chamber",
+      "displayName": "Dilford Chamber"
+    },
+    {
+      "name": "five-island",
+      "displayName": "Five Island"
+    },
+    {
+      "name": "five-isle-meadow",
+      "displayName": "Five Isle Meadow"
+    },
+    {
+      "name": "four-island",
+      "displayName": "Four Island"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "green-path",
+      "displayName": "Green Path"
+    },
+    {
+      "name": "icefall-cave",
+      "displayName": "Icefall Cave"
+    },
+    {
+      "name": "kanto-pokecenter",
+      "displayName": "Kanto Pokecenter"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "kindle-road",
+      "displayName": "Kindle Road"
+    },
+    {
+      "name": "liptoo-chamber",
+      "displayName": "Liptoo Chamber"
+    },
+    {
+      "name": "lost-cave",
+      "displayName": "Lost Cave"
+    },
+    {
+      "name": "memorial-pillar",
+      "displayName": "Memorial Pillar"
+    },
+    {
+      "name": "monean-chamber",
+      "displayName": "Monean Chamber"
+    },
+    {
+      "name": "mt-ember",
+      "displayName": "Mt. Ember"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "navel-rock",
+      "displayName": "Navel Rock"
+    },
+    {
+      "name": "one-island",
+      "displayName": "One Island"
+    },
+    {
+      "name": "outcast-island",
+      "displayName": "Outcast Island"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pattern-bush",
+      "displayName": "Pattern Bush"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "resort-gorgeous",
+      "displayName": "Resort Gorgeous"
+    },
+    {
+      "name": "rixy-chamber",
+      "displayName": "Rixy Chamber"
+    },
+    {
+      "name": "roaming-kanto",
+      "displayName": "Roaming Kanto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruin-valley",
+      "displayName": "Ruin Valley"
+    },
+    {
+      "name": "ss-anne",
+      "displayName": "S.S. Anne"
+    },
+    {
+      "name": "kanto-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "scufib-chamber",
+      "displayName": "Scufib Chamber"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "sevault-canyon",
+      "displayName": "Sevault Canyon"
+    },
+    {
+      "name": "tanoby-ruins",
+      "displayName": "Tanoby Ruins"
+    },
+    {
+      "name": "three-isle-port",
+      "displayName": "Three Isle Port"
+    },
+    {
+      "name": "trainer-tower",
+      "displayName": "Trainer Tower"
+    },
+    {
+      "name": "treasure-beach",
+      "displayName": "Treasure Beach"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "viapos-chamber",
+      "displayName": "Viapos Chamber"
+    },
+    {
+      "name": "kanto-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    },
+    {
+      "name": "water-labyrinth",
+      "displayName": "Water Labyrinth"
+    },
+    {
+      "name": "water-path",
+      "displayName": "Water Path"
+    },
+    {
+      "name": "weepth-chamber",
+      "displayName": "Weepth Chamber"
+    }
+  ],
+  "leafgreen": [
+    {
+      "name": "kanto-altering-cave",
+      "displayName": "Altering Cave"
+    },
+    {
+      "name": "berry-forest",
+      "displayName": "Berry Forest"
+    },
+    {
+      "name": "birth-island",
+      "displayName": "Birth Island"
+    },
+    {
+      "name": "bond-bridge",
+      "displayName": "Bond Bridge"
+    },
+    {
+      "name": "canyon-entrance",
+      "displayName": "Canyon Entrance"
+    },
+    {
+      "name": "cape-brink",
+      "displayName": "Cape Brink"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dilford-chamber",
+      "displayName": "Dilford Chamber"
+    },
+    {
+      "name": "five-island",
+      "displayName": "Five Island"
+    },
+    {
+      "name": "five-isle-meadow",
+      "displayName": "Five Isle Meadow"
+    },
+    {
+      "name": "four-island",
+      "displayName": "Four Island"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "green-path",
+      "displayName": "Green Path"
+    },
+    {
+      "name": "icefall-cave",
+      "displayName": "Icefall Cave"
+    },
+    {
+      "name": "kanto-pokecenter",
+      "displayName": "Kanto Pokecenter"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "kindle-road",
+      "displayName": "Kindle Road"
+    },
+    {
+      "name": "liptoo-chamber",
+      "displayName": "Liptoo Chamber"
+    },
+    {
+      "name": "lost-cave",
+      "displayName": "Lost Cave"
+    },
+    {
+      "name": "memorial-pillar",
+      "displayName": "Memorial Pillar"
+    },
+    {
+      "name": "monean-chamber",
+      "displayName": "Monean Chamber"
+    },
+    {
+      "name": "mt-ember",
+      "displayName": "Mt. Ember"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "navel-rock",
+      "displayName": "Navel Rock"
+    },
+    {
+      "name": "one-island",
+      "displayName": "One Island"
+    },
+    {
+      "name": "outcast-island",
+      "displayName": "Outcast Island"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pattern-bush",
+      "displayName": "Pattern Bush"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "resort-gorgeous",
+      "displayName": "Resort Gorgeous"
+    },
+    {
+      "name": "rixy-chamber",
+      "displayName": "Rixy Chamber"
+    },
+    {
+      "name": "roaming-kanto",
+      "displayName": "Roaming Kanto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruin-valley",
+      "displayName": "Ruin Valley"
+    },
+    {
+      "name": "ss-anne",
+      "displayName": "S.S. Anne"
+    },
+    {
+      "name": "kanto-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "scufib-chamber",
+      "displayName": "Scufib Chamber"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "sevault-canyon",
+      "displayName": "Sevault Canyon"
+    },
+    {
+      "name": "tanoby-ruins",
+      "displayName": "Tanoby Ruins"
+    },
+    {
+      "name": "three-isle-port",
+      "displayName": "Three Isle Port"
+    },
+    {
+      "name": "trainer-tower",
+      "displayName": "Trainer Tower"
+    },
+    {
+      "name": "treasure-beach",
+      "displayName": "Treasure Beach"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "viapos-chamber",
+      "displayName": "Viapos Chamber"
+    },
+    {
+      "name": "kanto-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    },
+    {
+      "name": "water-labyrinth",
+      "displayName": "Water Labyrinth"
+    },
+    {
+      "name": "water-path",
+      "displayName": "Water Path"
+    },
+    {
+      "name": "weepth-chamber",
+      "displayName": "Weepth Chamber"
+    }
+  ],
+  "diamond": [
+    {
+      "name": "acuity-lakefront",
+      "displayName": "Acuity Lakefront"
+    },
+    {
+      "name": "canalave-city",
+      "displayName": "Canalave City"
+    },
+    {
+      "name": "celestic-town",
+      "displayName": "Celestic Town"
+    },
+    {
+      "name": "eterna-city",
+      "displayName": "Eterna City"
+    },
+    {
+      "name": "eterna-forest",
+      "displayName": "Eterna Forest"
+    },
+    {
+      "name": "floaroma-meadow",
+      "displayName": "Floaroma Meadow"
+    },
+    {
+      "name": "flower-paradise",
+      "displayName": "Flower Paradise"
+    },
+    {
+      "name": "fuego-ironworks",
+      "displayName": "Fuego Ironworks"
+    },
+    {
+      "name": "great-marsh",
+      "displayName": "Great Marsh"
+    },
+    {
+      "name": "sinnoh-hall-of-origin-1",
+      "displayName": "Hall of Origin"
+    },
+    {
+      "name": "hearthome-city",
+      "displayName": "Hearthome City"
+    },
+    {
+      "name": "iron-island",
+      "displayName": "Iron Island"
+    },
+    {
+      "name": "lake-acuity",
+      "displayName": "Lake Acuity"
+    },
+    {
+      "name": "lake-valor",
+      "displayName": "Lake Valor"
+    },
+    {
+      "name": "lake-verity",
+      "displayName": "Lake Verity"
+    },
+    {
+      "name": "lost-tower",
+      "displayName": "Lost Tower"
+    },
+    {
+      "name": "maniac-tunnel",
+      "displayName": "Maniac Tunnel"
+    },
+    {
+      "name": "mt-coronet",
+      "displayName": "Mt. Coronet"
+    },
+    {
+      "name": "newmoon-island",
+      "displayName": "Newmoon Island"
+    },
+    {
+      "name": "old-chateau",
+      "displayName": "Old Chateau"
+    },
+    {
+      "name": "oreburgh-city",
+      "displayName": "Oreburgh City"
+    },
+    {
+      "name": "oreburgh-gate",
+      "displayName": "Oreburgh Gate"
+    },
+    {
+      "name": "oreburgh-mine",
+      "displayName": "Oreburgh Mine"
+    },
+    {
+      "name": "pastoria-city",
+      "displayName": "Pastoria City"
+    },
+    {
+      "name": "sinnoh-pokemon-league",
+      "displayName": "Pokémon League"
+    },
+    {
+      "name": "ravaged-path",
+      "displayName": "Ravaged Path"
+    },
+    {
+      "name": "resort-area",
+      "displayName": "Resort Area"
+    },
+    {
+      "name": "roaming-sinnoh",
+      "displayName": "Roaming Sinnoh"
+    },
+    {
+      "name": "sinnoh-route-201",
+      "displayName": "Route 201"
+    },
+    {
+      "name": "sinnoh-route-202",
+      "displayName": "Route 202"
+    },
+    {
+      "name": "sinnoh-route-203",
+      "displayName": "Route 203"
+    },
+    {
+      "name": "sinnoh-route-204",
+      "displayName": "Route 204"
+    },
+    {
+      "name": "sinnoh-route-205",
+      "displayName": "Route 205"
+    },
+    {
+      "name": "sinnoh-route-206",
+      "displayName": "Route 206"
+    },
+    {
+      "name": "sinnoh-route-207",
+      "displayName": "Route 207"
+    },
+    {
+      "name": "sinnoh-route-208",
+      "displayName": "Route 208"
+    },
+    {
+      "name": "sinnoh-route-209",
+      "displayName": "Route 209"
+    },
+    {
+      "name": "sinnoh-route-210",
+      "displayName": "Route 210"
+    },
+    {
+      "name": "sinnoh-route-211",
+      "displayName": "Route 211"
+    },
+    {
+      "name": "sinnoh-route-212",
+      "displayName": "Route 212"
+    },
+    {
+      "name": "sinnoh-route-213",
+      "displayName": "Route 213"
+    },
+    {
+      "name": "sinnoh-route-214",
+      "displayName": "Route 214"
+    },
+    {
+      "name": "sinnoh-route-215",
+      "displayName": "Route 215"
+    },
+    {
+      "name": "sinnoh-route-216",
+      "displayName": "Route 216"
+    },
+    {
+      "name": "sinnoh-route-217",
+      "displayName": "Route 217"
+    },
+    {
+      "name": "sinnoh-route-218",
+      "displayName": "Route 218"
+    },
+    {
+      "name": "sinnoh-route-219",
+      "displayName": "Route 219"
+    },
+    {
+      "name": "sinnoh-route-221",
+      "displayName": "Route 221"
+    },
+    {
+      "name": "sinnoh-route-222",
+      "displayName": "Route 222"
+    },
+    {
+      "name": "sinnoh-route-224",
+      "displayName": "Route 224"
+    },
+    {
+      "name": "sinnoh-route-225",
+      "displayName": "Route 225"
+    },
+    {
+      "name": "sinnoh-route-227",
+      "displayName": "Route 227"
+    },
+    {
+      "name": "sinnoh-route-228",
+      "displayName": "Route 228"
+    },
+    {
+      "name": "sinnoh-route-229",
+      "displayName": "Route 229"
+    },
+    {
+      "name": "ruin-maniac-cave",
+      "displayName": "Ruin Maniac Cave"
+    },
+    {
+      "name": "sinnoh-sea-route-220",
+      "displayName": "Sea Route 220"
+    },
+    {
+      "name": "sinnoh-sea-route-223",
+      "displayName": "Sea Route 223"
+    },
+    {
+      "name": "sinnoh-sea-route-226",
+      "displayName": "Sea Route 226"
+    },
+    {
+      "name": "sinnoh-sea-route-230",
+      "displayName": "Sea Route 230"
+    },
+    {
+      "name": "sendoff-spring",
+      "displayName": "Sendoff Spring"
+    },
+    {
+      "name": "sinnoh-pokemart",
+      "displayName": "Sinnoh Pokemart"
+    },
+    {
+      "name": "snowpoint-temple",
+      "displayName": "Snowpoint Temple"
+    },
+    {
+      "name": "solaceon-ruins",
+      "displayName": "Solaceon Ruins"
+    },
+    {
+      "name": "spear-pillar",
+      "displayName": "Spear Pillar"
+    },
+    {
+      "name": "stark-mountain",
+      "displayName": "Stark Mountain"
+    },
+    {
+      "name": "sunyshore-city",
+      "displayName": "Sunyshore City"
+    },
+    {
+      "name": "trophy-garden",
+      "displayName": "Trophy Garden"
+    },
+    {
+      "name": "turnback-cave",
+      "displayName": "Turnback Cave"
+    },
+    {
+      "name": "twinleaf-town",
+      "displayName": "Twinleaf Town"
+    },
+    {
+      "name": "valley-windworks",
+      "displayName": "Valley Windworks"
+    },
+    {
+      "name": "valor-lakefront",
+      "displayName": "Valor Lakefront"
+    },
+    {
+      "name": "sinnoh-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "wayward-cave",
+      "displayName": "Wayward Cave"
+    }
+  ],
+  "pearl": [
+    {
+      "name": "acuity-lakefront",
+      "displayName": "Acuity Lakefront"
+    },
+    {
+      "name": "canalave-city",
+      "displayName": "Canalave City"
+    },
+    {
+      "name": "celestic-town",
+      "displayName": "Celestic Town"
+    },
+    {
+      "name": "eterna-city",
+      "displayName": "Eterna City"
+    },
+    {
+      "name": "eterna-forest",
+      "displayName": "Eterna Forest"
+    },
+    {
+      "name": "floaroma-meadow",
+      "displayName": "Floaroma Meadow"
+    },
+    {
+      "name": "flower-paradise",
+      "displayName": "Flower Paradise"
+    },
+    {
+      "name": "fuego-ironworks",
+      "displayName": "Fuego Ironworks"
+    },
+    {
+      "name": "great-marsh",
+      "displayName": "Great Marsh"
+    },
+    {
+      "name": "sinnoh-hall-of-origin-1",
+      "displayName": "Hall of Origin"
+    },
+    {
+      "name": "hearthome-city",
+      "displayName": "Hearthome City"
+    },
+    {
+      "name": "iron-island",
+      "displayName": "Iron Island"
+    },
+    {
+      "name": "lake-acuity",
+      "displayName": "Lake Acuity"
+    },
+    {
+      "name": "lake-valor",
+      "displayName": "Lake Valor"
+    },
+    {
+      "name": "lake-verity",
+      "displayName": "Lake Verity"
+    },
+    {
+      "name": "lost-tower",
+      "displayName": "Lost Tower"
+    },
+    {
+      "name": "maniac-tunnel",
+      "displayName": "Maniac Tunnel"
+    },
+    {
+      "name": "mt-coronet",
+      "displayName": "Mt. Coronet"
+    },
+    {
+      "name": "newmoon-island",
+      "displayName": "Newmoon Island"
+    },
+    {
+      "name": "old-chateau",
+      "displayName": "Old Chateau"
+    },
+    {
+      "name": "oreburgh-city",
+      "displayName": "Oreburgh City"
+    },
+    {
+      "name": "oreburgh-gate",
+      "displayName": "Oreburgh Gate"
+    },
+    {
+      "name": "oreburgh-mine",
+      "displayName": "Oreburgh Mine"
+    },
+    {
+      "name": "pastoria-city",
+      "displayName": "Pastoria City"
+    },
+    {
+      "name": "sinnoh-pokemon-league",
+      "displayName": "Pokémon League"
+    },
+    {
+      "name": "ravaged-path",
+      "displayName": "Ravaged Path"
+    },
+    {
+      "name": "resort-area",
+      "displayName": "Resort Area"
+    },
+    {
+      "name": "roaming-sinnoh",
+      "displayName": "Roaming Sinnoh"
+    },
+    {
+      "name": "sinnoh-route-201",
+      "displayName": "Route 201"
+    },
+    {
+      "name": "sinnoh-route-202",
+      "displayName": "Route 202"
+    },
+    {
+      "name": "sinnoh-route-203",
+      "displayName": "Route 203"
+    },
+    {
+      "name": "sinnoh-route-204",
+      "displayName": "Route 204"
+    },
+    {
+      "name": "sinnoh-route-205",
+      "displayName": "Route 205"
+    },
+    {
+      "name": "sinnoh-route-206",
+      "displayName": "Route 206"
+    },
+    {
+      "name": "sinnoh-route-207",
+      "displayName": "Route 207"
+    },
+    {
+      "name": "sinnoh-route-208",
+      "displayName": "Route 208"
+    },
+    {
+      "name": "sinnoh-route-209",
+      "displayName": "Route 209"
+    },
+    {
+      "name": "sinnoh-route-210",
+      "displayName": "Route 210"
+    },
+    {
+      "name": "sinnoh-route-211",
+      "displayName": "Route 211"
+    },
+    {
+      "name": "sinnoh-route-212",
+      "displayName": "Route 212"
+    },
+    {
+      "name": "sinnoh-route-213",
+      "displayName": "Route 213"
+    },
+    {
+      "name": "sinnoh-route-214",
+      "displayName": "Route 214"
+    },
+    {
+      "name": "sinnoh-route-215",
+      "displayName": "Route 215"
+    },
+    {
+      "name": "sinnoh-route-216",
+      "displayName": "Route 216"
+    },
+    {
+      "name": "sinnoh-route-217",
+      "displayName": "Route 217"
+    },
+    {
+      "name": "sinnoh-route-218",
+      "displayName": "Route 218"
+    },
+    {
+      "name": "sinnoh-route-219",
+      "displayName": "Route 219"
+    },
+    {
+      "name": "sinnoh-route-221",
+      "displayName": "Route 221"
+    },
+    {
+      "name": "sinnoh-route-222",
+      "displayName": "Route 222"
+    },
+    {
+      "name": "sinnoh-route-224",
+      "displayName": "Route 224"
+    },
+    {
+      "name": "sinnoh-route-225",
+      "displayName": "Route 225"
+    },
+    {
+      "name": "sinnoh-route-227",
+      "displayName": "Route 227"
+    },
+    {
+      "name": "sinnoh-route-228",
+      "displayName": "Route 228"
+    },
+    {
+      "name": "sinnoh-route-229",
+      "displayName": "Route 229"
+    },
+    {
+      "name": "ruin-maniac-cave",
+      "displayName": "Ruin Maniac Cave"
+    },
+    {
+      "name": "sinnoh-sea-route-220",
+      "displayName": "Sea Route 220"
+    },
+    {
+      "name": "sinnoh-sea-route-223",
+      "displayName": "Sea Route 223"
+    },
+    {
+      "name": "sinnoh-sea-route-226",
+      "displayName": "Sea Route 226"
+    },
+    {
+      "name": "sinnoh-sea-route-230",
+      "displayName": "Sea Route 230"
+    },
+    {
+      "name": "sendoff-spring",
+      "displayName": "Sendoff Spring"
+    },
+    {
+      "name": "sinnoh-pokemart",
+      "displayName": "Sinnoh Pokemart"
+    },
+    {
+      "name": "snowpoint-temple",
+      "displayName": "Snowpoint Temple"
+    },
+    {
+      "name": "solaceon-ruins",
+      "displayName": "Solaceon Ruins"
+    },
+    {
+      "name": "spear-pillar",
+      "displayName": "Spear Pillar"
+    },
+    {
+      "name": "stark-mountain",
+      "displayName": "Stark Mountain"
+    },
+    {
+      "name": "sunyshore-city",
+      "displayName": "Sunyshore City"
+    },
+    {
+      "name": "trophy-garden",
+      "displayName": "Trophy Garden"
+    },
+    {
+      "name": "turnback-cave",
+      "displayName": "Turnback Cave"
+    },
+    {
+      "name": "twinleaf-town",
+      "displayName": "Twinleaf Town"
+    },
+    {
+      "name": "valley-windworks",
+      "displayName": "Valley Windworks"
+    },
+    {
+      "name": "valor-lakefront",
+      "displayName": "Valor Lakefront"
+    },
+    {
+      "name": "sinnoh-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "wayward-cave",
+      "displayName": "Wayward Cave"
+    }
+  ],
+  "platinum": [
+    {
+      "name": "acuity-lakefront",
+      "displayName": "Acuity Lakefront"
+    },
+    {
+      "name": "canalave-city",
+      "displayName": "Canalave City"
+    },
+    {
+      "name": "celestic-town",
+      "displayName": "Celestic Town"
+    },
+    {
+      "name": "eterna-city",
+      "displayName": "Eterna City"
+    },
+    {
+      "name": "eterna-forest",
+      "displayName": "Eterna Forest"
+    },
+    {
+      "name": "floaroma-meadow",
+      "displayName": "Floaroma Meadow"
+    },
+    {
+      "name": "flower-paradise",
+      "displayName": "Flower Paradise"
+    },
+    {
+      "name": "fuego-ironworks",
+      "displayName": "Fuego Ironworks"
+    },
+    {
+      "name": "great-marsh",
+      "displayName": "Great Marsh"
+    },
+    {
+      "name": "sinnoh-hall-of-origin-1",
+      "displayName": "Hall of Origin"
+    },
+    {
+      "name": "hearthome-city",
+      "displayName": "Hearthome City"
+    },
+    {
+      "name": "iron-island",
+      "displayName": "Iron Island"
+    },
+    {
+      "name": "lake-acuity",
+      "displayName": "Lake Acuity"
+    },
+    {
+      "name": "lake-valor",
+      "displayName": "Lake Valor"
+    },
+    {
+      "name": "lake-verity",
+      "displayName": "Lake Verity"
+    },
+    {
+      "name": "lost-tower",
+      "displayName": "Lost Tower"
+    },
+    {
+      "name": "maniac-tunnel",
+      "displayName": "Maniac Tunnel"
+    },
+    {
+      "name": "mt-coronet",
+      "displayName": "Mt. Coronet"
+    },
+    {
+      "name": "newmoon-island",
+      "displayName": "Newmoon Island"
+    },
+    {
+      "name": "old-chateau",
+      "displayName": "Old Chateau"
+    },
+    {
+      "name": "oreburgh-city",
+      "displayName": "Oreburgh City"
+    },
+    {
+      "name": "oreburgh-gate",
+      "displayName": "Oreburgh Gate"
+    },
+    {
+      "name": "oreburgh-mine",
+      "displayName": "Oreburgh Mine"
+    },
+    {
+      "name": "pastoria-city",
+      "displayName": "Pastoria City"
+    },
+    {
+      "name": "sinnoh-pokemon-league",
+      "displayName": "Pokémon League"
+    },
+    {
+      "name": "ravaged-path",
+      "displayName": "Ravaged Path"
+    },
+    {
+      "name": "resort-area",
+      "displayName": "Resort Area"
+    },
+    {
+      "name": "roaming-sinnoh",
+      "displayName": "Roaming Sinnoh"
+    },
+    {
+      "name": "sinnoh-route-201",
+      "displayName": "Route 201"
+    },
+    {
+      "name": "sinnoh-route-202",
+      "displayName": "Route 202"
+    },
+    {
+      "name": "sinnoh-route-203",
+      "displayName": "Route 203"
+    },
+    {
+      "name": "sinnoh-route-204",
+      "displayName": "Route 204"
+    },
+    {
+      "name": "sinnoh-route-205",
+      "displayName": "Route 205"
+    },
+    {
+      "name": "sinnoh-route-206",
+      "displayName": "Route 206"
+    },
+    {
+      "name": "sinnoh-route-207",
+      "displayName": "Route 207"
+    },
+    {
+      "name": "sinnoh-route-208",
+      "displayName": "Route 208"
+    },
+    {
+      "name": "sinnoh-route-209",
+      "displayName": "Route 209"
+    },
+    {
+      "name": "sinnoh-route-210",
+      "displayName": "Route 210"
+    },
+    {
+      "name": "sinnoh-route-211",
+      "displayName": "Route 211"
+    },
+    {
+      "name": "sinnoh-route-212",
+      "displayName": "Route 212"
+    },
+    {
+      "name": "sinnoh-route-213",
+      "displayName": "Route 213"
+    },
+    {
+      "name": "sinnoh-route-214",
+      "displayName": "Route 214"
+    },
+    {
+      "name": "sinnoh-route-215",
+      "displayName": "Route 215"
+    },
+    {
+      "name": "sinnoh-route-216",
+      "displayName": "Route 216"
+    },
+    {
+      "name": "sinnoh-route-217",
+      "displayName": "Route 217"
+    },
+    {
+      "name": "sinnoh-route-218",
+      "displayName": "Route 218"
+    },
+    {
+      "name": "sinnoh-route-219",
+      "displayName": "Route 219"
+    },
+    {
+      "name": "sinnoh-route-221",
+      "displayName": "Route 221"
+    },
+    {
+      "name": "sinnoh-route-222",
+      "displayName": "Route 222"
+    },
+    {
+      "name": "sinnoh-route-224",
+      "displayName": "Route 224"
+    },
+    {
+      "name": "sinnoh-route-225",
+      "displayName": "Route 225"
+    },
+    {
+      "name": "sinnoh-route-227",
+      "displayName": "Route 227"
+    },
+    {
+      "name": "sinnoh-route-228",
+      "displayName": "Route 228"
+    },
+    {
+      "name": "sinnoh-route-229",
+      "displayName": "Route 229"
+    },
+    {
+      "name": "ruin-maniac-cave",
+      "displayName": "Ruin Maniac Cave"
+    },
+    {
+      "name": "sinnoh-sea-route-220",
+      "displayName": "Sea Route 220"
+    },
+    {
+      "name": "sinnoh-sea-route-223",
+      "displayName": "Sea Route 223"
+    },
+    {
+      "name": "sinnoh-sea-route-226",
+      "displayName": "Sea Route 226"
+    },
+    {
+      "name": "sinnoh-sea-route-230",
+      "displayName": "Sea Route 230"
+    },
+    {
+      "name": "sendoff-spring",
+      "displayName": "Sendoff Spring"
+    },
+    {
+      "name": "sinnoh-pokemart",
+      "displayName": "Sinnoh Pokemart"
+    },
+    {
+      "name": "snowpoint-temple",
+      "displayName": "Snowpoint Temple"
+    },
+    {
+      "name": "solaceon-ruins",
+      "displayName": "Solaceon Ruins"
+    },
+    {
+      "name": "spear-pillar",
+      "displayName": "Spear Pillar"
+    },
+    {
+      "name": "stark-mountain",
+      "displayName": "Stark Mountain"
+    },
+    {
+      "name": "sunyshore-city",
+      "displayName": "Sunyshore City"
+    },
+    {
+      "name": "trophy-garden",
+      "displayName": "Trophy Garden"
+    },
+    {
+      "name": "turnback-cave",
+      "displayName": "Turnback Cave"
+    },
+    {
+      "name": "twinleaf-town",
+      "displayName": "Twinleaf Town"
+    },
+    {
+      "name": "valley-windworks",
+      "displayName": "Valley Windworks"
+    },
+    {
+      "name": "valor-lakefront",
+      "displayName": "Valor Lakefront"
+    },
+    {
+      "name": "veilstone-city",
+      "displayName": "Veilstone City"
+    },
+    {
+      "name": "sinnoh-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "wayward-cave",
+      "displayName": "Wayward Cave"
+    }
+  ],
+  "heartgold": [
+    {
+      "name": "azalea-town",
+      "displayName": "Azalea Town"
+    },
+    {
+      "name": "bell-tower",
+      "displayName": "Bell Tower"
+    },
+    {
+      "name": "blackthorn-city",
+      "displayName": "Blackthorn City"
+    },
+    {
+      "name": "burned-tower",
+      "displayName": "Burned Tower"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cherrygrove-city",
+      "displayName": "Cherrygrove City"
+    },
+    {
+      "name": "cianwood-city",
+      "displayName": "Cianwood City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "dark-cave",
+      "displayName": "Dark Cave"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dragons-den",
+      "displayName": "Dragon's Den"
+    },
+    {
+      "name": "ecruteak-city",
+      "displayName": "Ecruteak City"
+    },
+    {
+      "name": "embedded-tower",
+      "displayName": "Embedded Tower"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "goldenrod-city",
+      "displayName": "Goldenrod City"
+    },
+    {
+      "name": "ice-path",
+      "displayName": "Ice Path"
+    },
+    {
+      "name": "ilex-forest",
+      "displayName": "Ilex Forest"
+    },
+    {
+      "name": "johto-pokemart",
+      "displayName": "Johto Pokemart"
+    },
+    {
+      "name": "johto-safari-zone",
+      "displayName": "Johto Safari Zone"
+    },
+    {
+      "name": "lake-of-rage",
+      "displayName": "Lake of Rage"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "mt-mortar",
+      "displayName": "Mt. Mortar"
+    },
+    {
+      "name": "mt-silver",
+      "displayName": "Mt. Silver"
+    },
+    {
+      "name": "national-park",
+      "displayName": "National Park"
+    },
+    {
+      "name": "new-bark-town",
+      "displayName": "New Bark Town"
+    },
+    {
+      "name": "olivine-city",
+      "displayName": "Olivine City"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pewter-city",
+      "displayName": "Pewter City"
+    },
+    {
+      "name": "roaming-johto",
+      "displayName": "Roaming Johto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-26",
+      "displayName": "Route 26"
+    },
+    {
+      "name": "kanto-route-27",
+      "displayName": "Route 27"
+    },
+    {
+      "name": "kanto-route-28",
+      "displayName": "Route 28"
+    },
+    {
+      "name": "johto-route-29",
+      "displayName": "Route 29"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "johto-route-30",
+      "displayName": "Route 30"
+    },
+    {
+      "name": "johto-route-31",
+      "displayName": "Route 31"
+    },
+    {
+      "name": "johto-route-32",
+      "displayName": "Route 32"
+    },
+    {
+      "name": "johto-route-33",
+      "displayName": "Route 33"
+    },
+    {
+      "name": "johto-route-34",
+      "displayName": "Route 34"
+    },
+    {
+      "name": "johto-route-35",
+      "displayName": "Route 35"
+    },
+    {
+      "name": "johto-route-36",
+      "displayName": "Route 36"
+    },
+    {
+      "name": "johto-route-37",
+      "displayName": "Route 37"
+    },
+    {
+      "name": "johto-route-38",
+      "displayName": "Route 38"
+    },
+    {
+      "name": "johto-route-39",
+      "displayName": "Route 39"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "johto-route-42",
+      "displayName": "Route 42"
+    },
+    {
+      "name": "johto-route-43",
+      "displayName": "Route 43"
+    },
+    {
+      "name": "johto-route-44",
+      "displayName": "Route 44"
+    },
+    {
+      "name": "johto-route-45",
+      "displayName": "Route 45"
+    },
+    {
+      "name": "johto-route-46",
+      "displayName": "Route 46"
+    },
+    {
+      "name": "johto-route-47",
+      "displayName": "Route 47"
+    },
+    {
+      "name": "johto-route-48",
+      "displayName": "Route 48"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruins-of-alph",
+      "displayName": "Ruins of Alph"
+    },
+    {
+      "name": "safari-zone-gate",
+      "displayName": "Safari Zone Gate"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "johto-sea-route-40",
+      "displayName": "Sea Route 40"
+    },
+    {
+      "name": "johto-sea-route-41",
+      "displayName": "Sea Route 41"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "sinjoh-ruins",
+      "displayName": "Sinjoh Ruins"
+    },
+    {
+      "name": "slowpoke-well",
+      "displayName": "Slowpoke Well"
+    },
+    {
+      "name": "sprout-tower",
+      "displayName": "Sprout Tower"
+    },
+    {
+      "name": "team-rocket-hq",
+      "displayName": "Team Rocket HQ"
+    },
+    {
+      "name": "tohjo-falls",
+      "displayName": "Tohjo Falls"
+    },
+    {
+      "name": "union-cave",
+      "displayName": "Union Cave"
+    },
+    {
+      "name": "unknown-all-bugs",
+      "displayName": "Unknown; all bugs"
+    },
+    {
+      "name": "unknown-all-poliwag",
+      "displayName": "Unknown; all Poliwag"
+    },
+    {
+      "name": "unknown-all-rattata",
+      "displayName": "Unknown; all Rattata"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "violet-city",
+      "displayName": "Violet City"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    },
+    {
+      "name": "whirl-islands",
+      "displayName": "Whirl Islands"
+    }
+  ],
+  "soulsilver": [
+    {
+      "name": "azalea-town",
+      "displayName": "Azalea Town"
+    },
+    {
+      "name": "bell-tower",
+      "displayName": "Bell Tower"
+    },
+    {
+      "name": "blackthorn-city",
+      "displayName": "Blackthorn City"
+    },
+    {
+      "name": "burned-tower",
+      "displayName": "Burned Tower"
+    },
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cherrygrove-city",
+      "displayName": "Cherrygrove City"
+    },
+    {
+      "name": "cianwood-city",
+      "displayName": "Cianwood City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "dark-cave",
+      "displayName": "Dark Cave"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "dragons-den",
+      "displayName": "Dragon's Den"
+    },
+    {
+      "name": "ecruteak-city",
+      "displayName": "Ecruteak City"
+    },
+    {
+      "name": "embedded-tower",
+      "displayName": "Embedded Tower"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "goldenrod-city",
+      "displayName": "Goldenrod City"
+    },
+    {
+      "name": "ice-path",
+      "displayName": "Ice Path"
+    },
+    {
+      "name": "ilex-forest",
+      "displayName": "Ilex Forest"
+    },
+    {
+      "name": "johto-pokemart",
+      "displayName": "Johto Pokemart"
+    },
+    {
+      "name": "johto-safari-zone",
+      "displayName": "Johto Safari Zone"
+    },
+    {
+      "name": "lake-of-rage",
+      "displayName": "Lake of Rage"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "mt-mortar",
+      "displayName": "Mt. Mortar"
+    },
+    {
+      "name": "mt-silver",
+      "displayName": "Mt. Silver"
+    },
+    {
+      "name": "national-park",
+      "displayName": "National Park"
+    },
+    {
+      "name": "new-bark-town",
+      "displayName": "New Bark Town"
+    },
+    {
+      "name": "olivine-city",
+      "displayName": "Olivine City"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pewter-city",
+      "displayName": "Pewter City"
+    },
+    {
+      "name": "roaming-johto",
+      "displayName": "Roaming Johto"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-26",
+      "displayName": "Route 26"
+    },
+    {
+      "name": "kanto-route-27",
+      "displayName": "Route 27"
+    },
+    {
+      "name": "kanto-route-28",
+      "displayName": "Route 28"
+    },
+    {
+      "name": "johto-route-29",
+      "displayName": "Route 29"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "johto-route-30",
+      "displayName": "Route 30"
+    },
+    {
+      "name": "johto-route-31",
+      "displayName": "Route 31"
+    },
+    {
+      "name": "johto-route-32",
+      "displayName": "Route 32"
+    },
+    {
+      "name": "johto-route-33",
+      "displayName": "Route 33"
+    },
+    {
+      "name": "johto-route-34",
+      "displayName": "Route 34"
+    },
+    {
+      "name": "johto-route-35",
+      "displayName": "Route 35"
+    },
+    {
+      "name": "johto-route-36",
+      "displayName": "Route 36"
+    },
+    {
+      "name": "johto-route-37",
+      "displayName": "Route 37"
+    },
+    {
+      "name": "johto-route-38",
+      "displayName": "Route 38"
+    },
+    {
+      "name": "johto-route-39",
+      "displayName": "Route 39"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "johto-route-42",
+      "displayName": "Route 42"
+    },
+    {
+      "name": "johto-route-43",
+      "displayName": "Route 43"
+    },
+    {
+      "name": "johto-route-44",
+      "displayName": "Route 44"
+    },
+    {
+      "name": "johto-route-45",
+      "displayName": "Route 45"
+    },
+    {
+      "name": "johto-route-46",
+      "displayName": "Route 46"
+    },
+    {
+      "name": "johto-route-47",
+      "displayName": "Route 47"
+    },
+    {
+      "name": "johto-route-48",
+      "displayName": "Route 48"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "ruins-of-alph",
+      "displayName": "Ruins of Alph"
+    },
+    {
+      "name": "safari-zone-gate",
+      "displayName": "Safari Zone Gate"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "johto-sea-route-40",
+      "displayName": "Sea Route 40"
+    },
+    {
+      "name": "johto-sea-route-41",
+      "displayName": "Sea Route 41"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "sinjoh-ruins",
+      "displayName": "Sinjoh Ruins"
+    },
+    {
+      "name": "slowpoke-well",
+      "displayName": "Slowpoke Well"
+    },
+    {
+      "name": "sprout-tower",
+      "displayName": "Sprout Tower"
+    },
+    {
+      "name": "team-rocket-hq",
+      "displayName": "Team Rocket HQ"
+    },
+    {
+      "name": "tohjo-falls",
+      "displayName": "Tohjo Falls"
+    },
+    {
+      "name": "union-cave",
+      "displayName": "Union Cave"
+    },
+    {
+      "name": "unknown-all-bugs",
+      "displayName": "Unknown; all bugs"
+    },
+    {
+      "name": "unknown-all-poliwag",
+      "displayName": "Unknown; all Poliwag"
+    },
+    {
+      "name": "unknown-all-rattata",
+      "displayName": "Unknown; all Rattata"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "violet-city",
+      "displayName": "Violet City"
+    },
+    {
+      "name": "viridian-city",
+      "displayName": "Viridian City"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    },
+    {
+      "name": "whirl-islands",
+      "displayName": "Whirl Islands"
+    }
+  ],
+  "black": [
+    {
+      "name": "abundant-shrine",
+      "displayName": "Abundant Shrine"
+    },
+    {
+      "name": "castelia-city",
+      "displayName": "Castelia City"
+    },
+    {
+      "name": "celestial-tower",
+      "displayName": "Celestial Tower"
+    },
+    {
+      "name": "challengers-cave",
+      "displayName": "Challenger's Cave"
+    },
+    {
+      "name": "chargestone-cave",
+      "displayName": "Chargestone Cave"
+    },
+    {
+      "name": "cold-storage",
+      "displayName": "Cold Storage"
+    },
+    {
+      "name": "desert-resort",
+      "displayName": "Desert Resort"
+    },
+    {
+      "name": "dragonspiral-tower",
+      "displayName": "Dragonspiral Tower"
+    },
+    {
+      "name": "dreamyard",
+      "displayName": "Dreamyard"
+    },
+    {
+      "name": "driftveil-city",
+      "displayName": "Driftveil City"
+    },
+    {
+      "name": "driftveil-drawbridge",
+      "displayName": "Driftveil Drawbridge"
+    },
+    {
+      "name": "giant-chasm",
+      "displayName": "Giant Chasm"
+    },
+    {
+      "name": "guidance-chamber",
+      "displayName": "Guidance Chamber"
+    },
+    {
+      "name": "icirrus-city",
+      "displayName": "Icirrus City"
+    },
+    {
+      "name": "liberty-garden",
+      "displayName": "Liberty Garden"
+    },
+    {
+      "name": "lostlorn-forest",
+      "displayName": "Lostlorn Forest"
+    },
+    {
+      "name": "marvelous-bridge",
+      "displayName": "Marvelous Bridge"
+    },
+    {
+      "name": "mistralton-cave",
+      "displayName": "Mistralton Cave"
+    },
+    {
+      "name": "moor-of-icirrus",
+      "displayName": "Moor of Icirrus"
+    },
+    {
+      "name": "ns-castle",
+      "displayName": "N's Castle"
+    },
+    {
+      "name": "nuvema-town",
+      "displayName": "Nuvema Town"
+    },
+    {
+      "name": "p2-laboratory",
+      "displayName": "P2 Laboratory"
+    },
+    {
+      "name": "pinwheel-forest",
+      "displayName": "Pinwheel Forest"
+    },
+    {
+      "name": "relic-castle",
+      "displayName": "Relic Castle"
+    },
+    {
+      "name": "unova-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "unova-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "unova-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "unova-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "unova-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "unova-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "unova-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "unova-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "unova-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "unova-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "unova-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "unova-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "unova-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "unova-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "unova-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "unova-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "unova-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "unova-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "striaton-city",
+      "displayName": "Striaton City"
+    },
+    {
+      "name": "trial-chamber",
+      "displayName": "Trial Chamber"
+    },
+    {
+      "name": "twist-mountain",
+      "displayName": "Twist Mountain"
+    },
+    {
+      "name": "undella-bay",
+      "displayName": "Undella Bay"
+    },
+    {
+      "name": "undella-town",
+      "displayName": "Undella Town"
+    },
+    {
+      "name": "unova-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "village-bridge",
+      "displayName": "Village Bridge"
+    },
+    {
+      "name": "wellspring-cave",
+      "displayName": "Wellspring Cave"
+    }
+  ],
+  "white": [
+    {
+      "name": "abundant-shrine",
+      "displayName": "Abundant Shrine"
+    },
+    {
+      "name": "castelia-city",
+      "displayName": "Castelia City"
+    },
+    {
+      "name": "celestial-tower",
+      "displayName": "Celestial Tower"
+    },
+    {
+      "name": "challengers-cave",
+      "displayName": "Challenger's Cave"
+    },
+    {
+      "name": "chargestone-cave",
+      "displayName": "Chargestone Cave"
+    },
+    {
+      "name": "cold-storage",
+      "displayName": "Cold Storage"
+    },
+    {
+      "name": "desert-resort",
+      "displayName": "Desert Resort"
+    },
+    {
+      "name": "dragonspiral-tower",
+      "displayName": "Dragonspiral Tower"
+    },
+    {
+      "name": "dreamyard",
+      "displayName": "Dreamyard"
+    },
+    {
+      "name": "driftveil-city",
+      "displayName": "Driftveil City"
+    },
+    {
+      "name": "driftveil-drawbridge",
+      "displayName": "Driftveil Drawbridge"
+    },
+    {
+      "name": "giant-chasm",
+      "displayName": "Giant Chasm"
+    },
+    {
+      "name": "guidance-chamber",
+      "displayName": "Guidance Chamber"
+    },
+    {
+      "name": "icirrus-city",
+      "displayName": "Icirrus City"
+    },
+    {
+      "name": "liberty-garden",
+      "displayName": "Liberty Garden"
+    },
+    {
+      "name": "lostlorn-forest",
+      "displayName": "Lostlorn Forest"
+    },
+    {
+      "name": "marvelous-bridge",
+      "displayName": "Marvelous Bridge"
+    },
+    {
+      "name": "mistralton-cave",
+      "displayName": "Mistralton Cave"
+    },
+    {
+      "name": "moor-of-icirrus",
+      "displayName": "Moor of Icirrus"
+    },
+    {
+      "name": "ns-castle",
+      "displayName": "N's Castle"
+    },
+    {
+      "name": "nuvema-town",
+      "displayName": "Nuvema Town"
+    },
+    {
+      "name": "p2-laboratory",
+      "displayName": "P2 Laboratory"
+    },
+    {
+      "name": "pinwheel-forest",
+      "displayName": "Pinwheel Forest"
+    },
+    {
+      "name": "relic-castle",
+      "displayName": "Relic Castle"
+    },
+    {
+      "name": "unova-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "unova-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "unova-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "unova-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "unova-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "unova-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "unova-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "unova-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "unova-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "unova-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "unova-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "unova-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "unova-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "unova-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "unova-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "unova-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "unova-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "unova-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "striaton-city",
+      "displayName": "Striaton City"
+    },
+    {
+      "name": "trial-chamber",
+      "displayName": "Trial Chamber"
+    },
+    {
+      "name": "twist-mountain",
+      "displayName": "Twist Mountain"
+    },
+    {
+      "name": "undella-bay",
+      "displayName": "Undella Bay"
+    },
+    {
+      "name": "undella-town",
+      "displayName": "Undella Town"
+    },
+    {
+      "name": "unova-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "village-bridge",
+      "displayName": "Village Bridge"
+    },
+    {
+      "name": "wellspring-cave",
+      "displayName": "Wellspring Cave"
+    }
+  ],
+  "black-2": [
+    {
+      "name": "abundant-shrine",
+      "displayName": "Abundant Shrine"
+    },
+    {
+      "name": "accumula-town",
+      "displayName": "Accumula Town"
+    },
+    {
+      "name": "aspertia-city",
+      "displayName": "Aspertia City"
+    },
+    {
+      "name": "castelia-city",
+      "displayName": "Castelia City"
+    },
+    {
+      "name": "castelia-sewers",
+      "displayName": "Castelia Sewers"
+    },
+    {
+      "name": "celestial-tower",
+      "displayName": "Celestial Tower"
+    },
+    {
+      "name": "chargestone-cave",
+      "displayName": "Chargestone Cave"
+    },
+    {
+      "name": "clay-tunnel",
+      "displayName": "Clay Tunnel"
+    },
+    {
+      "name": "desert-resort",
+      "displayName": "Desert Resort"
+    },
+    {
+      "name": "dragonspiral-tower",
+      "displayName": "Dragonspiral Tower"
+    },
+    {
+      "name": "dreamyard",
+      "displayName": "Dreamyard"
+    },
+    {
+      "name": "driftveil-city",
+      "displayName": "Driftveil City"
+    },
+    {
+      "name": "driftveil-drawbridge",
+      "displayName": "Driftveil Drawbridge"
+    },
+    {
+      "name": "floccesy-ranch",
+      "displayName": "Floccesy Ranch"
+    },
+    {
+      "name": "floccesy-town",
+      "displayName": "Floccesy Town"
+    },
+    {
+      "name": "giant-chasm",
+      "displayName": "Giant Chasm"
+    },
+    {
+      "name": "glacier-room",
+      "displayName": "Glacier Room"
+    },
+    {
+      "name": "guidance-chamber",
+      "displayName": "Guidance Chamber"
+    },
+    {
+      "name": "humilau-city",
+      "displayName": "Humilau City"
+    },
+    {
+      "name": "icirrus-city",
+      "displayName": "Icirrus City"
+    },
+    {
+      "name": "iron-room",
+      "displayName": "Iron Room"
+    },
+    {
+      "name": "lostlorn-forest",
+      "displayName": "Lostlorn Forest"
+    },
+    {
+      "name": "marvelous-bridge",
+      "displayName": "Marvelous Bridge"
+    },
+    {
+      "name": "mistralton-cave",
+      "displayName": "Mistralton Cave"
+    },
+    {
+      "name": "moor-of-icirrus",
+      "displayName": "Moor of Icirrus"
+    },
+    {
+      "name": "nacrene-city",
+      "displayName": "Nacrene City"
+    },
+    {
+      "name": "nature-sanctuary",
+      "displayName": "Nature Sanctuary"
+    },
+    {
+      "name": "p2-laboratory",
+      "displayName": "P2 Laboratory"
+    },
+    {
+      "name": "pinwheel-forest",
+      "displayName": "Pinwheel Forest"
+    },
+    {
+      "name": "relic-castle",
+      "displayName": "Relic Castle"
+    },
+    {
+      "name": "relic-passage",
+      "displayName": "Relic Passage"
+    },
+    {
+      "name": "reversal-mountain",
+      "displayName": "Reversal Mountain"
+    },
+    {
+      "name": "rocky-mountain-room",
+      "displayName": "Rocky Mountain Room"
+    },
+    {
+      "name": "unova-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "unova-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "unova-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "unova-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "unova-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "unova-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "unova-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "unova-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "unova-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "unova-route-19",
+      "displayName": "Route 19"
+    },
+    {
+      "name": "unova-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "unova-route-20",
+      "displayName": "Route 20"
+    },
+    {
+      "name": "unova-route-21",
+      "displayName": "Route 21"
+    },
+    {
+      "name": "unova-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "unova-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "unova-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "unova-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "unova-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "unova-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "unova-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "unova-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "unova-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "seaside-cave",
+      "displayName": "Seaside Cave"
+    },
+    {
+      "name": "strange-house",
+      "displayName": "Strange House"
+    },
+    {
+      "name": "striaton-city",
+      "displayName": "Striaton City"
+    },
+    {
+      "name": "twist-mountain",
+      "displayName": "Twist Mountain"
+    },
+    {
+      "name": "undella-bay",
+      "displayName": "Undella Bay"
+    },
+    {
+      "name": "undella-town",
+      "displayName": "Undella Town"
+    },
+    {
+      "name": "underground-ruins",
+      "displayName": "Underground Ruins"
+    },
+    {
+      "name": "unova-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "unova-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "village-bridge",
+      "displayName": "Village Bridge"
+    },
+    {
+      "name": "virbank-city",
+      "displayName": "Virbank City"
+    },
+    {
+      "name": "virbank-complex",
+      "displayName": "Virbank Complex"
+    },
+    {
+      "name": "wellspring-cave",
+      "displayName": "Wellspring Cave"
+    }
+  ],
+  "white-2": [
+    {
+      "name": "abundant-shrine",
+      "displayName": "Abundant Shrine"
+    },
+    {
+      "name": "accumula-town",
+      "displayName": "Accumula Town"
+    },
+    {
+      "name": "aspertia-city",
+      "displayName": "Aspertia City"
+    },
+    {
+      "name": "castelia-city",
+      "displayName": "Castelia City"
+    },
+    {
+      "name": "castelia-sewers",
+      "displayName": "Castelia Sewers"
+    },
+    {
+      "name": "celestial-tower",
+      "displayName": "Celestial Tower"
+    },
+    {
+      "name": "chargestone-cave",
+      "displayName": "Chargestone Cave"
+    },
+    {
+      "name": "clay-tunnel",
+      "displayName": "Clay Tunnel"
+    },
+    {
+      "name": "desert-resort",
+      "displayName": "Desert Resort"
+    },
+    {
+      "name": "dragonspiral-tower",
+      "displayName": "Dragonspiral Tower"
+    },
+    {
+      "name": "dreamyard",
+      "displayName": "Dreamyard"
+    },
+    {
+      "name": "driftveil-city",
+      "displayName": "Driftveil City"
+    },
+    {
+      "name": "driftveil-drawbridge",
+      "displayName": "Driftveil Drawbridge"
+    },
+    {
+      "name": "floccesy-ranch",
+      "displayName": "Floccesy Ranch"
+    },
+    {
+      "name": "floccesy-town",
+      "displayName": "Floccesy Town"
+    },
+    {
+      "name": "giant-chasm",
+      "displayName": "Giant Chasm"
+    },
+    {
+      "name": "glacier-room",
+      "displayName": "Glacier Room"
+    },
+    {
+      "name": "guidance-chamber",
+      "displayName": "Guidance Chamber"
+    },
+    {
+      "name": "humilau-city",
+      "displayName": "Humilau City"
+    },
+    {
+      "name": "icirrus-city",
+      "displayName": "Icirrus City"
+    },
+    {
+      "name": "iron-room",
+      "displayName": "Iron Room"
+    },
+    {
+      "name": "lostlorn-forest",
+      "displayName": "Lostlorn Forest"
+    },
+    {
+      "name": "marvelous-bridge",
+      "displayName": "Marvelous Bridge"
+    },
+    {
+      "name": "mistralton-cave",
+      "displayName": "Mistralton Cave"
+    },
+    {
+      "name": "moor-of-icirrus",
+      "displayName": "Moor of Icirrus"
+    },
+    {
+      "name": "nacrene-city",
+      "displayName": "Nacrene City"
+    },
+    {
+      "name": "nature-sanctuary",
+      "displayName": "Nature Sanctuary"
+    },
+    {
+      "name": "p2-laboratory",
+      "displayName": "P2 Laboratory"
+    },
+    {
+      "name": "pinwheel-forest",
+      "displayName": "Pinwheel Forest"
+    },
+    {
+      "name": "relic-castle",
+      "displayName": "Relic Castle"
+    },
+    {
+      "name": "relic-passage",
+      "displayName": "Relic Passage"
+    },
+    {
+      "name": "reversal-mountain",
+      "displayName": "Reversal Mountain"
+    },
+    {
+      "name": "rocky-mountain-room",
+      "displayName": "Rocky Mountain Room"
+    },
+    {
+      "name": "unova-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "unova-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "unova-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "unova-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "unova-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "unova-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "unova-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "unova-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "unova-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "unova-route-19",
+      "displayName": "Route 19"
+    },
+    {
+      "name": "unova-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "unova-route-20",
+      "displayName": "Route 20"
+    },
+    {
+      "name": "unova-route-21",
+      "displayName": "Route 21"
+    },
+    {
+      "name": "unova-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "unova-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "unova-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "unova-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "unova-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "unova-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "unova-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "unova-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "unova-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "seaside-cave",
+      "displayName": "Seaside Cave"
+    },
+    {
+      "name": "strange-house",
+      "displayName": "Strange House"
+    },
+    {
+      "name": "striaton-city",
+      "displayName": "Striaton City"
+    },
+    {
+      "name": "twist-mountain",
+      "displayName": "Twist Mountain"
+    },
+    {
+      "name": "undella-bay",
+      "displayName": "Undella Bay"
+    },
+    {
+      "name": "undella-town",
+      "displayName": "Undella Town"
+    },
+    {
+      "name": "underground-ruins",
+      "displayName": "Underground Ruins"
+    },
+    {
+      "name": "unova-victory-road",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "unova-victory-road-2",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "village-bridge",
+      "displayName": "Village Bridge"
+    },
+    {
+      "name": "virbank-city",
+      "displayName": "Virbank City"
+    },
+    {
+      "name": "virbank-complex",
+      "displayName": "Virbank Complex"
+    },
+    {
+      "name": "wellspring-cave",
+      "displayName": "Wellspring Cave"
+    }
+  ],
+  "x": [
+    {
+      "name": "ambrette-town",
+      "displayName": "Ambrette Town"
+    },
+    {
+      "name": "aquacorde-town",
+      "displayName": "Aquacorde Town"
+    },
+    {
+      "name": "azure-bay",
+      "displayName": "Azure Bay"
+    },
+    {
+      "name": "connecting-cave",
+      "displayName": "Connecting Cave"
+    },
+    {
+      "name": "couriway-town",
+      "displayName": "Couriway Town"
+    },
+    {
+      "name": "cyllage-city",
+      "displayName": "Cyllage City"
+    },
+    {
+      "name": "friend-safari",
+      "displayName": "Friend Safari"
+    },
+    {
+      "name": "frost-cavern",
+      "displayName": "Frost Cavern"
+    },
+    {
+      "name": "glittering-cave",
+      "displayName": "Glittering Cave"
+    },
+    {
+      "name": "roaming-kalos",
+      "displayName": "Kalos (Roaming)"
+    },
+    {
+      "name": "laverre-city",
+      "displayName": "Laverre City"
+    },
+    {
+      "name": "lost-hotel",
+      "displayName": "Lost Hotel"
+    },
+    {
+      "name": "lumiose-city",
+      "displayName": "Lumiose City"
+    },
+    {
+      "name": "parfum-palace",
+      "displayName": "Parfum Palace"
+    },
+    {
+      "name": "pokemon-village",
+      "displayName": "Pokémon Village"
+    },
+    {
+      "name": "reflection-cave",
+      "displayName": "Reflection Cave"
+    },
+    {
+      "name": "kalos-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kalos-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kalos-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kalos-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kalos-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kalos-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kalos-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kalos-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kalos-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kalos-route-19",
+      "displayName": "Route 19"
+    },
+    {
+      "name": "kalos-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kalos-route-20",
+      "displayName": "Route 20"
+    },
+    {
+      "name": "kalos-route-21",
+      "displayName": "Route 21"
+    },
+    {
+      "name": "kalos-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kalos-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kalos-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kalos-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kalos-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kalos-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kalos-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kalos-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "santalune-forest",
+      "displayName": "Santalune Forest"
+    },
+    {
+      "name": "sea-spirits-den",
+      "displayName": "Sea Spirit’s Den"
+    },
+    {
+      "name": "shalour-city",
+      "displayName": "Shalour City"
+    },
+    {
+      "name": "team-flare-secret-hq",
+      "displayName": "Team Flare Secret HQ"
+    },
+    {
+      "name": "terminus-cave",
+      "displayName": "Terminus Cave"
+    },
+    {
+      "name": "tower-of-mastery",
+      "displayName": "Tower of Mastery"
+    },
+    {
+      "name": "unknown-dungeon",
+      "displayName": "Unknown Dungeon"
+    },
+    {
+      "name": "kalos-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "y": [
+    {
+      "name": "ambrette-town",
+      "displayName": "Ambrette Town"
+    },
+    {
+      "name": "aquacorde-town",
+      "displayName": "Aquacorde Town"
+    },
+    {
+      "name": "azure-bay",
+      "displayName": "Azure Bay"
+    },
+    {
+      "name": "connecting-cave",
+      "displayName": "Connecting Cave"
+    },
+    {
+      "name": "couriway-town",
+      "displayName": "Couriway Town"
+    },
+    {
+      "name": "cyllage-city",
+      "displayName": "Cyllage City"
+    },
+    {
+      "name": "friend-safari",
+      "displayName": "Friend Safari"
+    },
+    {
+      "name": "frost-cavern",
+      "displayName": "Frost Cavern"
+    },
+    {
+      "name": "glittering-cave",
+      "displayName": "Glittering Cave"
+    },
+    {
+      "name": "roaming-kalos",
+      "displayName": "Kalos (Roaming)"
+    },
+    {
+      "name": "laverre-city",
+      "displayName": "Laverre City"
+    },
+    {
+      "name": "lost-hotel",
+      "displayName": "Lost Hotel"
+    },
+    {
+      "name": "lumiose-city",
+      "displayName": "Lumiose City"
+    },
+    {
+      "name": "parfum-palace",
+      "displayName": "Parfum Palace"
+    },
+    {
+      "name": "pokemon-village",
+      "displayName": "Pokémon Village"
+    },
+    {
+      "name": "reflection-cave",
+      "displayName": "Reflection Cave"
+    },
+    {
+      "name": "kalos-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kalos-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kalos-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kalos-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kalos-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kalos-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kalos-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kalos-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kalos-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kalos-route-19",
+      "displayName": "Route 19"
+    },
+    {
+      "name": "kalos-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kalos-route-20",
+      "displayName": "Route 20"
+    },
+    {
+      "name": "kalos-route-21",
+      "displayName": "Route 21"
+    },
+    {
+      "name": "kalos-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kalos-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kalos-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kalos-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kalos-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kalos-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kalos-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kalos-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "santalune-forest",
+      "displayName": "Santalune Forest"
+    },
+    {
+      "name": "sea-spirits-den",
+      "displayName": "Sea Spirit’s Den"
+    },
+    {
+      "name": "shalour-city",
+      "displayName": "Shalour City"
+    },
+    {
+      "name": "team-flare-secret-hq",
+      "displayName": "Team Flare Secret HQ"
+    },
+    {
+      "name": "terminus-cave",
+      "displayName": "Terminus Cave"
+    },
+    {
+      "name": "tower-of-mastery",
+      "displayName": "Tower of Mastery"
+    },
+    {
+      "name": "unknown-dungeon",
+      "displayName": "Unknown Dungeon"
+    },
+    {
+      "name": "kalos-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "omega-ruby": [
+    {
+      "name": "ancient-tomb",
+      "displayName": "Ancient Tomb"
+    },
+    {
+      "name": "battle-resort",
+      "displayName": "Battle Resort"
+    },
+    {
+      "name": "cave-of-origin",
+      "displayName": "Cave of Origin"
+    },
+    {
+      "name": "crescent-isle",
+      "displayName": "Crescent Isle"
+    },
+    {
+      "name": "desert-ruins",
+      "displayName": "Desert Ruins"
+    },
+    {
+      "name": "fabled-cave",
+      "displayName": "Fabled Cave"
+    },
+    {
+      "name": "fallarbor-town",
+      "displayName": "Fallarbor Town"
+    },
+    {
+      "name": "fiery-path",
+      "displayName": "Fiery Path"
+    },
+    {
+      "name": "gnarled-den",
+      "displayName": "Gnarled Den"
+    },
+    {
+      "name": "granite-cave",
+      "displayName": "Granite Cave"
+    },
+    {
+      "name": "island-cave",
+      "displayName": "Island Cave"
+    },
+    {
+      "name": "jagged-pass",
+      "displayName": "Jagged Pass"
+    },
+    {
+      "name": "lavaridge-town",
+      "displayName": "Lavaridge Town"
+    },
+    {
+      "name": "lilycove-city",
+      "displayName": "Lilycove City"
+    },
+    {
+      "name": "meteor-falls",
+      "displayName": "Meteor Falls"
+    },
+    {
+      "name": "mirage-spot-cave",
+      "displayName": "Mirage Cave"
+    },
+    {
+      "name": "mirage-spot-forest",
+      "displayName": "Mirage Forest"
+    },
+    {
+      "name": "mirage-spot-island",
+      "displayName": "Mirage Island"
+    },
+    {
+      "name": "mirage-spot-mountain",
+      "displayName": "Mirage Mountain"
+    },
+    {
+      "name": "mossdeep-city",
+      "displayName": "Mossdeep City"
+    },
+    {
+      "name": "mossdeep-space-center",
+      "displayName": "Mossdeep Space Center"
+    },
+    {
+      "name": "mt-pyre",
+      "displayName": "Mt. Pyre"
+    },
+    {
+      "name": "nameless-cavern",
+      "displayName": "Nameless Cavern"
+    },
+    {
+      "name": "new-mauville",
+      "displayName": "New Mauville"
+    },
+    {
+      "name": "pathless-plain",
+      "displayName": "Pathless Plain"
+    },
+    {
+      "name": "petalburg-woods",
+      "displayName": "Petalburg Woods"
+    },
+    {
+      "name": "hoenn-route-101",
+      "displayName": "Route 101"
+    },
+    {
+      "name": "hoenn-route-102",
+      "displayName": "Route 102"
+    },
+    {
+      "name": "hoenn-route-103",
+      "displayName": "Route 103"
+    },
+    {
+      "name": "hoenn-route-104",
+      "displayName": "Route 104"
+    },
+    {
+      "name": "hoenn-route-110",
+      "displayName": "Route 110"
+    },
+    {
+      "name": "hoenn-route-111",
+      "displayName": "Route 111"
+    },
+    {
+      "name": "hoenn-route-112",
+      "displayName": "Route 112"
+    },
+    {
+      "name": "hoenn-route-113",
+      "displayName": "Route 113"
+    },
+    {
+      "name": "hoenn-route-114",
+      "displayName": "Route 114"
+    },
+    {
+      "name": "hoenn-route-115",
+      "displayName": "Route 115"
+    },
+    {
+      "name": "hoenn-route-116",
+      "displayName": "Route 116"
+    },
+    {
+      "name": "hoenn-route-117",
+      "displayName": "Route 117"
+    },
+    {
+      "name": "hoenn-route-118",
+      "displayName": "Route 118"
+    },
+    {
+      "name": "hoenn-route-119",
+      "displayName": "Route 119"
+    },
+    {
+      "name": "hoenn-route-120",
+      "displayName": "Route 120"
+    },
+    {
+      "name": "hoenn-route-121",
+      "displayName": "Route 121"
+    },
+    {
+      "name": "hoenn-route-123",
+      "displayName": "Route 123"
+    },
+    {
+      "name": "rusturf-tunnel",
+      "displayName": "Rusturf Tunnel"
+    },
+    {
+      "name": "hoenn-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "scorched-slab",
+      "displayName": "Scorched Slab"
+    },
+    {
+      "name": "sea-mauville",
+      "displayName": "Sea Mauville"
+    },
+    {
+      "name": "seafloor-cavern",
+      "displayName": "Seafloor Cavern"
+    },
+    {
+      "name": "shoal-cave",
+      "displayName": "Shoal Cave"
+    },
+    {
+      "name": "sky-pillar",
+      "displayName": "Sky Pillar"
+    },
+    {
+      "name": "slateport-city",
+      "displayName": "Slateport City"
+    },
+    {
+      "name": "soaring-in-the-sky",
+      "displayName": "Soaring in the sky"
+    },
+    {
+      "name": "southern-island",
+      "displayName": "Southern Island"
+    },
+    {
+      "name": "team-aqua-hideout",
+      "displayName": "Team Aqua Hideout"
+    },
+    {
+      "name": "team-magma-hideout",
+      "displayName": "Team Magma Hideout"
+    },
+    {
+      "name": "trackless-forest",
+      "displayName": "Trackless Forest"
+    },
+    {
+      "name": "verdanturf-town",
+      "displayName": "Verdanturf Town"
+    },
+    {
+      "name": "hoenn-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "alpha-sapphire": [
+    {
+      "name": "ancient-tomb",
+      "displayName": "Ancient Tomb"
+    },
+    {
+      "name": "battle-resort",
+      "displayName": "Battle Resort"
+    },
+    {
+      "name": "cave-of-origin",
+      "displayName": "Cave of Origin"
+    },
+    {
+      "name": "crescent-isle",
+      "displayName": "Crescent Isle"
+    },
+    {
+      "name": "desert-ruins",
+      "displayName": "Desert Ruins"
+    },
+    {
+      "name": "fabled-cave",
+      "displayName": "Fabled Cave"
+    },
+    {
+      "name": "fallarbor-town",
+      "displayName": "Fallarbor Town"
+    },
+    {
+      "name": "fiery-path",
+      "displayName": "Fiery Path"
+    },
+    {
+      "name": "gnarled-den",
+      "displayName": "Gnarled Den"
+    },
+    {
+      "name": "granite-cave",
+      "displayName": "Granite Cave"
+    },
+    {
+      "name": "island-cave",
+      "displayName": "Island Cave"
+    },
+    {
+      "name": "jagged-pass",
+      "displayName": "Jagged Pass"
+    },
+    {
+      "name": "lavaridge-town",
+      "displayName": "Lavaridge Town"
+    },
+    {
+      "name": "lilycove-city",
+      "displayName": "Lilycove City"
+    },
+    {
+      "name": "meteor-falls",
+      "displayName": "Meteor Falls"
+    },
+    {
+      "name": "mirage-spot-cave",
+      "displayName": "Mirage Cave"
+    },
+    {
+      "name": "mirage-spot-forest",
+      "displayName": "Mirage Forest"
+    },
+    {
+      "name": "mirage-spot-island",
+      "displayName": "Mirage Island"
+    },
+    {
+      "name": "mirage-spot-mountain",
+      "displayName": "Mirage Mountain"
+    },
+    {
+      "name": "mossdeep-city",
+      "displayName": "Mossdeep City"
+    },
+    {
+      "name": "mossdeep-space-center",
+      "displayName": "Mossdeep Space Center"
+    },
+    {
+      "name": "mt-pyre",
+      "displayName": "Mt. Pyre"
+    },
+    {
+      "name": "nameless-cavern",
+      "displayName": "Nameless Cavern"
+    },
+    {
+      "name": "new-mauville",
+      "displayName": "New Mauville"
+    },
+    {
+      "name": "pathless-plain",
+      "displayName": "Pathless Plain"
+    },
+    {
+      "name": "petalburg-woods",
+      "displayName": "Petalburg Woods"
+    },
+    {
+      "name": "hoenn-route-101",
+      "displayName": "Route 101"
+    },
+    {
+      "name": "hoenn-route-102",
+      "displayName": "Route 102"
+    },
+    {
+      "name": "hoenn-route-103",
+      "displayName": "Route 103"
+    },
+    {
+      "name": "hoenn-route-104",
+      "displayName": "Route 104"
+    },
+    {
+      "name": "hoenn-route-110",
+      "displayName": "Route 110"
+    },
+    {
+      "name": "hoenn-route-111",
+      "displayName": "Route 111"
+    },
+    {
+      "name": "hoenn-route-112",
+      "displayName": "Route 112"
+    },
+    {
+      "name": "hoenn-route-113",
+      "displayName": "Route 113"
+    },
+    {
+      "name": "hoenn-route-114",
+      "displayName": "Route 114"
+    },
+    {
+      "name": "hoenn-route-115",
+      "displayName": "Route 115"
+    },
+    {
+      "name": "hoenn-route-116",
+      "displayName": "Route 116"
+    },
+    {
+      "name": "hoenn-route-117",
+      "displayName": "Route 117"
+    },
+    {
+      "name": "hoenn-route-118",
+      "displayName": "Route 118"
+    },
+    {
+      "name": "hoenn-route-119",
+      "displayName": "Route 119"
+    },
+    {
+      "name": "hoenn-route-120",
+      "displayName": "Route 120"
+    },
+    {
+      "name": "hoenn-route-121",
+      "displayName": "Route 121"
+    },
+    {
+      "name": "hoenn-route-123",
+      "displayName": "Route 123"
+    },
+    {
+      "name": "rusturf-tunnel",
+      "displayName": "Rusturf Tunnel"
+    },
+    {
+      "name": "hoenn-safari-zone",
+      "displayName": "Safari Zone"
+    },
+    {
+      "name": "scorched-slab",
+      "displayName": "Scorched Slab"
+    },
+    {
+      "name": "sea-mauville",
+      "displayName": "Sea Mauville"
+    },
+    {
+      "name": "seafloor-cavern",
+      "displayName": "Seafloor Cavern"
+    },
+    {
+      "name": "shoal-cave",
+      "displayName": "Shoal Cave"
+    },
+    {
+      "name": "sky-pillar",
+      "displayName": "Sky Pillar"
+    },
+    {
+      "name": "slateport-city",
+      "displayName": "Slateport City"
+    },
+    {
+      "name": "soaring-in-the-sky",
+      "displayName": "Soaring in the sky"
+    },
+    {
+      "name": "southern-island",
+      "displayName": "Southern Island"
+    },
+    {
+      "name": "team-aqua-hideout",
+      "displayName": "Team Aqua Hideout"
+    },
+    {
+      "name": "team-magma-hideout",
+      "displayName": "Team Magma Hideout"
+    },
+    {
+      "name": "trackless-forest",
+      "displayName": "Trackless Forest"
+    },
+    {
+      "name": "verdanturf-town",
+      "displayName": "Verdanturf Town"
+    },
+    {
+      "name": "hoenn-victory-road",
+      "displayName": "Victory Road"
+    }
+  ],
+  "sun": [
+    {
+      "name": "aether-paradise",
+      "displayName": "Aether Paradise"
+    },
+    {
+      "name": "akala-outskirts",
+      "displayName": "Akala Outskirts"
+    },
+    {
+      "name": "altar-of-the-moone",
+      "displayName": "Altar of the Moone"
+    },
+    {
+      "name": "altar-of-the-sunne",
+      "displayName": "Altar of the Sunne"
+    },
+    {
+      "name": "ancient-poni-path",
+      "displayName": "Ancient Poni Path"
+    },
+    {
+      "name": "berry-fields",
+      "displayName": "Berry Fields"
+    },
+    {
+      "name": "blush-mountain",
+      "displayName": "Blush Mountain"
+    },
+    {
+      "name": "brooklet-hill",
+      "displayName": "Brooklet Hill"
+    },
+    {
+      "name": "digletts-tunnel",
+      "displayName": "Diglett’s Tunnel"
+    },
+    {
+      "name": "exeggutor-island",
+      "displayName": "Exeggutor Island"
+    },
+    {
+      "name": "haina-desert",
+      "displayName": "Haina Desert"
+    },
+    {
+      "name": "hano-beach",
+      "displayName": "Hano Beach"
+    },
+    {
+      "name": "hauoli-cemetery",
+      "displayName": "Hau’oli Cemetery"
+    },
+    {
+      "name": "hauoli-city",
+      "displayName": "Hau'oli City"
+    },
+    {
+      "name": "iki-town",
+      "displayName": "Iki Town"
+    },
+    {
+      "name": "kalae-bay",
+      "displayName": "Kala’e Bay"
+    },
+    {
+      "name": "konikoni-city",
+      "displayName": "Konikoni City"
+    },
+    {
+      "name": "lake-of-the-moone",
+      "displayName": "Lake of the Moone"
+    },
+    {
+      "name": "lake-of-the-sunne",
+      "displayName": "Lake of the Sunne"
+    },
+    {
+      "name": "lush-jungle",
+      "displayName": "Lush Jungle"
+    },
+    {
+      "name": "malie-city",
+      "displayName": "Malie City"
+    },
+    {
+      "name": "malie-garden",
+      "displayName": "Malie Garden"
+    },
+    {
+      "name": "melemele-meadow",
+      "displayName": "Melemele Meadow"
+    },
+    {
+      "name": "melemele-sea",
+      "displayName": "Melemele Sea"
+    },
+    {
+      "name": "memorial-hill",
+      "displayName": "Memorial Hill"
+    },
+    {
+      "name": "mount-hokulani",
+      "displayName": "Mount Hokulani"
+    },
+    {
+      "name": "mount-lanakila",
+      "displayName": "Mount Lanakila"
+    },
+    {
+      "name": "paniola-ranch",
+      "displayName": "Paniola Ranch"
+    },
+    {
+      "name": "paniola-town",
+      "displayName": "Paniola Town"
+    },
+    {
+      "name": "poke-pelago",
+      "displayName": "Poké Pelago"
+    },
+    {
+      "name": "poni-breaker-coast",
+      "displayName": "Poni Breaker Coast"
+    },
+    {
+      "name": "poni-coast",
+      "displayName": "Poni Coast"
+    },
+    {
+      "name": "poni-gauntlet",
+      "displayName": "Poni Gauntlet"
+    },
+    {
+      "name": "poni-grove",
+      "displayName": "Poni Grove"
+    },
+    {
+      "name": "poni-meadow",
+      "displayName": "Poni Meadow"
+    },
+    {
+      "name": "poni-plains",
+      "displayName": "Poni Plains"
+    },
+    {
+      "name": "poni-wilds",
+      "displayName": "Poni Wilds"
+    },
+    {
+      "name": "resolution-cave",
+      "displayName": "Resolution Cave"
+    },
+    {
+      "name": "alola-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "alola-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "alola-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "alola-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "alola-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "alola-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "alola-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "alola-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "alola-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "alola-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "alola-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "alola-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "alola-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "alola-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "alola-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "alola-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "alola-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "thrifty-megamart",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "ruins-of-abundance",
+      "displayName": "Ruins of Abundance"
+    },
+    {
+      "name": "ruins-of-conflict",
+      "displayName": "Ruins of Conflict"
+    },
+    {
+      "name": "ruins-of-hope",
+      "displayName": "Ruins of Hope"
+    },
+    {
+      "name": "ruins-of-life",
+      "displayName": "Ruins of Life"
+    },
+    {
+      "name": "seafolk-village",
+      "displayName": "Seafolk Village"
+    },
+    {
+      "name": "seaward-cave",
+      "displayName": "Seaward Cave"
+    },
+    {
+      "name": "secluded-shore",
+      "displayName": "Secluded Shore"
+    },
+    {
+      "name": "tapu-village",
+      "displayName": "Tapu Village"
+    },
+    {
+      "name": "ten-carat-hill",
+      "displayName": "Ten Carat Hill"
+    },
+    {
+      "name": "ulaula-meadow",
+      "displayName": "Ula’ula Meadow"
+    },
+    {
+      "name": "vast-poni-canyon",
+      "displayName": "Vast Poni Canyon"
+    },
+    {
+      "name": "verdant-cavern--trial-site",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "verdant-cavern",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "wela-volcano-park",
+      "displayName": "Wela Volcano Park"
+    }
+  ],
+  "moon": [
+    {
+      "name": "aether-paradise",
+      "displayName": "Aether Paradise"
+    },
+    {
+      "name": "akala-outskirts",
+      "displayName": "Akala Outskirts"
+    },
+    {
+      "name": "altar-of-the-moone",
+      "displayName": "Altar of the Moone"
+    },
+    {
+      "name": "altar-of-the-sunne",
+      "displayName": "Altar of the Sunne"
+    },
+    {
+      "name": "ancient-poni-path",
+      "displayName": "Ancient Poni Path"
+    },
+    {
+      "name": "berry-fields",
+      "displayName": "Berry Fields"
+    },
+    {
+      "name": "blush-mountain",
+      "displayName": "Blush Mountain"
+    },
+    {
+      "name": "brooklet-hill",
+      "displayName": "Brooklet Hill"
+    },
+    {
+      "name": "digletts-tunnel",
+      "displayName": "Diglett’s Tunnel"
+    },
+    {
+      "name": "exeggutor-island",
+      "displayName": "Exeggutor Island"
+    },
+    {
+      "name": "haina-desert",
+      "displayName": "Haina Desert"
+    },
+    {
+      "name": "hano-beach",
+      "displayName": "Hano Beach"
+    },
+    {
+      "name": "hauoli-cemetery",
+      "displayName": "Hau’oli Cemetery"
+    },
+    {
+      "name": "hauoli-city",
+      "displayName": "Hau'oli City"
+    },
+    {
+      "name": "iki-town",
+      "displayName": "Iki Town"
+    },
+    {
+      "name": "kalae-bay",
+      "displayName": "Kala’e Bay"
+    },
+    {
+      "name": "konikoni-city",
+      "displayName": "Konikoni City"
+    },
+    {
+      "name": "lake-of-the-moone",
+      "displayName": "Lake of the Moone"
+    },
+    {
+      "name": "lake-of-the-sunne",
+      "displayName": "Lake of the Sunne"
+    },
+    {
+      "name": "lush-jungle",
+      "displayName": "Lush Jungle"
+    },
+    {
+      "name": "malie-city",
+      "displayName": "Malie City"
+    },
+    {
+      "name": "malie-garden",
+      "displayName": "Malie Garden"
+    },
+    {
+      "name": "melemele-meadow",
+      "displayName": "Melemele Meadow"
+    },
+    {
+      "name": "melemele-sea",
+      "displayName": "Melemele Sea"
+    },
+    {
+      "name": "memorial-hill",
+      "displayName": "Memorial Hill"
+    },
+    {
+      "name": "mount-hokulani",
+      "displayName": "Mount Hokulani"
+    },
+    {
+      "name": "mount-lanakila",
+      "displayName": "Mount Lanakila"
+    },
+    {
+      "name": "paniola-ranch",
+      "displayName": "Paniola Ranch"
+    },
+    {
+      "name": "paniola-town",
+      "displayName": "Paniola Town"
+    },
+    {
+      "name": "poke-pelago",
+      "displayName": "Poké Pelago"
+    },
+    {
+      "name": "poni-breaker-coast",
+      "displayName": "Poni Breaker Coast"
+    },
+    {
+      "name": "poni-coast",
+      "displayName": "Poni Coast"
+    },
+    {
+      "name": "poni-gauntlet",
+      "displayName": "Poni Gauntlet"
+    },
+    {
+      "name": "poni-grove",
+      "displayName": "Poni Grove"
+    },
+    {
+      "name": "poni-meadow",
+      "displayName": "Poni Meadow"
+    },
+    {
+      "name": "poni-plains",
+      "displayName": "Poni Plains"
+    },
+    {
+      "name": "poni-wilds",
+      "displayName": "Poni Wilds"
+    },
+    {
+      "name": "resolution-cave",
+      "displayName": "Resolution Cave"
+    },
+    {
+      "name": "alola-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "alola-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "alola-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "alola-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "alola-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "alola-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "alola-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "alola-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "alola-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "alola-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "alola-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "alola-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "alola-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "alola-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "alola-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "alola-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "alola-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "thrifty-megamart",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "ruins-of-abundance",
+      "displayName": "Ruins of Abundance"
+    },
+    {
+      "name": "ruins-of-conflict",
+      "displayName": "Ruins of Conflict"
+    },
+    {
+      "name": "ruins-of-hope",
+      "displayName": "Ruins of Hope"
+    },
+    {
+      "name": "ruins-of-life",
+      "displayName": "Ruins of Life"
+    },
+    {
+      "name": "seafolk-village",
+      "displayName": "Seafolk Village"
+    },
+    {
+      "name": "seaward-cave",
+      "displayName": "Seaward Cave"
+    },
+    {
+      "name": "secluded-shore",
+      "displayName": "Secluded Shore"
+    },
+    {
+      "name": "tapu-village",
+      "displayName": "Tapu Village"
+    },
+    {
+      "name": "ten-carat-hill",
+      "displayName": "Ten Carat Hill"
+    },
+    {
+      "name": "ulaula-meadow",
+      "displayName": "Ula’ula Meadow"
+    },
+    {
+      "name": "vast-poni-canyon",
+      "displayName": "Vast Poni Canyon"
+    },
+    {
+      "name": "verdant-cavern--trial-site",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "verdant-cavern",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "wela-volcano-park",
+      "displayName": "Wela Volcano Park"
+    }
+  ],
+  "ultra-sun": [
+    {
+      "name": "akala-outskirts",
+      "displayName": "Akala Outskirts"
+    },
+    {
+      "name": "ancient-poni-path",
+      "displayName": "Ancient Poni Path"
+    },
+    {
+      "name": "berry-fields",
+      "displayName": "Berry Fields"
+    },
+    {
+      "name": "blush-mountain",
+      "displayName": "Blush Mountain"
+    },
+    {
+      "name": "brooklet-hill",
+      "displayName": "Brooklet Hill"
+    },
+    {
+      "name": "digletts-tunnel",
+      "displayName": "Diglett’s Tunnel"
+    },
+    {
+      "name": "dividing-peak-tunnel",
+      "displayName": "Dividing Peak Tunnel"
+    },
+    {
+      "name": "exeggutor-island",
+      "displayName": "Exeggutor Island"
+    },
+    {
+      "name": "haina-desert",
+      "displayName": "Haina Desert"
+    },
+    {
+      "name": "hano-beach",
+      "displayName": "Hano Beach"
+    },
+    {
+      "name": "hauoli-cemetery",
+      "displayName": "Hau’oli Cemetery"
+    },
+    {
+      "name": "hauoli-city",
+      "displayName": "Hau'oli City"
+    },
+    {
+      "name": "heahea-beach",
+      "displayName": "Heahea Beach"
+    },
+    {
+      "name": "heahea-city",
+      "displayName": "Heahea City"
+    },
+    {
+      "name": "kalae-bay",
+      "displayName": "Kala’e Bay"
+    },
+    {
+      "name": "konikoni-city",
+      "displayName": "Konikoni City"
+    },
+    {
+      "name": "lake-of-the-moone",
+      "displayName": "Lake of the Moone"
+    },
+    {
+      "name": "lake-of-the-sunne",
+      "displayName": "Lake of the Sunne"
+    },
+    {
+      "name": "lush-jungle",
+      "displayName": "Lush Jungle"
+    },
+    {
+      "name": "mahalo-trail",
+      "displayName": "Mahalo Trail"
+    },
+    {
+      "name": "malie-city",
+      "displayName": "Malie City"
+    },
+    {
+      "name": "malie-garden",
+      "displayName": "Malie Garden"
+    },
+    {
+      "name": "melemele-meadow",
+      "displayName": "Melemele Meadow"
+    },
+    {
+      "name": "melemele-sea",
+      "displayName": "Melemele Sea"
+    },
+    {
+      "name": "memorial-hill",
+      "displayName": "Memorial Hill"
+    },
+    {
+      "name": "mount-hokulani",
+      "displayName": "Mount Hokulani"
+    },
+    {
+      "name": "mount-lanakila",
+      "displayName": "Mount Lanakila"
+    },
+    {
+      "name": "paniola-ranch",
+      "displayName": "Paniola Ranch"
+    },
+    {
+      "name": "paniola-town",
+      "displayName": "Paniola Town"
+    },
+    {
+      "name": "poke-pelago",
+      "displayName": "Poké Pelago"
+    },
+    {
+      "name": "poni-breaker-coast",
+      "displayName": "Poni Breaker Coast"
+    },
+    {
+      "name": "poni-coast",
+      "displayName": "Poni Coast"
+    },
+    {
+      "name": "poni-gauntlet",
+      "displayName": "Poni Gauntlet"
+    },
+    {
+      "name": "poni-grove",
+      "displayName": "Poni Grove"
+    },
+    {
+      "name": "poni-meadow",
+      "displayName": "Poni Meadow"
+    },
+    {
+      "name": "poni-plains",
+      "displayName": "Poni Plains"
+    },
+    {
+      "name": "poni-wilds",
+      "displayName": "Poni Wilds"
+    },
+    {
+      "name": "resolution-cave",
+      "displayName": "Resolution Cave"
+    },
+    {
+      "name": "alola-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "alola-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "alola-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "alola-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "alola-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "alola-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "alola-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "alola-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "alola-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "alola-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "alola-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "alola-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "alola-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "alola-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "alola-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "alola-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "alola-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "royal-avenue",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "thrifty-megamart",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "ruins-of-abundance",
+      "displayName": "Ruins of Abundance"
+    },
+    {
+      "name": "ruins-of-conflict",
+      "displayName": "Ruins of Conflict"
+    },
+    {
+      "name": "ruins-of-hope",
+      "displayName": "Ruins of Hope"
+    },
+    {
+      "name": "ruins-of-life",
+      "displayName": "Ruins of Life"
+    },
+    {
+      "name": "sandy-cave",
+      "displayName": "Sandy Cave"
+    },
+    {
+      "name": "seafolk-village",
+      "displayName": "Seafolk Village"
+    },
+    {
+      "name": "seaward-cave",
+      "displayName": "Seaward Cave"
+    },
+    {
+      "name": "tapu-village",
+      "displayName": "Tapu Village"
+    },
+    {
+      "name": "team-rockets-castle",
+      "displayName": "Team Rocket's Castle"
+    },
+    {
+      "name": "ten-carat-hill",
+      "displayName": "Ten Carat Hill"
+    },
+    {
+      "name": "ulaula-beach",
+      "displayName": "Ula'ula Beach"
+    },
+    {
+      "name": "ulaula-meadow",
+      "displayName": "Ula’ula Meadow"
+    },
+    {
+      "name": "ultra-megalopolis",
+      "displayName": "Ultra Megalopolis"
+    },
+    {
+      "name": "ultra-space",
+      "displayName": "Ultra Space"
+    },
+    {
+      "name": "ultra-space-wilds",
+      "displayName": "Ultra Space Wilds"
+    },
+    {
+      "name": "vast-poni-canyon",
+      "displayName": "Vast Poni Canyon"
+    },
+    {
+      "name": "verdant-cavern",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "wela-volcano-park",
+      "displayName": "Wela Volcano Park"
+    }
+  ],
+  "ultra-moon": [
+    {
+      "name": "akala-outskirts",
+      "displayName": "Akala Outskirts"
+    },
+    {
+      "name": "ancient-poni-path",
+      "displayName": "Ancient Poni Path"
+    },
+    {
+      "name": "berry-fields",
+      "displayName": "Berry Fields"
+    },
+    {
+      "name": "blush-mountain",
+      "displayName": "Blush Mountain"
+    },
+    {
+      "name": "brooklet-hill",
+      "displayName": "Brooklet Hill"
+    },
+    {
+      "name": "digletts-tunnel",
+      "displayName": "Diglett’s Tunnel"
+    },
+    {
+      "name": "dividing-peak-tunnel",
+      "displayName": "Dividing Peak Tunnel"
+    },
+    {
+      "name": "exeggutor-island",
+      "displayName": "Exeggutor Island"
+    },
+    {
+      "name": "haina-desert",
+      "displayName": "Haina Desert"
+    },
+    {
+      "name": "hano-beach",
+      "displayName": "Hano Beach"
+    },
+    {
+      "name": "hauoli-cemetery",
+      "displayName": "Hau’oli Cemetery"
+    },
+    {
+      "name": "hauoli-city",
+      "displayName": "Hau'oli City"
+    },
+    {
+      "name": "heahea-beach",
+      "displayName": "Heahea Beach"
+    },
+    {
+      "name": "heahea-city",
+      "displayName": "Heahea City"
+    },
+    {
+      "name": "kalae-bay",
+      "displayName": "Kala’e Bay"
+    },
+    {
+      "name": "konikoni-city",
+      "displayName": "Konikoni City"
+    },
+    {
+      "name": "lake-of-the-moone",
+      "displayName": "Lake of the Moone"
+    },
+    {
+      "name": "lake-of-the-sunne",
+      "displayName": "Lake of the Sunne"
+    },
+    {
+      "name": "lush-jungle",
+      "displayName": "Lush Jungle"
+    },
+    {
+      "name": "mahalo-trail",
+      "displayName": "Mahalo Trail"
+    },
+    {
+      "name": "malie-city",
+      "displayName": "Malie City"
+    },
+    {
+      "name": "malie-garden",
+      "displayName": "Malie Garden"
+    },
+    {
+      "name": "melemele-meadow",
+      "displayName": "Melemele Meadow"
+    },
+    {
+      "name": "melemele-sea",
+      "displayName": "Melemele Sea"
+    },
+    {
+      "name": "memorial-hill",
+      "displayName": "Memorial Hill"
+    },
+    {
+      "name": "mount-hokulani",
+      "displayName": "Mount Hokulani"
+    },
+    {
+      "name": "mount-lanakila",
+      "displayName": "Mount Lanakila"
+    },
+    {
+      "name": "paniola-ranch",
+      "displayName": "Paniola Ranch"
+    },
+    {
+      "name": "paniola-town",
+      "displayName": "Paniola Town"
+    },
+    {
+      "name": "poke-pelago",
+      "displayName": "Poké Pelago"
+    },
+    {
+      "name": "poni-breaker-coast",
+      "displayName": "Poni Breaker Coast"
+    },
+    {
+      "name": "poni-coast",
+      "displayName": "Poni Coast"
+    },
+    {
+      "name": "poni-gauntlet",
+      "displayName": "Poni Gauntlet"
+    },
+    {
+      "name": "poni-grove",
+      "displayName": "Poni Grove"
+    },
+    {
+      "name": "poni-meadow",
+      "displayName": "Poni Meadow"
+    },
+    {
+      "name": "poni-plains",
+      "displayName": "Poni Plains"
+    },
+    {
+      "name": "poni-wilds",
+      "displayName": "Poni Wilds"
+    },
+    {
+      "name": "resolution-cave",
+      "displayName": "Resolution Cave"
+    },
+    {
+      "name": "alola-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "alola-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "alola-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "alola-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "alola-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "alola-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "alola-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "alola-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "alola-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "alola-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "alola-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "alola-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "alola-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "alola-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "alola-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "alola-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "alola-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "royal-avenue",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "thrifty-megamart",
+      "displayName": "Royal Avenue"
+    },
+    {
+      "name": "ruins-of-abundance",
+      "displayName": "Ruins of Abundance"
+    },
+    {
+      "name": "ruins-of-conflict",
+      "displayName": "Ruins of Conflict"
+    },
+    {
+      "name": "ruins-of-hope",
+      "displayName": "Ruins of Hope"
+    },
+    {
+      "name": "ruins-of-life",
+      "displayName": "Ruins of Life"
+    },
+    {
+      "name": "sandy-cave",
+      "displayName": "Sandy Cave"
+    },
+    {
+      "name": "seafolk-village",
+      "displayName": "Seafolk Village"
+    },
+    {
+      "name": "seaward-cave",
+      "displayName": "Seaward Cave"
+    },
+    {
+      "name": "tapu-village",
+      "displayName": "Tapu Village"
+    },
+    {
+      "name": "team-rockets-castle",
+      "displayName": "Team Rocket's Castle"
+    },
+    {
+      "name": "ten-carat-hill",
+      "displayName": "Ten Carat Hill"
+    },
+    {
+      "name": "ulaula-beach",
+      "displayName": "Ula'ula Beach"
+    },
+    {
+      "name": "ulaula-meadow",
+      "displayName": "Ula’ula Meadow"
+    },
+    {
+      "name": "ultra-megalopolis",
+      "displayName": "Ultra Megalopolis"
+    },
+    {
+      "name": "ultra-space",
+      "displayName": "Ultra Space"
+    },
+    {
+      "name": "ultra-space-wilds",
+      "displayName": "Ultra Space Wilds"
+    },
+    {
+      "name": "vast-poni-canyon",
+      "displayName": "Vast Poni Canyon"
+    },
+    {
+      "name": "verdant-cavern",
+      "displayName": "Verdant Cavern"
+    },
+    {
+      "name": "wela-volcano-park",
+      "displayName": "Wela Volcano Park"
+    }
+  ],
+  "lets-go-pikachu": [
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "indigo-plateau",
+      "displayName": "Indigo Plateau"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "lavender-town",
+      "displayName": "Lavender Town"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    }
+  ],
+  "lets-go-eevee": [
+    {
+      "name": "celadon-city",
+      "displayName": "Celadon City"
+    },
+    {
+      "name": "cerulean-cave",
+      "displayName": "Cerulean Cave"
+    },
+    {
+      "name": "cerulean-city",
+      "displayName": "Cerulean City"
+    },
+    {
+      "name": "cinnabar-island",
+      "displayName": "Cinnabar Island"
+    },
+    {
+      "name": "digletts-cave",
+      "displayName": "Diglett's Cave"
+    },
+    {
+      "name": "fuchsia-city",
+      "displayName": "Fuchsia City"
+    },
+    {
+      "name": "indigo-plateau",
+      "displayName": "Indigo Plateau"
+    },
+    {
+      "name": "kanto-power-plant",
+      "displayName": "Kanto Power Plant"
+    },
+    {
+      "name": "lavender-town",
+      "displayName": "Lavender Town"
+    },
+    {
+      "name": "mt-moon",
+      "displayName": "Mt. Moon"
+    },
+    {
+      "name": "pallet-town",
+      "displayName": "Pallet Town"
+    },
+    {
+      "name": "pokemon-mansion",
+      "displayName": "Pokémon Mansion"
+    },
+    {
+      "name": "pokemon-tower",
+      "displayName": "Pokémon Tower"
+    },
+    {
+      "name": "rock-tunnel",
+      "displayName": "Rock Tunnel"
+    },
+    {
+      "name": "kanto-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "kanto-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "kanto-route-11",
+      "displayName": "Route 11"
+    },
+    {
+      "name": "kanto-route-12",
+      "displayName": "Route 12"
+    },
+    {
+      "name": "kanto-route-13",
+      "displayName": "Route 13"
+    },
+    {
+      "name": "kanto-route-14",
+      "displayName": "Route 14"
+    },
+    {
+      "name": "kanto-route-15",
+      "displayName": "Route 15"
+    },
+    {
+      "name": "kanto-route-16",
+      "displayName": "Route 16"
+    },
+    {
+      "name": "kanto-route-17",
+      "displayName": "Route 17"
+    },
+    {
+      "name": "kanto-route-18",
+      "displayName": "Route 18"
+    },
+    {
+      "name": "kanto-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "kanto-route-22",
+      "displayName": "Route 22"
+    },
+    {
+      "name": "kanto-route-23",
+      "displayName": "Route 23"
+    },
+    {
+      "name": "kanto-route-24",
+      "displayName": "Route 24"
+    },
+    {
+      "name": "kanto-route-25",
+      "displayName": "Route 25"
+    },
+    {
+      "name": "kanto-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "kanto-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "kanto-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "kanto-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "kanto-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "kanto-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "kanto-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "saffron-city",
+      "displayName": "Saffron City"
+    },
+    {
+      "name": "kanto-sea-route-19",
+      "displayName": "Sea Route 19"
+    },
+    {
+      "name": "kanto-sea-route-20",
+      "displayName": "Sea Route 20"
+    },
+    {
+      "name": "kanto-sea-route-21",
+      "displayName": "Sea Route 21"
+    },
+    {
+      "name": "seafoam-islands",
+      "displayName": "Seafoam Islands"
+    },
+    {
+      "name": "vermilion-city",
+      "displayName": "Vermilion City"
+    },
+    {
+      "name": "kanto-victory-road-1",
+      "displayName": "Victory Road"
+    },
+    {
+      "name": "viridian-forest",
+      "displayName": "Viridian Forest"
+    }
+  ],
+  "sword": [
+    {
+      "name": "ballonlea",
+      "displayName": "Ballonlea"
+    },
+    {
+      "name": "galar-battle-tower",
+      "displayName": "Battle Tower"
+    },
+    {
+      "name": "circhester",
+      "displayName": "Circhester"
+    },
+    {
+      "name": "energy-plant",
+      "displayName": "Energy Plant"
+    },
+    {
+      "name": "fields-of-honor",
+      "displayName": "Fields of Honor"
+    },
+    {
+      "name": "freezington",
+      "displayName": "Freezington"
+    },
+    {
+      "name": "galar-mine",
+      "displayName": "Galar Mine"
+    },
+    {
+      "name": "galar-mine-no-2",
+      "displayName": "Galar Mine No. 2"
+    },
+    {
+      "name": "glimwood-tangle",
+      "displayName": "Glimwood Tangle"
+    },
+    {
+      "name": "hammerlocke",
+      "displayName": "Hammerlocke"
+    },
+    {
+      "name": "hulbury",
+      "displayName": "Hulbury"
+    },
+    {
+      "name": "master-dojo",
+      "displayName": "Master Dojo"
+    },
+    {
+      "name": "max-lair",
+      "displayName": "Max Lair"
+    },
+    {
+      "name": "meetup-spot",
+      "displayName": "Meetup Spot"
+    },
+    {
+      "name": "motostoke",
+      "displayName": "Motostoke"
+    },
+    {
+      "name": "motostoke-outskirts",
+      "displayName": "Motostoke Outskirts"
+    },
+    {
+      "name": "postwick",
+      "displayName": "Postwick"
+    },
+    {
+      "name": "isle-of-armor-caves",
+      "displayName": "Random caves across the Isle of Armor"
+    },
+    {
+      "name": "rolling-fields",
+      "displayName": "Rolling Fields"
+    },
+    {
+      "name": "galar-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "galar-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "galar-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "galar-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "galar-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "galar-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "galar-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "galar-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "galar-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "galar-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "slumbering-weald",
+      "displayName": "Slumbering Weald"
+    },
+    {
+      "name": "spikemuth",
+      "displayName": "Spikemuth"
+    },
+    {
+      "name": "stow-on-side",
+      "displayName": "Stow-on-Side"
+    },
+    {
+      "name": "turffield",
+      "displayName": "Turffield"
+    },
+    {
+      "name": "wedgehurst",
+      "displayName": "Wedgehurst"
+    },
+    {
+      "name": "wyndon",
+      "displayName": "Wyndon"
+    }
+  ],
+  "shield": [
+    {
+      "name": "ballonlea",
+      "displayName": "Ballonlea"
+    },
+    {
+      "name": "galar-battle-tower",
+      "displayName": "Battle Tower"
+    },
+    {
+      "name": "circhester",
+      "displayName": "Circhester"
+    },
+    {
+      "name": "energy-plant",
+      "displayName": "Energy Plant"
+    },
+    {
+      "name": "fields-of-honor",
+      "displayName": "Fields of Honor"
+    },
+    {
+      "name": "freezington",
+      "displayName": "Freezington"
+    },
+    {
+      "name": "galar-mine",
+      "displayName": "Galar Mine"
+    },
+    {
+      "name": "galar-mine-no-2",
+      "displayName": "Galar Mine No. 2"
+    },
+    {
+      "name": "glimwood-tangle",
+      "displayName": "Glimwood Tangle"
+    },
+    {
+      "name": "hammerlocke",
+      "displayName": "Hammerlocke"
+    },
+    {
+      "name": "hulbury",
+      "displayName": "Hulbury"
+    },
+    {
+      "name": "master-dojo",
+      "displayName": "Master Dojo"
+    },
+    {
+      "name": "max-lair",
+      "displayName": "Max Lair"
+    },
+    {
+      "name": "meetup-spot",
+      "displayName": "Meetup Spot"
+    },
+    {
+      "name": "motostoke",
+      "displayName": "Motostoke"
+    },
+    {
+      "name": "motostoke-outskirts",
+      "displayName": "Motostoke Outskirts"
+    },
+    {
+      "name": "postwick",
+      "displayName": "Postwick"
+    },
+    {
+      "name": "isle-of-armor-caves",
+      "displayName": "Random caves across the Isle of Armor"
+    },
+    {
+      "name": "rolling-fields",
+      "displayName": "Rolling Fields"
+    },
+    {
+      "name": "galar-route-1",
+      "displayName": "Route 1"
+    },
+    {
+      "name": "galar-route-10",
+      "displayName": "Route 10"
+    },
+    {
+      "name": "galar-route-2",
+      "displayName": "Route 2"
+    },
+    {
+      "name": "galar-route-3",
+      "displayName": "Route 3"
+    },
+    {
+      "name": "galar-route-4",
+      "displayName": "Route 4"
+    },
+    {
+      "name": "galar-route-5",
+      "displayName": "Route 5"
+    },
+    {
+      "name": "galar-route-6",
+      "displayName": "Route 6"
+    },
+    {
+      "name": "galar-route-7",
+      "displayName": "Route 7"
+    },
+    {
+      "name": "galar-route-8",
+      "displayName": "Route 8"
+    },
+    {
+      "name": "galar-route-9",
+      "displayName": "Route 9"
+    },
+    {
+      "name": "slumbering-weald",
+      "displayName": "Slumbering Weald"
+    },
+    {
+      "name": "spikemuth",
+      "displayName": "Spikemuth"
+    },
+    {
+      "name": "stow-on-side",
+      "displayName": "Stow-on-Side"
+    },
+    {
+      "name": "turffield",
+      "displayName": "Turffield"
+    },
+    {
+      "name": "wedgehurst",
+      "displayName": "Wedgehurst"
+    },
+    {
+      "name": "wyndon",
+      "displayName": "Wyndon"
+    }
+  ],
+  "brilliant-diamond": [],
+  "shining-pearl": [],
+  "legends-arceus": [],
+  "scarlet": [],
+  "violet": [],
+  "legends-za": []
+}

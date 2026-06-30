@@ -1,4 +1,5 @@
 import { getPokemonListUpToGeneration, P } from '../utils/pokemon-data.js';
+import { getEncounterConditionLabelsForRefs } from '../utils/pokeapi.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 import { POKEMON_LOOKUP_INSTRUCTIONS } from '../utils/instruction-content.js';
 
@@ -68,6 +69,16 @@ function normalizePokeApiPath(rawPath) {
 function gameOrderIndex(version) {
   const i = GAME_ORDER.indexOf(version);
   return i === -1 ? Infinity : i;
+}
+
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.toString()
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
 }
 
 /**
@@ -274,7 +285,7 @@ export async function initPokemonLookup(appContainer) {
             const methodFormatted = methodRaw.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             const conditions = encDetail.condition_values.map(c => c.name);
 
-            // Split Walk encounters by time-of-day (inspired by encounter-calc.js)
+            // Split Walk encounters by time-of-day
             let methodKeys = [];
             if (methodRaw === 'walk') {
               const hasMorning = conditions.includes('time-morning');
@@ -291,15 +302,18 @@ export async function initPokemonLookup(appContainer) {
               methodKeys.push(methodFormatted);
             }
 
+            const conditionTexts = await getEncounterConditionLabelsForRefs(encDetail.condition_values, methodRaw);
+
             // Aggregate into keyed map: sum chance, track min/max level
             const areaMap = groupedByVersion[versionName][areaName];
             for (const key of methodKeys) {
               if (!areaMap[key]) {
-                areaMap[key] = { method: key, chance: 0, minLevel: Infinity, maxLevel: -Infinity };
+                areaMap[key] = { method: key, chance: 0, minLevel: Infinity, maxLevel: -Infinity, conditionTexts: new Set() };
               }
               areaMap[key].chance += encDetail.chance;
               areaMap[key].minLevel = Math.min(areaMap[key].minLevel, encDetail.min_level);
               areaMap[key].maxLevel = Math.max(areaMap[key].maxLevel, encDetail.max_level);
+              conditionTexts.forEach(c => areaMap[key].conditionTexts.add(c));
             }
           }
         }
@@ -311,6 +325,7 @@ export async function initPokemonLookup(appContainer) {
         result[version] = {};
         for (const area in groupedByVersion[version]) {
           result[version][area] = Object.values(groupedByVersion[version][area])
+            .map(enc => ({ ...enc, conditionTexts: Array.from(enc.conditionTexts) }))
             .sort((a, b) => b.chance - a.chance);
         }
       }

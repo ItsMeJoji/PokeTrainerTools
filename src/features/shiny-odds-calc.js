@@ -350,8 +350,7 @@ export async function initShinyOddsCalc(appContainer) {
                                     <span class="text-lg font-bold text-gray-900 dark:text-white rolls-display">${odds.rolls} <span class="text-xs font-normal text-gray-500">(1/${odds.base} base)</span></span>
                                 </div>
                                 <div class="hidden fraction-display">${odds.fraction}</div> 
-                                <!-- Hidden element to store/update fraction for summary if needed, 
-                                     actually summary is at top. Let's update top summary too. -->
+                                <!-- Hidden element to store fraction for dynamic updates -->
                             </div>
                         </div>
                     </details>
@@ -365,10 +364,7 @@ export async function initShinyOddsCalc(appContainer) {
     sparklingSelect.addEventListener('change', updateUI);
     researchSelect.addEventListener('change', updateUI);
 
-    // Listen for custom input updates to re-render without closing details (if we handle state better)
-    // Actually, full re-render closes details. Let's just re-calculate?
-    // For simplicity V1: Re-render. Use state preservation for 'open' details?
-    // Better: Add event listeners to inputs AFTER render.
+    // Update odds on input change using event delegation
 
     // Using event delegation for dynamic inputs
     methodsList.addEventListener('input', (e) => {
