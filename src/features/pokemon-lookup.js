@@ -43,6 +43,18 @@ const VERSION_SPRITE_MAP = {
   'white': ['generation-v', 'black-white'],
   'black-2': ['generation-v', 'black-white'],
   'white-2': ['generation-v', 'black-white'],
+  'x': ['generation-vi', 'omegaruby-alphasapphire'],
+  'y': ['generation-vi', 'omegaruby-alphasapphire'],
+  'omegaruby': ['generation-vi', 'omegaruby-alphasapphire'],
+  'alphasapphire': ['generation-vi', 'omegaruby-alphasapphire'],
+  'sun': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'moon': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'ultra-sun': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'ultra-moon': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'brilliant-diamond': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'shining-pearl': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'lets-go-pikachu': ['generation-vii', 'ultra-sun-ultra-moon'],
+  'lets-go-eevee': ['generation-vii', 'ultra-sun-ultra-moon'],
 };
 
 const EXCLUDED_VERSIONS = new Set(['red-japan', 'green', 'green-japan']);
@@ -51,6 +63,24 @@ const EXCLUDED_VERSIONS = new Set(['red-japan', 'green', 'green-japan']);
 const POKEMON_API_NAME_OVERRIDES = {
   'minior': 'minior-red-meteor',
   'mimikyu': 'mimikyu-disguised',
+  'deoxys': 'deoxys-normal',
+  'wormadam': 'wormadam-plant',
+  'giratina': 'giratina-altered',
+  'shaymin': 'shaymin-land',
+  'basculin': 'basculin-red-striped',
+  'darmanitan': 'darmanitan-standard',
+  'tornadus': 'tornadus-incarnate',
+  'thundurus': 'thundurus-incarnate',
+  'landorus': 'landorus-incarnate',
+  'keldeo': 'keldeo-ordinary',
+  'meloetta': 'meloetta-aria',
+  'zygarde': 'zygarde-50',
+  'oricorio': 'oricorio-baile',
+  'lycanroc': 'lycanroc-midday',
+  'wishiwashi': 'wishiwashi-solo',
+  'eiscue': 'eiscue-ice',
+  'indeedee': 'indeedee-female',
+  'urshifu': 'urshifu-single-strike',
 };
 
 function normalizePokeApiPath(rawPath) {
