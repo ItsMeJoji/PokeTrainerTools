@@ -313,7 +313,7 @@ button:focus-visible {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
-  max-height: 24rem;
+  max-height: 32rem;
 }
 
 /* Force-hide navbar dropdowns while Ribbon modal is open. This avoids any
@@ -1207,6 +1207,10 @@ details summary::-webkit-details-marker {
 
 .bg-mmo {
   background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.bg-other-tools {
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
 }
 
 /* Event Calendar Section */

@@ -11,6 +11,7 @@ import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import { initMmoPermutations } from './features/mmo-permutations.js'
 import { initRibbonTracker } from './features/ribbon-tracker.js'
 import { initShinyBingo } from './features/shiny-bingo.js'
+import { initOtherCreatorsTools } from './features/other-creators-tools.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
@@ -113,6 +114,7 @@ const renderNavbar = () => {
             <a href="/mmo-permutations" class="dropdown-item">MMO Permutations</a>
             <a href="/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
             <a href="/shiny-bingo" class="dropdown-item">Shiny Bingo Generator</a>
+            <a href="/other-tools" class="dropdown-item">Other Creator's Tools</a>
             ${isAprilFools ? '<a href="/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
           </div>
         </div>
@@ -374,6 +376,18 @@ const renderPage = () => {
                 <h3>Shiny Bingo Generator</h3>
               </div>
             </a>
+
+            <!-- Other Creator's Tools -->
+            <a href="/other-tools" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.8s">
+              <div class="tool-image bg-other-tools">
+                <div class="tool-overlay flex items-center justify-center">
+                  <i class="fas fa-toolbox text-white text-5xl opacity-80 drop-shadow-md"></i>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>Other Creator's Tools</h3>
+              </div>
+            </a>
           </div>
 
           <!-- Separator and Event Calendar Section -->
@@ -530,6 +544,8 @@ const renderPage = () => {
       return `<div id="shiny-bingo-container"></div>`;
     } else if (path === '/info/ribbon-master-guide') {
       return `<div id="ribbon-master-guide-container"></div>`;
+    } else if (path === '/other-tools') {
+      return `<div id="other-tools-container"></div>`;
     } else if (path === '/rng-version') {
       const today = new Date();
       if (today.getMonth() === 3 && today.getDate() === 1) {
@@ -690,6 +706,8 @@ const renderPage = () => {
     initShinyBingo(document.querySelector('#shiny-bingo-container'));
   } else if (path === '/info/ribbon-master-guide') {
     initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
+  } else if (path === '/other-tools') {
+    initOtherCreatorsTools(document.querySelector('#other-tools-container'));
   } else if (path === '/rng-version') {
     const today = new Date();
     if (today.getMonth() === 3 && today.getDate() === 1) {
