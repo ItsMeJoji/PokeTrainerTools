@@ -29,6 +29,25 @@ export function initOtherCreatorsTools(container) {
           </div>
         </span>
 
+        <!-- Athis' Ribbon Handbook -->
+        <span class="block bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-shadow flex flex-col md:flex-row">
+          <a href="https://sites.google.com/view/athis-ribbon-handbook/home?authuser=0" target="_blank" rel="noopener noreferrer" class="md:w-1/3 bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 hover:opacity-80 transition-opacity">
+             <div class="text-center">
+               <i class="fas fa-ribbon text-4xl text-gray-400 dark:text-gray-600 mb-2"></i>
+               <span class="block text-sm font-bold text-gray-500">Athis' Ribbon Handbook</span>
+             </div>
+          </a>
+          <div class="p-6 md:w-2/3 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold text-black dark:text-white mb-3">Athis' Ribbon Handbook</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+              The most comprehensive Ribbon Master resource, in my opinion. It covers Pokemon selection, ribbon requirements, transfer paths, and generation-by-generation planning. I personally use it as a reference when planning my Ribbon Master journey.
+            </p>
+            <a href="https://sites.google.com/view/athis-ribbon-handbook/home?authuser=0" target="_blank" rel="noopener noreferrer" class="brand-link inline-flex items-center gap-2 font-bold hover:underline self-start">
+              Visit Athis' Ribbon Handbook <i class="fas fa-external-link-alt text-sm"></i>
+            </a>
+          </div>
+        </span>
+
       </div>
     </div>
   `;

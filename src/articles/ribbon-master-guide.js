@@ -11,6 +11,20 @@ export function initRibbonMasterGuide(container) {
       </div>
       
       <div class="space-y-12">
+        <!-- Section: Pokemon Bank Closure Notice -->
+        <section class="brand-panel-yellow p-8 shadow-xl">
+          <h2 class="text-3xl font-bold brand-text-yellow mb-4 flex items-center gap-3">
+            <span class="w-1.5 h-8 brand-marker-red rounded-full"></span>
+            Pokemon Bank Closure Notice
+          </h2>
+          <p class="brand-text-yellow leading-relaxed text-lg mb-4">
+            Pokemon Bank is scheduled to shut down on <span class="font-bold">February 26, 2027</span>. If your Ribbon Master still needs to move from older games through Poke Transporter or Pokemon Bank into Pokemon HOME, plan to transfer it before that date.
+          </p>
+          <p class="brand-text-yellow leading-relaxed">
+            Once Bank is offline, many older-game transfer paths may no longer be available, which could leave eligible Ribbon Master candidates stuck outside the current generation.
+          </p>
+        </section>
+
         <!-- Section: What is a Ribbon Master? -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
@@ -62,6 +76,28 @@ export function initRibbonMasterGuide(container) {
           </div>
         </section>
 
+        <!-- Section: Best Guide imo -->
+        <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
+          <h2 class="text-3xl font-bold text-black dark:text-white mb-4 flex items-center gap-3">
+            <span class="w-1.5 h-8 brand-marker-yellow rounded-full"></span>
+            The Best Ribbon Master Guide
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+            If you want a comprehensive guide, Athis' Ribbon Handbook is what I first used for my Ribbon Master journey. It covers available ribbons, transfer paths, and so much more.
+          </p>
+          <div class="text-center">
+            <a
+              href="https://sites.google.com/view/athis-ribbon-handbook/home?authuser=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="tool-cta inline-flex items-center justify-center px-8 py-3 rounded-full font-bold shadow-md hover:no-underline"
+              style="background-color: #ef4444; color: #ffffff;"
+            >
+              Read Athis' Ribbon Guide
+            </a>
+          </div>
+        </section>
+
         <!-- Section: The Journey by Generation -->
         <section class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
           <h2 class="text-3xl font-bold text-black dark:text-white mb-6 flex items-center gap-3">
@@ -109,7 +145,7 @@ export function initRibbonMasterGuide(container) {
           <div class="grid sm:grid-cols-2 gap-4">
             <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
               <span class="text-xs font-black text-[#ef4444] uppercase">Tip 01</span>
-              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Use <span class="font-bold">Berries</span> and <span class="font-bold">Poffins</span> carefully! In older games, sheen is permanent and can't be reset.</p>
+              <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Use <span class="font-bold">PokeBlocks</span> and <span class="font-bold">Poffins</span> carefully! In older games, sheen is permanent and can't be reset.</p>
             </div>
             <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
               <span class="text-xs font-black text-[#ef4444] uppercase">Tip 02</span>
