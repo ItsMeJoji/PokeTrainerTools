@@ -151,6 +151,21 @@ export const RIBBONS = [
   { id: 'mark_partner', name: 'Partner Mark', game: RIBBON_GAMES.MARKS, description: 'Have your Pokémon\'s friendship be at 200 or higher - Randomly added after walking around with it.', gen: 9, versionGroup: 'scarlet-violet' }
 ];
 
+export const GEN3_4_BATTLE_RIBBON_IDS = new Set([
+  'gen3_winning',
+  'gen3_victory',
+  'gen4_ability',
+  'gen4_great_ability',
+  'gen4_double_ability',
+  'gen4_multi_ability',
+  'gen4_pair_ability',
+  'gen4_world_ability'
+]);
+
+export function isGen34BattleRibbon(ribbon) {
+  return GEN3_4_BATTLE_RIBBON_IDS.has(ribbon.id);
+}
+
 /**
  * Checks if a Pokemon can obtain a specific ribbon based on its origin and the ribbon's gen.
  */
@@ -172,6 +187,10 @@ export function isEligible(pokemonState, ribbon) {
   // A Pokemon can only earn ribbons from its origin generation or later.
   // EXCEPT for recurring ribbons (Effort, Footprint, etc) which are available in almost all games.
   if (!ribbon.isRecurring && ribbon.gen < pokemonState.gen) {
+    return false;
+  }
+
+  if ((pokemonState.isMythical || pokemonState.isLegendary) && isGen34BattleRibbon(ribbon)) {
     return false;
   }
 

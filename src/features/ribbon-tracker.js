@@ -1,6 +1,6 @@
-import { getPokemonListUpToGeneration, getPokemonGameAvailability } from '../utils/pokemon-data.js';
+import { getPokemonListUpToGeneration, getPokemonGameAvailability, getPokemonSpeciesFlags, isKnownMythicalPokemonId, isKnownLegendaryPokemonId } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
-import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES } from '../utils/ribbon-data.js';
+import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon } from '../utils/ribbon-data.js';
 import { initGoogleAuth, signIn, signOut, isSignedIn, signInRedirect } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
 import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
@@ -136,6 +136,25 @@ const OPTIONAL_EXTRA_RIBBONS = Object.keys(ribbonImageMap)
     isOptionalExtra: true
   }));
 
+const getPokemonStateFromEntry = (entry) => ({
+  originGameId: entry.originGameId,
+  gen: parseInt(entry.originGen),
+  isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
+  isMythical: Boolean(entry.isMythical) || isKnownMythicalPokemonId(entry.speciesId),
+  isLegendary: Boolean(entry.isLegendary) || isKnownLegendaryPokemonId(entry.speciesId),
+  availableGames: Array.isArray(entry.availableGames) ? new Set(entry.availableGames) : new Set()
+});
+
+const getEligibleStandardRibbons = (pokemonState) => (
+  RIBBONS.filter(ribbon => isEligible(pokemonState, ribbon) && !ribbon.isAutomated)
+);
+
+const getGen34BattleRibbonIds = (pokemonState) => (
+  getEligibleStandardRibbons(pokemonState)
+    .filter(ribbon => isGen34BattleRibbon(ribbon))
+    .map(ribbon => ribbon.id)
+);
+
 
 /**
  * Initializes the Ribbon Tracker page.
@@ -242,6 +261,23 @@ export async function initRibbonTracker(appContainer) {
   `;
   // --- State ---
   let entries = JSON.parse(localStorage.getItem('ribbon_entries') || '[]');
+  const migratedSpeciesFlags = entries.reduce((changed, entry) => {
+    let didChange = false;
+    if (typeof entry.isMythical !== 'boolean') {
+      entry.isMythical = isKnownMythicalPokemonId(entry.speciesId);
+      didChange = true;
+    }
+    if (typeof entry.isLegendary !== 'boolean') {
+      entry.isLegendary = isKnownLegendaryPokemonId(entry.speciesId);
+      didChange = true;
+    }
+    return changed || didChange;
+  }, false);
+
+  if (migratedSpeciesFlags) {
+    localStorage.setItem('ribbon_entries', JSON.stringify(entries));
+  }
+
   let selectedSpecies = null;
   let isFetchingAvailability = false;
   let tooltipTimeoutId = null;
@@ -384,17 +420,13 @@ export async function initRibbonTracker(appContainer) {
         <div class="flex items-center gap-6">
           <div class="text-right flex flex-col items-end">
             ${(() => {
-        const pokemonState = {
-          originGameId: entry.originGameId,
-          gen: parseInt(entry.originGen),
-          isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
-          availableGames: Array.isArray(entry.availableGames) ? new Set(entry.availableGames) : new Set()
-        };
+        const pokemonState = getPokemonStateFromEntry(entry);
 
         // Standard eligible ribbons
-        const eligibleBase = RIBBONS.filter(r => isEligible(pokemonState, r) && !r.isAutomated);
+        const eligibleBase = getEligibleStandardRibbons(pokemonState);
+        const eligibleBaseIds = new Set(eligibleBase.map(ribbon => ribbon.id));
         let eligibleCount = eligibleBase.length;
-        let collectedCount = entry.collectedRibbons.length;
+        let collectedCount = entry.collectedRibbons.filter(id => eligibleBaseIds.has(id)).length;
 
         // Check for automated ribbons (Contest Memory)
         const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
@@ -406,7 +438,7 @@ export async function initRibbonTracker(appContainer) {
         }
 
         // Check for automated ribbons (Battle Memory)
-        const battleRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && (r.name.includes('Ability') || r.name.includes('Winning') || r.name.includes('Victory'))).map(r => r.id);
+        const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
         const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
 
         if (collectedBattleCount > 0) {
@@ -510,12 +542,7 @@ export async function initRibbonTracker(appContainer) {
     // Group eligible ribbons by Generation, then by Game Category
     // Group eligible ribbons by Generation/Category, then by Game Category
     // Recurring ribbons move to the top group ONLY if they are from an earlier gen than the Pokemon
-    const pokemonState = {
-      originGameId: entry.originGameId,
-      gen: parseInt(entry.originGen),
-      isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
-      availableGames: entry.availableGames ? new Set(entry.availableGames) : null
-    };
+    const pokemonState = getPokemonStateFromEntry(entry);
 
     // Generate the automated Contest Memory Ribbon if applicable
     const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
@@ -537,7 +564,7 @@ export async function initRibbonTracker(appContainer) {
     }
 
     // Generate the automated Battle Memory Ribbon if applicable
-    const battleRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && (r.name.includes('Ability') || r.name.includes('Winning') || r.name.includes('Victory'))).map(r => r.id);
+    const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
     const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
 
     if (collectedBattleCount > 0) {
@@ -933,6 +960,8 @@ export async function initRibbonTracker(appContainer) {
       const oldSpeciesName = entry.speciesName;
       entry.speciesId = tempSelectedSpecies.id;
       entry.speciesName = tempSelectedSpecies.displayName;
+      entry.isMythical = isKnownMythicalPokemonId(entry.speciesId);
+      entry.isLegendary = isKnownLegendaryPokemonId(entry.speciesId);
       
       // If nickname was the old species name, update it to the new one
       if (entry.nickname === oldSpeciesName) {
@@ -940,8 +969,13 @@ export async function initRibbonTracker(appContainer) {
       }
       
       // Re-fetch availability for the new species
-      const availability = await getPokemonGameAvailability(entry.speciesId);
+      const [availability, speciesFlags] = await Promise.all([
+        getPokemonGameAvailability(entry.speciesId),
+        getPokemonSpeciesFlags(entry.speciesId)
+      ]);
       entry.availableGames = [...availability]; // Convert Set to Array for serialization
+      entry.isMythical = speciesFlags.isMythical;
+      entry.isLegendary = speciesFlags.isLegendary;
 
       saveEntries(entry.id);
       renderEntriesList();
@@ -1052,7 +1086,10 @@ export async function initRibbonTracker(appContainer) {
     try {
       // Fetch specific game availability for this Pokemon from PokeAPI
       // Used to determine if the Pokemon can even enter Gen 8/9 games for those ribbons
-      const availableGames = await getPokemonGameAvailability(selectedPokemonId);
+      const [availableGames, speciesFlags] = await Promise.all([
+        getPokemonGameAvailability(selectedPokemonId),
+        getPokemonSpeciesFlags(selectedPokemonId)
+      ]);
 
       const newEntry = {
         id: Date.now().toString(),
@@ -1062,6 +1099,8 @@ export async function initRibbonTracker(appContainer) {
         isShiny: isShiny,
         originGameId: selectedOriginId,
         originGen: ORIGIN_GAMES.find(g => g.id === selectedOriginId)?.gen || 1,
+        isMythical: speciesFlags.isMythical,
+        isLegendary: speciesFlags.isLegendary,
         collectedRibbons: [],
         optionalRibbons: [],
         availableGames: [...availableGames], // Store as array for localStorage

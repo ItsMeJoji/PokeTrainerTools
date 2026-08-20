@@ -75,6 +75,13 @@ export async function getPokemonUpToGeneration(genNumber) {
 }
 
 const availabilityCache = {};
+const speciesFlagsCache = {};
+const RESTRICTED_MYTHICAL_POKEMON_IDS = new Set([
+    151, 251, 385, 386, 489, 490, 491, 492, 493
+]);
+const RESTRICTED_LEGENDARY_POKEMON_IDS = new Set([
+    150, 249, 250, 382, 383, 384, 483, 484, 487
+]);
 
 /**
  * Determines which modern (Gen 8+) games a Pokémon is available in.
@@ -101,6 +108,34 @@ export async function getPokemonGameAvailability(pokemonIdOrName) {
     } catch (error) {
         console.error(`Error fetching game availability for ${pokemonIdOrName}:`, error);
         return new Set();
+    }
+}
+
+export function isKnownMythicalPokemonId(pokemonId) {
+    return RESTRICTED_MYTHICAL_POKEMON_IDS.has(Number(pokemonId));
+}
+
+export function isKnownLegendaryPokemonId(pokemonId) {
+    return RESTRICTED_LEGENDARY_POKEMON_IDS.has(Number(pokemonId));
+}
+
+export async function getPokemonSpeciesFlags(pokemonIdOrName) {
+    if (speciesFlagsCache[pokemonIdOrName]) return speciesFlagsCache[pokemonIdOrName];
+    try {
+        const species = await P.getPokemonSpeciesByName(pokemonIdOrName);
+        const flags = {
+            isMythical: Boolean(species.is_mythical) || isKnownMythicalPokemonId(species.id),
+            isLegendary: Boolean(species.is_legendary) || isKnownLegendaryPokemonId(species.id)
+        };
+
+        speciesFlagsCache[pokemonIdOrName] = flags;
+        return flags;
+    } catch (error) {
+        console.error(`Error fetching species flags for ${pokemonIdOrName}:`, error);
+        return {
+            isMythical: isKnownMythicalPokemonId(pokemonIdOrName),
+            isLegendary: isKnownLegendaryPokemonId(pokemonIdOrName)
+        };
     }
 }
 
