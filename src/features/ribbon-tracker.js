@@ -231,6 +231,21 @@ export async function initRibbonTracker(appContainer) {
         </div>
       </div>
 
+      <!-- Sort Options -->
+      <div class="mb-6 flex items-center justify-end gap-2 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <label for="ribbon-sort-select" class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sort By:</label>
+        <div class="relative">
+          <select id="ribbon-sort-select" class="appearance-none bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xs font-bold text-gray-800 dark:text-white py-1.5 pl-3 pr-8 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/20">
+            <option value="dex">Dex Number</option>
+            <option value="name">Pokemon Name</option>
+            <option value="progress">Ribbon Progress</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 dark:text-gray-500">
+            <i class="fas fa-chevron-down text-[10px]"></i>
+          </div>
+        </div>
+      </div>
+
       <!-- Active Entries -->
       <div id="active-entries" class="space-y-6">
         <!-- Injected dynamically -->
@@ -261,6 +276,7 @@ export async function initRibbonTracker(appContainer) {
   `;
   // --- State ---
   let entries = JSON.parse(localStorage.getItem('ribbon_entries') || '[]');
+  let currentSort = localStorage.getItem('ribbon_sort_option') || 'dex';
   const migratedSpeciesFlags = entries.reduce((changed, entry) => {
     let didChange = false;
     if (typeof entry.isMythical !== 'boolean') {
@@ -385,6 +401,85 @@ export async function initRibbonTracker(appContainer) {
   };
 
   // --- UI Functions ---
+  const getEntryProgressStats = (entry) => {
+    const pokemonState = getPokemonStateFromEntry(entry);
+
+    // Standard eligible ribbons
+    const eligibleBase = getEligibleStandardRibbons(pokemonState);
+    const eligibleBaseIds = new Set(eligibleBase.map(ribbon => ribbon.id));
+    let eligibleCount = eligibleBase.length;
+    let collectedCount = entry.collectedRibbons.filter(id => eligibleBaseIds.has(id)).length;
+
+    // Check for automated ribbons (Contest Memory)
+    const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
+    const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
+    
+    if (collectedContestCount > 0) {
+      eligibleCount++; // Contest Memory is eligible
+      collectedCount++; // Contest Memory is earned
+    }
+
+    // Check for automated ribbons (Battle Memory)
+    const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
+    const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
+
+    if (collectedBattleCount > 0) {
+      eligibleCount++; // Battle Memory is eligible
+      collectedCount++; // Battle Memory is earned
+    }
+
+    const isMaster = collectedCount > 0 && collectedCount === eligibleCount;
+    const progressRatio = eligibleCount > 0 ? collectedCount / eligibleCount : 0;
+
+    return {
+      eligibleCount,
+      collectedCount,
+      isMaster,
+      progressRatio
+    };
+  };
+
+  const renderCardHtml = (entry, stats, originalIdx) => {
+    const isMaster = stats.isMaster;
+    const collectedCount = stats.collectedCount;
+    const eligibleCount = stats.eligibleCount;
+
+    return `
+      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-yellow-300 transition-all cursor-pointer group" onclick="window.openRibbonDetail(${originalIdx})">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900' : 'border-red-100 dark:border-red-900'} relative">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain">
+            ${entry.isShiny ? '<i class="fas fa-star text-[10px] text-yellow-400 absolute top-0 right-0 animate-pulse"></i>' : ''}
+          </div>
+          <div class="text-left min-w-0">
+            <h3 class="font-bold text-gray-800 dark:text-white truncate">${entry.nickname}</h3>
+            <div class="flex flex-col text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">
+              <span class="truncate">${entry.speciesName}</span>
+              <span class="truncate">${ORIGIN_GAMES.find(g => g.id === entry.originGameId)?.name || (entry.originGen ? `Gen ${entry.originGen}` : 'Unknown')}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="text-right flex flex-col items-end">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              ${isMaster ? `
+                <div class="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                  <i class="fas fa-crown text-[8px]"></i>
+                  <span class="hidden sm:inline">MASTER</span>
+                </div>
+              ` : ''}
+              <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
+            </div>
+            <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
+          </div>
+          <button onclick="event.stopPropagation(); window.deleteEntry(${originalIdx})" class="p-2 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  };
+
   const renderEntriesList = () => {
     // Migration: fix any entries that might have corrupted availableGames (Set serialized as {})
     entries.forEach(entry => {
@@ -402,72 +497,95 @@ export async function initRibbonTracker(appContainer) {
       return;
     }
 
-    entriesList.innerHTML = entries.map((entry, idx) => `
-      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-yellow-300 transition-all cursor-pointer group" onclick="window.openRibbonDetail(${idx})">
-        <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900' : 'border-red-100 dark:border-red-900'} relative">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain">
-            ${entry.isShiny ? '<i class="fas fa-star text-[10px] text-yellow-400 absolute top-0 right-0 animate-pulse"></i>' : ''}
-          </div>
-          <div class="text-left min-w-0">
-            <h3 class="font-bold text-gray-800 dark:text-white truncate">${entry.nickname}</h3>
-            <div class="flex flex-col text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">
-              <span class="truncate">${entry.speciesName}</span>
-              <span class="truncate">${ORIGIN_GAMES.find(g => g.id === entry.originGameId)?.name || (entry.originGen ? `Gen ${entry.originGen}` : 'Unknown')}</span>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center gap-6">
-          <div class="text-right flex flex-col items-end">
-            ${(() => {
-        const pokemonState = getPokemonStateFromEntry(entry);
+    // Read previous collapse/open state from DOM if they exist
+    const inProgressDetails = document.getElementById('in-progress-details');
+    const completedDetails = document.getElementById('completed-details');
+    const isInProgressOpen = inProgressDetails ? inProgressDetails.open : false;
+    const isCompletedOpen = completedDetails ? completedDetails.open : false;
 
-        // Standard eligible ribbons
-        const eligibleBase = getEligibleStandardRibbons(pokemonState);
-        const eligibleBaseIds = new Set(eligibleBase.map(ribbon => ribbon.id));
-        let eligibleCount = eligibleBase.length;
-        let collectedCount = entry.collectedRibbons.filter(id => eligibleBaseIds.has(id)).length;
+    const inProgressOpenAttr = isInProgressOpen ? 'open' : '';
+    const completedOpenAttr = isCompletedOpen ? 'open' : '';
 
-        // Check for automated ribbons (Contest Memory)
-        const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
-        const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
-        
-        if (collectedContestCount > 0) {
-          eligibleCount++; // Contest Memory is eligible
-          collectedCount++; // Contest Memory is earned
+    // Calculate progress stats and keep original index
+    const processedEntries = entries.map((entry, originalIdx) => {
+      const stats = getEntryProgressStats(entry);
+      return {
+        entry,
+        stats,
+        originalIdx
+      };
+    });
+
+    // Sort entries according to currentSort
+    processedEntries.sort((a, b) => {
+      if (currentSort === 'dex') {
+        const idA = Number(a.entry.speciesId) || 0;
+        const idB = Number(b.entry.speciesId) || 0;
+        if (idA !== idB) return idA - idB;
+        return a.entry.nickname.localeCompare(b.entry.nickname);
+      } else if (currentSort === 'name') {
+        const nameComp = a.entry.speciesName.localeCompare(b.entry.speciesName);
+        if (nameComp !== 0) return nameComp;
+        const idA = Number(a.entry.speciesId) || 0;
+        const idB = Number(b.entry.speciesId) || 0;
+        if (idA !== idB) return idA - idB;
+        return a.entry.nickname.localeCompare(b.entry.nickname);
+      } else if (currentSort === 'progress') {
+        if (b.stats.progressRatio !== a.stats.progressRatio) {
+          return b.stats.progressRatio - a.stats.progressRatio;
         }
+        const idA = Number(a.entry.speciesId) || 0;
+        const idB = Number(b.entry.speciesId) || 0;
+        if (idA !== idB) return idA - idB;
+        return a.entry.nickname.localeCompare(b.entry.nickname);
+      }
+      return 0;
+    });
 
-        // Check for automated ribbons (Battle Memory)
-        const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
-        const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
+    const inProgressEntries = processedEntries.filter(item => !item.stats.isMaster);
+    const completedEntries = processedEntries.filter(item => item.stats.isMaster);
 
-        if (collectedBattleCount > 0) {
-          eligibleCount++; // Battle Memory is eligible
-          collectedCount++; // Battle Memory is earned
-        }
+    const inProgressHtml = inProgressEntries.length === 0
+      ? `<div class="p-6 text-gray-500 dark:text-gray-400 italic">No Pokémon currently in progress.</div>`
+      : inProgressEntries.map(item => renderCardHtml(item.entry, item.stats, item.originalIdx)).join('');
 
-        const isMaster = collectedCount > 0 && collectedCount === eligibleCount;
+    const completedHtml = completedEntries.length === 0
+      ? `<div class="p-6 text-gray-500 dark:text-gray-400 italic">No completed journeys yet.</div>`
+      : completedEntries.map(item => renderCardHtml(item.entry, item.stats, item.originalIdx)).join('');
 
-        return `
-                <div class="flex items-center gap-1.5 sm:gap-2">
-                  ${isMaster ? `
-                    <div class="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
-                      <i class="fas fa-crown text-[8px]"></i>
-                      <span class="hidden sm:inline">MASTER</span>
-                    </div>
-                  ` : ''}
-                  <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
-                </div>
-                <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
-              `;
-      })()}
+    entriesList.innerHTML = `
+      <!-- In Progress Collapsible -->
+      <details id="in-progress-details" ${inProgressOpenAttr} class="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center mb-6">
+        <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+          <div class="flex items-center space-x-3">
+            <span class="w-1.5 h-6 bg-[#ef4444] rounded-full"></span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">In Progress (${inProgressEntries.length})</span>
           </div>
-          <button onclick="event.stopPropagation(); window.deleteEntry(${idx})" class="p-2 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-          </button>
+          <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="p-4 sm:p-6 bg-gray-50/50 dark:bg-gray-900/20 space-y-4">
+          ${inProgressHtml}
         </div>
-      </div>
-    `).join('');
+      </details>
+
+      <!-- Completed Collapsible -->
+      <details id="completed-details" ${completedOpenAttr} class="group bg-white dark:bg-gray-800 rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden text-center">
+        <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 list-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open:border-gray-100 dark:group-open:border-gray-700">
+          <div class="flex items-center space-x-3">
+            <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">Completed (${completedEntries.length})</span>
+          </div>
+          <svg class="w-6 h-6 text-gray-400 transform transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="p-4 sm:p-6 bg-gray-50/50 dark:bg-gray-900/20 space-y-4">
+          ${completedHtml}
+        </div>
+      </details>
+    `;
 
     requestAnimationFrame(() => {
       entriesList.querySelectorAll('.ribbon-entry-card').forEach((card, index) => {
@@ -1130,6 +1248,16 @@ export async function initRibbonTracker(appContainer) {
   });
 
   // --- Event Listeners ---
+  const sortSelect = document.getElementById('ribbon-sort-select');
+  if (sortSelect) {
+    sortSelect.value = currentSort;
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      localStorage.setItem('ribbon_sort_option', currentSort);
+      renderEntriesList();
+    });
+  }
+
   document.getElementById('close-detail').onclick = () => {
     closeRibbonDetail();
   };
