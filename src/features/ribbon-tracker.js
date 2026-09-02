@@ -297,6 +297,7 @@ export async function initRibbonTracker(appContainer) {
   let selectedSpecies = null;
   let isFetchingAvailability = false;
   let tooltipTimeoutId = null;
+  let currentDetailEntryIdx = null;
   const categoryBulkSelectionByEntry = {};
 
   const closeNavbarOverlays = () => {
@@ -445,7 +446,7 @@ export async function initRibbonTracker(appContainer) {
     const eligibleCount = stats.eligibleCount;
 
     return `
-      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-yellow-300 transition-all cursor-pointer group" onclick="window.openRibbonDetail(${originalIdx})">
+      <div class="ribbon-entry-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center justify-between hover:border-yellow-300 transition-all cursor-pointer group" data-entry-idx="${originalIdx}" onclick="window.openRibbonDetail(${originalIdx})">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900' : 'border-red-100 dark:border-red-900'} relative">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain">
@@ -468,7 +469,7 @@ export async function initRibbonTracker(appContainer) {
                   <span class="hidden sm:inline">MASTER</span>
                 </div>
               ` : ''}
-              <div class="text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
+              <div class="ribbon-card-count text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
             </div>
             <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
           </div>
@@ -604,9 +605,160 @@ export async function initRibbonTracker(appContainer) {
     }
   };
 
+  const getGenerationWarningHtml = (genCategory, entry, isCompleted) => {
+    if (!genCategory.startsWith('Generation ')) return '';
+    const genNum = parseInt(genCategory.replace('Generation ', ''), 10);
+    const originGen = parseInt(entry.originGen, 10);
+
+    // If Pokemon originated in a later generation, this generation does not apply
+    if (originGen && genNum < originGen) return '';
+
+    // Gen 9 is currently the latest mainline generation with nowhere to move up to yet
+    if (genNum >= 9) return '';
+
+    if (isCompleted) {
+      return `
+        <div class="generation-warning-box bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300 rounded-xl p-2.5 mb-3 text-xs flex items-center gap-2">
+          <i class="fas fa-check-circle text-emerald-500 shrink-0 text-sm"></i>
+          <span><strong>Generation Complete:</strong> All ribbons in this generation are collected. Safe to transfer forward!</span>
+        </div>
+      `;
+    }
+
+    const isGen3 = genCategory === 'Generation 3';
+    const hasWinningRibbon = isGen3 && entry.collectedRibbons.includes('gen3_winning');
+
+    return `
+      <div class="generation-warning-box bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
+        <div class="flex items-start gap-2">
+          <i class="fas fa-exclamation-triangle text-amber-500 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <div>
+            <strong>Transfer Warning:</strong> Do not transfer this Pokémon to the next generation until all ribbons in this section are collected. Inter-generation transfers are permanent and one-way!
+          </div>
+        </div>
+        ${isGen3 ? `
+          <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasWinningRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
+            <i class="fas ${hasWinningRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-red-500'} shrink-0 mt-0.5"></i>
+            <div>
+              ${hasWinningRibbon 
+                ? `<strong>Winning Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 50.`
+                : `<strong>Battle Tower Lv. 50 Warning:</strong> Do not level this Pokémon past <strong>Lv. 50</strong> until you obtain the <strong>Winning Ribbon</strong>! Pokémon above Lv. 50 are permanently barred from entering the Battle Tower Level 50 Challenge in Gen 3.`}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  };
+
+  const getRecurringRibbonsWarningHtml = (entry, eligibleRibbons, isCompleted) => {
+    // Chronological order of mainline game version groups (oldest to newest).
+    // Used to find the LAST game in a ribbon's versionGroups that this Pokémon can access.
+    const GAME_ORDER = [
+      { key: 'diamond-pearl',              label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'platinum',                   label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'heartgold-soulsilver',       label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'black-white',               label: 'Black / White' },
+      { key: 'black-2-white-2',           label: 'Black 2 / White 2' },
+      { key: 'x-y',                       label: 'X / Y' },
+      { key: 'omega-ruby-alpha-sapphire', label: 'Omega Ruby / Alpha Sapphire' },
+      { key: 'sun-moon',                  label: 'Sun / Moon' },
+      { key: 'ultra-sun-ultra-moon',      label: 'Ultra Sun / Ultra Moon' },
+      { key: 'sword-shield',              label: 'Sword / Shield' },
+      { key: 'brilliant-diamond-shining-pearl', label: 'Brilliant Diamond / Shining Pearl' },
+      { key: 'legends-arceus',            label: 'Legends: Arceus' },
+      { key: 'scarlet-violet',            label: 'Scarlet / Violet' },
+    ];
+
+    // Ribbons that have a deadline (not available in Sword/Shield or Scarlet/Violet)
+    const deadlineRibbons = eligibleRibbons.filter(r =>
+      r.isRecurring &&
+      r.id !== 'gen3_effort' &&
+      Array.isArray(r.versionGroups) &&
+      !r.versionGroups.includes('sword-shield') &&
+      !r.versionGroups.includes('scarlet-violet')
+    );
+
+    if (deadlineRibbons.length === 0) return '';
+
+    const availableGames = entry.availableGames instanceof Set
+      ? entry.availableGames
+      : new Set(Array.isArray(entry.availableGames) ? entry.availableGames : []);
+
+    // For each ribbon, find the last game this Pokémon can access it in
+    const ribbonsWithDeadline = deadlineRibbons.map(r => {
+      // Walk game order in reverse to find the latest accessible game for this ribbon
+      let lastGame = null;
+      for (let i = GAME_ORDER.length - 1; i >= 0; i--) {
+        const game = GAME_ORDER[i];
+        if (r.versionGroups.includes(game.key)) {
+          // Check if this Pokémon can enter this game
+          if (availableGames.size === 0 || availableGames.has(game.key)) {
+            lastGame = game;
+            break;
+          }
+        }
+      }
+      return { ribbon: r, lastGame };
+    }).filter(({ lastGame }) => lastGame !== null);
+
+    if (ribbonsWithDeadline.length === 0) return '';
+
+    const allDeadlineDone = ribbonsWithDeadline.every(({ ribbon }) => entry.collectedRibbons.includes(ribbon.id));
+
+    if (isCompleted || allDeadlineDone) {
+      return `
+        <div class="recurring-warning-box bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300 rounded-xl p-2.5 mb-3 text-xs flex items-center gap-2">
+          <i class="fas fa-check-circle text-emerald-500 shrink-0 text-sm"></i>
+          <span><strong>Transfer Deadline Met:</strong> All time-limited recurring ribbons have been collected!</span>
+        </div>
+      `;
+    }
+
+    // Group ribbons by their deadline game label
+    const byDeadline = {};
+    ribbonsWithDeadline.forEach(({ ribbon, lastGame }) => {
+      const label = lastGame.label;
+      if (!byDeadline[label]) byDeadline[label] = [];
+      byDeadline[label].push(ribbon);
+    });
+
+    const deadlineBlocks = Object.entries(byDeadline).map(([gameLabel, ribbons]) => {
+      const pills = ribbons.map(r => {
+        const collected = entry.collectedRibbons.includes(r.id);
+        return collected
+          ? `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-[10px] font-semibold"><i class="fas fa-check text-[8px]"></i>${r.name}</span>`
+          : `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-[10px] font-semibold"><i class="fas fa-times text-[8px]"></i>${r.name}</span>`;
+      }).join('');
+
+      return `
+        <div class="mt-2 pt-2 border-t border-amber-200/70 dark:border-amber-800/50 first:mt-0 first:pt-0 first:border-t-0">
+          <div class="font-semibold text-[10px] uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-1.5">
+            <i class="fas fa-hourglass-half mr-1 text-[9px]"></i>Last chance: <strong>${gameLabel}</strong>
+          </div>
+          <div class="flex flex-wrap gap-1.5">${pills}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="recurring-warning-box bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
+        <div class="flex items-start gap-2 mb-2">
+          <i class="fas fa-exclamation-triangle text-amber-500 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <div>
+            <strong>Transfer Deadline Warning:</strong> The following ribbons cannot be obtained in Sword / Shield or Scarlet / Violet. Collect them before transferring past the listed game!
+          </div>
+        </div>
+        ${deadlineBlocks}
+      </div>
+    `;
+  };
+
+
   window.openRibbonDetail = (idx) => {
     window.hideRibbonTooltip();
     const entry = entries[idx];
+    const isDifferentEntry = currentDetailEntryIdx !== idx;
+    currentDetailEntryIdx = idx;
     const detailView = document.getElementById('ribbon-detail-view');
     const gridContainer = document.getElementById('ribbon-grid-container');
     const nameHeader = document.getElementById('detail-pokemon-name');
@@ -661,42 +813,41 @@ export async function initRibbonTracker(appContainer) {
     // Group eligible ribbons by Generation/Category, then by Game Category
     // Recurring ribbons move to the top group ONLY if they are from an earlier gen than the Pokemon
     const pokemonState = getPokemonStateFromEntry(entry);
-
-    // Generate the automated Contest Memory Ribbon if applicable
-    const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
-    const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
-    
+    // Generate the automated Contest Memory Ribbon if applicable (only for Gen 3 & 4 Pokémon)
     let automatedRibbons = [];
-    if (collectedContestCount > 0) {
-      const isGold = collectedContestCount === 40;
-      automatedRibbons.push({
-        id: 'gen6_contest_memory',
-        name: isGold ? 'Contest Memory Ribbon (Gold)' : 'Contest Memory Ribbon',
-        description: `A Ribbon awarded to a Pokémon that has overcome many challenges in Contests in the distant past. (Contests Cleared: ${collectedContestCount}/40)`,
-        game: RIBBON_GAMES.XY,
-        gen: 6,
-        isEarned: true,
-        isAutomated: true,
-        isGold: isGold
-      });
-    }
+    if (pokemonState.gen <= 4) {
+      const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
+      const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
+      if (collectedContestCount > 0) {
+        const isContestGold = collectedContestCount === 40;
+        automatedRibbons.push({
+          id: 'gen6_contest_memory',
+          name: isContestGold ? 'Contest Memory Ribbon (Gold)' : 'Contest Memory Ribbon',
+          description: `A Ribbon awarded to a Pokémon that has overcome many challenges in Contests in the distant past. (Contests Cleared: ${collectedContestCount}/40)`,
+          game: RIBBON_GAMES.XY,
+          gen: 6,
+          isEarned: true,
+          isAutomated: true,
+          isGold: isContestGold
+        });
+      }
 
-    // Generate the automated Battle Memory Ribbon if applicable
-    const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
-    const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
-
-    if (collectedBattleCount > 0) {
-      const isGold = collectedBattleCount >= 7;
-      automatedRibbons.push({
-        id: 'gen6_battle_memory',
-        name: isGold ? 'Battle Memory Ribbon (Gold)' : 'Battle Memory Ribbon',
-        description: `A Ribbon awarded to a Pokémon that has overcome many challenges in Battle Towers in the distant past. (Battle Ribbons: ${collectedBattleCount}/8)`,
-        game: RIBBON_GAMES.XY,
-        gen: 6,
-        isEarned: true,
-        isAutomated: true,
-        isGold: isGold
-      });
+      // Generate the automated Battle Memory Ribbon if applicable
+      const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
+      const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
+      if (collectedBattleCount > 0) {
+        const isBattleGold = collectedBattleCount >= 7;
+        automatedRibbons.push({
+          id: 'gen6_battle_memory',
+          name: isBattleGold ? 'Battle Memory Ribbon (Gold)' : 'Battle Memory Ribbon',
+          description: `A Ribbon awarded to a Pokémon that has overcome many challenges in Battle Towers in the distant past. (Battle Ribbons: ${collectedBattleCount}/8)`,
+          game: RIBBON_GAMES.XY,
+          gen: 6,
+          isEarned: true,
+          isAutomated: true,
+          isGold: isBattleGold
+        });
+      }
     }
 
     const grouped = RIBBONS.reduce((acc, ribbon) => {
@@ -743,16 +894,23 @@ export async function initRibbonTracker(appContainer) {
       };
     }
 
-    // Sort categories: Recurring first, then numeric generations, then Marks
-    const sortedCategories = Object.keys(grouped).sort((a, b) => {
-      if (a === 'Recurring Ribbons') return -1;
-      if (b === 'Recurring Ribbons') return 1;
-      if (a === 'Optional Extras') return 1;
-      if (b === 'Optional Extras') return -1;
-      if (a === 'Marks') return 1;
-      if (b === 'Marks') return -1;
-      return a.localeCompare(b, undefined, { numeric: true });
-    });
+    // Sort categories: Recurring first, then numeric generations, then Marks. Exclude empty categories.
+    const sortedCategories = Object.keys(grouped)
+      .filter(category => {
+        const gamesObj = grouped[category];
+        if (!gamesObj) return false;
+        const ribbons = Object.values(gamesObj).flat();
+        return ribbons.length > 0;
+      })
+      .sort((a, b) => {
+        if (a === 'Recurring Ribbons') return -1;
+        if (b === 'Recurring Ribbons') return 1;
+        if (a === 'Optional Extras') return 1;
+        if (b === 'Optional Extras') return -1;
+        if (a === 'Marks') return 1;
+        if (b === 'Marks') return -1;
+        return a.localeCompare(b, undefined, { numeric: true });
+      });
 
     const categoryBulkSelection = {};
 
@@ -762,7 +920,7 @@ export async function initRibbonTracker(appContainer) {
       const isOptionalExtras = genCategory === 'Optional Extras';
       const isGenerationCategory = genCategory.startsWith('Generation ');
       const isMarksCategory = genCategory === 'Marks';
-      const supportsBulkToggle = isGenerationCategory || isMarksCategory;
+      const supportsBulkToggle = isGenerationCategory || isMarksCategory || isRecurring;
       const ribbonsInCategory = Object.values(gamesObj).flat();
       const selectableStandardRibbonIds = ribbonsInCategory
         .filter(ribbon => !ribbon.isAutomated && !ribbon.isOptionalExtra)
@@ -788,37 +946,78 @@ export async function initRibbonTracker(appContainer) {
       let totalInGen = 0;
       if (!isOptionalExtras) {
         Object.values(gamesObj).forEach(ribbons => {
-          totalInGen += ribbons.length;
           ribbons.forEach(r => {
-            const isEarned = r.isAutomated ? r.isEarned : entry.collectedRibbons.includes(r.id);
-            if (isEarned) earnedInGen++;
+            if (r.isAutomated) {
+              if (r.isEarned && !r.isHidden) {
+                totalInGen++;
+                earnedInGen++;
+              }
+            } else {
+              totalInGen++;
+              if (entry.collectedRibbons.includes(r.id)) {
+                earnedInGen++;
+              }
+            }
           });
         });
       }
 
-      // Render the Generation/Category header
+      const isCompleted = isOptionalExtras
+        ? (totalSelectableInCategory > 0 && allSelectableEarned)
+        : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+
+      // Check previous collapse/open state from existing DOM details element if still on same entry
+      const prevDetails = !isDifferentEntry && window.CSS && CSS.escape
+        ? gridContainer.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`)
+        : null;
+      const wasCompleted = prevDetails ? prevDetails.dataset.completed === 'true' : isCompleted;
+
+      let isOpen;
+      if (!prevDetails) {
+        // Initial view for this entry: completed sections collapse, incomplete sections stay open
+        isOpen = !isCompleted;
+      } else if (isCompleted && !wasCompleted) {
+        // Just transitioned to completed: collapse
+        isOpen = false;
+      } else if (!isCompleted && wasCompleted) {
+        // Just transitioned from completed to incomplete: expand
+        isOpen = true;
+      } else {
+        // Preserve user's current manual open/closed state
+        isOpen = prevDetails.open;
+      }
+
+      // Render the Generation/Category collapsible
       return `
-        <div class="mb-6 min-w-0">
-          <div class="flex items-center justify-between gap-3 mb-3 pb-1 border-b dark:border-gray-700/50 min-w-0">
-            <h3 class="text-xs font-black text-gray-800 dark:text-gray-200 uppercase tracking-[0.2em] min-w-0">${genCategory}</h3>
-            <div class="flex items-center gap-2">
+        <details ${isOpen ? 'open' : ''} data-category="${genCategory.replace(/"/g, '&quot;')}" data-completed="${isCompleted ? 'true' : 'false'}" class="group mb-5 min-w-0">
+          <summary class="flex items-center justify-between gap-3 mb-3 pb-1.5 border-b dark:border-gray-700/50 min-w-0 cursor-pointer list-none select-none hover:opacity-85 transition-opacity [&::-webkit-details-marker]:hidden">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="fas fa-chevron-right text-[10px] text-gray-400 dark:text-gray-500 transform transition-transform duration-200 group-open:rotate-90 shrink-0"></i>
+              <h3 class="text-xs font-black text-gray-800 dark:text-gray-200 uppercase tracking-[0.2em] min-w-0">${genCategory}</h3>
+              <span class="category-completed-check shrink-0 ${isCompleted && !isOptionalExtras ? '' : 'hidden'}"><i class="fas fa-check-circle text-green-500 text-[11px]" title="Section Completed"></i></span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
               ${supportsBulkToggle && totalSelectableInCategory > 0
                 ? `<button
-                  onclick="window.toggleCategoryRibbons(${idx}, '${genCategory.replace(/'/g, "\\'")}')"
-                  class="inline-flex items-center px-2 py-0.5 h-[18px] leading-none text-[9px] font-black whitespace-nowrap rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+                  data-bulk-category="${genCategory.replace(/"/g, '&quot;')}"
+                  onclick="event.stopPropagation(); window.toggleCategoryRibbons(${idx}, '${genCategory.replace(/'/g, "\\'")}')"
+                  class="category-bulk-btn inline-flex items-center px-2 py-0.5 h-[18px] leading-none text-[9px] font-black whitespace-nowrap rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors cursor-pointer"
                 >${allSelectableEarned ? 'Deselect All' : 'Select All'}</button>`
                 : ''}
               ${isOptionalExtras
                 ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
                 : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
-                <span class="text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
+                <span class="category-earned-count text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
                 <span class="text-[9px] font-black text-gray-300 dark:text-gray-600">/</span>
-                <span class="text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
+                <span class="category-total-count text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
               </div>`}
             </div>
-          </div>
+          </summary>
           
-          ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
+          <div class="pb-1">
+            ${getGenerationWarningHtml(genCategory, entry, isCompleted)}
+            ${isRecurring ? getRecurringRibbonsWarningHtml(entry, ribbonsInCategory, isCompleted) : ''}
+            ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
         return `
             <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-yellow-200 dark:border-yellow-800'}">
               ${isRecurring ? '' : `<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 break-words pr-1">${gameCategory}</h4>`}
@@ -834,11 +1033,15 @@ export async function initRibbonTracker(appContainer) {
           const ribbonImageUrl = ribbon.isOptionalExtra ? ribbonImageMap[ribbon.imageKey] : getRibbonImageUrl(ribbon);
           return `
                     <div 
+                      data-ribbon-id="${ribbon.id}"
+                      data-category="${genCategory.replace(/"/g, '&quot;')}"
+                      ${ribbon.isAutomated ? 'data-automated="true"' : ''}
+                      ${ribbon.isOptionalExtra ? 'data-optional="true"' : ''}
                       ${ribbon.isAutomated ? '' : ribbon.isOptionalExtra ? `onclick="window.toggleOptionalRibbon(${idx}, '${ribbon.id}')"` : `onclick="window.toggleRibbon(${idx}, '${ribbon.id}')"`}
                       ontouchstart="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}', true)"
                       onmouseenter="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}')"
                       onmouseleave="window.hideRibbonTooltip()"
-                      class="relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'}"
+                      class="ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'} ${ribbon.isHidden ? 'hidden' : ''}"
                     >
                       ${ribbonImageUrl
               ? `<img src="${ribbonImageUrl}" alt="${ribbon.name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain ${isEarned ? '' : 'grayscale'}">`
@@ -850,25 +1053,280 @@ export async function initRibbonTracker(appContainer) {
             </div>
             `;
       }).join('')}
-        </div>
+          </div>
+        </details>
       `;
     }).join('');
     categoryBulkSelectionByEntry[idx] = categoryBulkSelection;
 
-    closeNavbarOverlays();
-    document.body.classList.add('overflow-hidden', 'ribbon-modal-open');
-    detailView.classList.remove('hidden');
-    detailView.classList.add('flex');
-    requestAnimationFrame(() => {
-      detailView.classList.add('is-visible');
-      detailPanel.classList.add('is-visible');
+    const isAlreadyOpen = detailView.classList.contains('is-visible') && !isDifferentEntry;
+    if (!isAlreadyOpen) {
+      closeNavbarOverlays();
+      document.body.classList.add('overflow-hidden', 'ribbon-modal-open');
+      detailView.classList.remove('hidden');
+      detailView.classList.add('flex');
+      requestAnimationFrame(() => {
+        detailView.classList.add('is-visible');
+        detailPanel.classList.add('is-visible');
+      });
+    }
+  };
+
+  const updateSingleRibbonElement = (ribbonEl, isEarned) => {
+    if (!ribbonEl) return;
+    const earnedClasses = ['border-yellow-400', 'bg-yellow-50', 'dark:border-yellow-500/50', 'dark:bg-yellow-900/30'];
+    const unearnedClasses = ['border-gray-200', 'bg-white', 'opacity-50', 'hover:opacity-80', 'dark:border-gray-700', 'dark:bg-gray-800', 'dark:opacity-40'];
+
+    if (isEarned) {
+      ribbonEl.classList.remove(...unearnedClasses);
+      ribbonEl.classList.add(...earnedClasses);
+    } else {
+      ribbonEl.classList.remove(...earnedClasses);
+      ribbonEl.classList.add(...unearnedClasses);
+    }
+
+    const img = ribbonEl.querySelector('img');
+    if (img) {
+      if (isEarned) {
+        img.classList.remove('grayscale');
+      } else {
+        img.classList.add('grayscale');
+      }
+    }
+
+    const icon = ribbonEl.querySelector('i');
+    if (icon) {
+      if (isEarned) {
+        icon.classList.remove('text-gray-400', 'dark:text-gray-500');
+        icon.classList.add('text-[#ef4444]', 'dark:text-red-300', 'drop-shadow-sm');
+      } else {
+        icon.classList.remove('text-[#ef4444]', 'dark:text-red-300', 'drop-shadow-sm');
+        icon.classList.add('text-gray-400', 'dark:text-gray-500');
+      }
+    }
+  };
+
+  const updateCategoryHeaderState = (entryIdx, genCategory) => {
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    if (!gridContainer) return;
+    const categoryEl = gridContainer.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
+    if (!categoryEl) return;
+
+    const entry = entries[entryIdx];
+    if (!entry) return;
+
+    const isOptionalExtras = genCategory === 'Optional Extras';
+    const bulkData = categoryBulkSelectionByEntry?.[entryIdx]?.[genCategory];
+    const standardIds = bulkData?.standardRibbonIds || [];
+    const optionalIds = bulkData?.optionalRibbonIds || [];
+    const totalSelectable = standardIds.length + optionalIds.length;
+
+    const earnedStandard = standardIds.filter(id => entry.collectedRibbons.includes(id)).length;
+    const earnedOptional = optionalIds.filter(id => (entry.optionalRibbons || []).includes(id)).length;
+    const allSelectableEarned = totalSelectable > 0 && (earnedStandard + earnedOptional) === totalSelectable;
+
+    const ribbonItems = categoryEl.querySelectorAll('.ribbon-card-item');
+    let totalInGen = 0;
+    let earnedInGen = 0;
+    ribbonItems.forEach(item => {
+      const id = item.dataset.ribbonId;
+      const isAutomated = item.dataset.automated === 'true';
+      const isOpt = item.dataset.optional === 'true';
+      const isHidden = item.classList.contains('hidden');
+
+      if (isHidden) return;
+
+      if (!isOpt) {
+        totalInGen++;
+        if (isAutomated) {
+          earnedInGen++;
+        } else if (entry.collectedRibbons.includes(id)) {
+          earnedInGen++;
+        }
+      }
     });
+
+    const isCompleted = isOptionalExtras
+      ? (totalSelectable > 0 && allSelectableEarned)
+      : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+
+    const wasCompleted = categoryEl.dataset.completed === 'true';
+    categoryEl.dataset.completed = isCompleted ? 'true' : 'false';
+
+    const earnedCountEl = categoryEl.querySelector('.category-earned-count');
+    if (earnedCountEl) {
+      earnedCountEl.textContent = earnedInGen;
+      if (earnedInGen === totalInGen && totalInGen > 0) {
+        earnedCountEl.classList.remove('text-gray-500', 'dark:text-gray-400');
+        earnedCountEl.classList.add('text-green-500');
+      } else {
+        earnedCountEl.classList.remove('text-green-500');
+        earnedCountEl.classList.add('text-gray-500', 'dark:text-gray-400');
+      }
+    }
+
+    const totalCountEl = categoryEl.querySelector('.category-total-count');
+    if (totalCountEl) {
+      totalCountEl.textContent = totalInGen;
+    }
+
+    const bulkBtn = categoryEl.querySelector('.category-bulk-btn');
+    if (bulkBtn) {
+      bulkBtn.textContent = allSelectableEarned ? 'Deselect All' : 'Select All';
+    }
+
+    const checkEl = categoryEl.querySelector('.category-completed-check');
+    if (checkEl) {
+      if (isCompleted && !isOptionalExtras) {
+        checkEl.classList.remove('hidden');
+      } else {
+        checkEl.classList.add('hidden');
+      }
+    }
+
+    const warningBox = categoryEl.querySelector('.generation-warning-box');
+    if (warningBox) {
+      warningBox.outerHTML = getGenerationWarningHtml(genCategory, entry, isCompleted);
+    }
+
+    if (genCategory === 'Recurring Ribbons') {
+      const recurringWarningBox = categoryEl.querySelector('.recurring-warning-box');
+      if (recurringWarningBox) {
+        // Re-derive eligible recurring ribbons from RIBBONS data (matches the new filter in getRecurringRibbonsWarningHtml)
+        const eligibleRecurring = RIBBONS.filter(r =>
+          r.isRecurring &&
+          r.id !== 'gen3_effort' &&
+          Array.isArray(r.versionGroups) &&
+          !r.versionGroups.includes('sword-shield') &&
+          !r.versionGroups.includes('scarlet-violet')
+        );
+        recurringWarningBox.outerHTML = getRecurringRibbonsWarningHtml(entry, eligibleRecurring, isCompleted);
+      }
+    }
+
+    if (isCompleted && !wasCompleted) {
+      categoryEl.open = false;
+    } else if (!isCompleted && wasCompleted) {
+      categoryEl.open = true;
+    }
+  };
+
+  const updateBackgroundCardProgress = (entryIdx) => {
+    const entry = entries[entryIdx];
+    if (!entry) return;
+    const stats = getEntryProgressStats(entry);
+    const card = document.querySelector(`.ribbon-entry-card[data-entry-idx="${entryIdx}"]`);
+    if (card) {
+      const countEl = card.querySelector('.ribbon-card-count');
+      if (countEl) {
+        countEl.textContent = `${stats.collectedCount} / ${stats.eligibleCount}`;
+        if (stats.isMaster) {
+          countEl.className = 'ribbon-card-count text-sm font-bold whitespace-nowrap text-amber-600 dark:text-amber-400';
+        } else {
+          countEl.className = 'ribbon-card-count text-sm font-bold whitespace-nowrap text-[#ef4444] dark:text-red-300';
+        }
+      }
+    }
+  };
+
+  const updateAutomatedGen6Ribbons = (entryIdx) => {
+    const entry = entries[entryIdx];
+    if (!entry) return;
+    const pokemonState = getPokemonStateFromEntry(entry);
+    if (pokemonState.gen > 4) return; // Contest and Battle Memory only apply to Gen 3 & 4 Pokémon
+
+    const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
+    const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
+    const isContestGold = collectedContestCount === 40;
+
+    const battleRibbonIds = getGen34BattleRibbonIds(pokemonState);
+    const collectedBattleCount = entry.collectedRibbons.filter(id => battleRibbonIds.includes(id)).length;
+    const isBattleGold = collectedBattleCount >= 7;
+
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    if (!gridContainer) return;
+
+    const gen6El = gridContainer.querySelector('details[data-category="Generation 6"]');
+    if (!gen6El) return;
+
+    // Contest Memory Ribbon
+    let contestEl = gen6El.querySelector('[data-ribbon-id="gen6_contest_memory"]');
+    if (collectedContestCount > 0) {
+      const desc = `A Ribbon awarded to a Pokémon that has overcome many challenges in Contests in the distant past. (Contests Cleared: ${collectedContestCount}/40)`;
+      const name = isContestGold ? 'Contest Memory Ribbon (Gold)' : 'Contest Memory Ribbon';
+      const contestRibbonObj = { id: 'gen6_contest_memory', name, isGold: isContestGold };
+      const newImgUrl = getRibbonImageUrl(contestRibbonObj);
+      const iconClass = isContestGold ? 'fa-award text-yellow-500 animate-pulse' : 'fa-ribbon';
+
+      if (contestEl) {
+        contestEl.setAttribute('onmouseenter', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}')`);
+        contestEl.setAttribute('ontouchstart', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}', true)`);
+        const img = contestEl.querySelector('img');
+        if (img && newImgUrl) img.src = newImgUrl;
+      } else {
+        const firstGrid = gen6El.querySelector('.grid');
+        if (firstGrid) {
+          const div = document.createElement('div');
+          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30 flex items-center justify-center transition-all cursor-default';
+          div.setAttribute('data-ribbon-id', 'gen6_contest_memory');
+          div.setAttribute('data-category', 'Generation 6');
+          div.setAttribute('data-automated', 'true');
+          div.setAttribute('onmouseenter', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}')`);
+          div.setAttribute('ontouchstart', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}', true)`);
+          div.setAttribute('onmouseleave', 'window.hideRibbonTooltip()');
+          div.innerHTML = newImgUrl
+            ? `<img src="${newImgUrl}" alt="${name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">`
+            : `<i class="fas ${iconClass} text-[#ef4444] dark:text-red-300 drop-shadow-sm"></i>`;
+          firstGrid.prepend(div);
+        }
+      }
+    } else if (contestEl) {
+      contestEl.remove();
+    }
+
+    // Battle Memory Ribbon
+    let battleEl = gen6El.querySelector('[data-ribbon-id="gen6_battle_memory"]');
+    if (collectedBattleCount > 0) {
+      const desc = `A Ribbon awarded to a Pokémon that has overcome many challenges in Battle Towers in the distant past. (Battle Ribbons: ${collectedBattleCount}/8)`;
+      const name = isBattleGold ? 'Battle Memory Ribbon (Gold)' : 'Battle Memory Ribbon';
+      const battleRibbonObj = { id: 'gen6_battle_memory', name, isGold: isBattleGold };
+      const newImgUrl = getRibbonImageUrl(battleRibbonObj);
+      const iconClass = isBattleGold ? 'fa-award text-yellow-500 animate-pulse' : 'fa-ribbon';
+
+      if (battleEl) {
+        battleEl.setAttribute('onmouseenter', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}')`);
+        battleEl.setAttribute('ontouchstart', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}', true)`);
+        const img = battleEl.querySelector('img');
+        if (img && newImgUrl) img.src = newImgUrl;
+      } else {
+        const firstGrid = gen6El.querySelector('.grid');
+        if (firstGrid) {
+          const div = document.createElement('div');
+          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30 flex items-center justify-center transition-all cursor-default';
+          div.setAttribute('data-ribbon-id', 'gen6_battle_memory');
+          div.setAttribute('data-category', 'Generation 6');
+          div.setAttribute('data-automated', 'true');
+          div.setAttribute('onmouseenter', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}')`);
+          div.setAttribute('ontouchstart', `window.showRibbonTooltip(this, '${name.replace(/'/g, "\\'")}', '${desc.replace(/'/g, "\\'")}', true)`);
+          div.setAttribute('onmouseleave', 'window.hideRibbonTooltip()');
+          div.innerHTML = newImgUrl
+            ? `<img src="${newImgUrl}" alt="${name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">`
+            : `<i class="fas ${iconClass} text-[#ef4444] dark:text-red-300 drop-shadow-sm"></i>`;
+          firstGrid.prepend(div);
+        }
+      }
+    } else if (battleEl) {
+      battleEl.remove();
+    }
+
+    updateCategoryHeaderState(entryIdx, 'Generation 6');
   };
 
   const closeRibbonDetail = () => {
     const detailView = document.getElementById('ribbon-detail-view');
     const detailPanel = detailView.querySelector('.ribbon-detail-panel');
 
+    currentDetailEntryIdx = null;
     window.hideRibbonTooltip();
     detailView.classList.remove('is-visible');
     detailPanel.classList.remove('is-visible');
@@ -877,21 +1335,40 @@ export async function initRibbonTracker(appContainer) {
     window.setTimeout(() => {
       detailView.classList.add('hidden');
       detailView.classList.remove('flex');
+      renderEntriesList();
     }, 220);
   };
 
   window.toggleRibbon = (entryIdx, ribbonId) => {
     window.hideRibbonTooltip();
     const entry = entries[entryIdx];
+    if (!entry) return;
+
     const rbIdx = entry.collectedRibbons.indexOf(ribbonId);
-    if (rbIdx > -1) {
-      entry.collectedRibbons.splice(rbIdx, 1);
-    } else {
+    const isNowEarned = rbIdx === -1;
+    if (isNowEarned) {
       entry.collectedRibbons.push(ribbonId);
+    } else {
+      entry.collectedRibbons.splice(rbIdx, 1);
     }
     saveEntries(entry.id);
-    window.openRibbonDetail(entryIdx); // Re-render detail
-    renderEntriesList(); // Update count on list
+
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const ribbonEl = gridContainer?.querySelector(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`);
+    if (ribbonEl) {
+      updateSingleRibbonElement(ribbonEl, isNowEarned);
+      const category = ribbonEl.dataset.category;
+      if (category) {
+        updateCategoryHeaderState(entryIdx, category);
+      }
+    }
+
+    const r = RIBBONS.find(rb => rb.id === ribbonId);
+    if ((r && (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')) || isGen34BattleRibbon(ribbonId)) {
+      updateAutomatedGen6Ribbons(entryIdx);
+    }
+
+    updateBackgroundCardProgress(entryIdx);
   };
 
   window.toggleCategoryRibbons = (entryIdx, genCategory) => {
@@ -915,11 +1392,25 @@ export async function initRibbonTracker(appContainer) {
       && hasAllStandard
       && hasAllOptional;
 
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const categoryEl = gridContainer?.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
+
     if (hasAllSelected) {
       const standardRibbonIdSet = new Set(standardRibbonIds);
       const optionalRibbonIdSet = new Set(optionalRibbonIds);
       entry.collectedRibbons = entry.collectedRibbons.filter(id => !standardRibbonIdSet.has(id));
       entry.optionalRibbons = entry.optionalRibbons.filter(id => !optionalRibbonIdSet.has(id));
+
+      if (categoryEl) {
+        standardRibbonIds.forEach(id => {
+          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
+          if (el) updateSingleRibbonElement(el, false);
+        });
+        optionalRibbonIds.forEach(id => {
+          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
+          if (el) updateSingleRibbonElement(el, false);
+        });
+      }
     } else {
       const collectedRibbonSet = new Set(entry.collectedRibbons);
       const optionalRibbonSet = new Set(entry.optionalRibbons);
@@ -929,6 +1420,10 @@ export async function initRibbonTracker(appContainer) {
           entry.collectedRibbons.push(id);
           collectedRibbonSet.add(id);
         }
+        if (categoryEl) {
+          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
+          if (el) updateSingleRibbonElement(el, true);
+        }
       });
 
       optionalRibbonIds.forEach(id => {
@@ -936,30 +1431,50 @@ export async function initRibbonTracker(appContainer) {
           entry.optionalRibbons.push(id);
           optionalRibbonSet.add(id);
         }
+        if (categoryEl) {
+          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
+          if (el) updateSingleRibbonElement(el, true);
+        }
       });
     }
 
     saveEntries(entry.id);
-    window.openRibbonDetail(entryIdx);
-    renderEntriesList();
+    updateCategoryHeaderState(entryIdx, genCategory);
+
+    if (genCategory === 'Generation 3' || genCategory === 'Generation 4') {
+      updateAutomatedGen6Ribbons(entryIdx);
+    }
+
+    updateBackgroundCardProgress(entryIdx);
   };
 
   window.toggleOptionalRibbon = (entryIdx, ribbonId) => {
     window.hideRibbonTooltip();
     const entry = entries[entryIdx];
+    if (!entry) return;
     if (!Array.isArray(entry.optionalRibbons)) {
       entry.optionalRibbons = [];
     }
 
     const ribbonIndex = entry.optionalRibbons.indexOf(ribbonId);
-    if (ribbonIndex > -1) {
-      entry.optionalRibbons.splice(ribbonIndex, 1);
-    } else {
+    const isNowEarned = ribbonIndex === -1;
+    if (isNowEarned) {
       entry.optionalRibbons.push(ribbonId);
+    } else {
+      entry.optionalRibbons.splice(ribbonIndex, 1);
     }
 
     saveEntries(entry.id);
-    window.openRibbonDetail(entryIdx);
+
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const ribbonEl = gridContainer?.querySelector(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`);
+    if (ribbonEl) {
+      updateSingleRibbonElement(ribbonEl, isNowEarned);
+      const category = ribbonEl.dataset.category || 'Optional Extras';
+      updateCategoryHeaderState(entryIdx, category);
+    }
+
+    updateBackgroundCardProgress(entryIdx);
   };
 
   window.toggleEntryShiny = (idx) => {
