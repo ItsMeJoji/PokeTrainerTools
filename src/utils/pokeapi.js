@@ -152,7 +152,7 @@ function formatEncounterConditionLabels(conditionValueRefs, methodNameRaw, condi
     for (const conditionValueRef of conditionValueRefs) {
         const raw = conditionValueRef?.name;
         if (!raw || raw === 'none') continue;
-        if (methodNameRaw === 'walk' && ['time-morning', 'time-day', 'time-night'].includes(raw)) {
+        if (['time-morning', 'time-day', 'time-night'].includes(raw)) {
             continue;
         }
 
@@ -495,6 +495,24 @@ export async function getVersionGroups() {
  * @param {string} locationName - The name of the location.
  * @returns {Promise<Object>} Grouped encounters: { methodDisplay: [{ name, sprite, rate }] }.
  */
+function areEncounterMapsEqual(mapA, mapB) {
+    if (!mapA && !mapB) return true;
+    if (!mapA || !mapB) return false;
+    if (mapA.size !== mapB.size) return false;
+
+    for (const [name, entryA] of mapA.entries()) {
+        const entryB = mapB.get(name);
+        if (!entryB) return false;
+        if (entryA.sumChance !== entryB.sumChance) return false;
+        if (entryA.minLevel !== entryB.minLevel || entryA.maxLevel !== entryB.maxLevel) return false;
+
+        const condA = Array.from(entryA.conditions || []).sort().join('|');
+        const condB = Array.from(entryB.conditions || []).sort().join('|');
+        if (condA !== condB) return false;
+    }
+    return true;
+}
+
 export async function getEncounters(versionName, locationName, options = {}) {
     const optionsCacheKey = JSON.stringify({
         radar: Boolean(options.radar),
@@ -547,6 +565,30 @@ export async function getEncounters(versionName, locationName, options = {}) {
                 });
             }
 
+            const areaTimeConditionsByMethod = {};
+            const areaSeasonConditionsByMethod = {};
+            for (const encounter of area.pokemon_encounters || []) {
+                const versionDetail = encounter.version_details?.find(vd => vd.version.name === versionName);
+                if (versionDetail) {
+                    for (const detail of versionDetail.encounter_details || []) {
+                        const mRaw = detail.method?.name;
+                        if (!mRaw) continue;
+                        const hasT = detail.condition_values?.some(c =>
+                            c.name === 'time-morning' || c.name === 'time-day' || c.name === 'time-night'
+                        );
+                        if (hasT) {
+                            areaTimeConditionsByMethod[mRaw] = true;
+                        }
+                        const hasS = detail.condition_values?.some(c =>
+                            c.name === 'season-spring' || c.name === 'season-summer' || c.name === 'season-autumn' || c.name === 'season-winter'
+                        );
+                        if (hasS) {
+                            areaSeasonConditionsByMethod[mRaw] = true;
+                        }
+                    }
+                }
+            }
+
             for (const encounter of area.pokemon_encounters) {
                 const versionDetail = encounter.version_details.find(vd => vd.version.name === versionName);
                 if (versionDetail) {
@@ -570,10 +612,14 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             const hasSummer = conditionValues.includes('season-summer');
                             const hasAutumn = conditionValues.includes('season-autumn');
                             const hasWinter = conditionValues.includes('season-winter');
+                            const hasSeasonCond = hasSpring || hasSummer || hasAutumn || hasWinter;
+                            const hasSeasonInAreaForMethod = Boolean(areaSeasonConditionsByMethod[methodNameRaw]);
 
                             const methodBase = methodNameRaw === 'walk' ? 'Walk' : methodNameFormatted;
 
-                            if (!hasSpring && !hasSummer && !hasAutumn && !hasWinter) {
+                            if (!hasSeasonInAreaForMethod) {
+                                methodDisplayNames.push(methodBase);
+                            } else if (!hasSeasonCond) {
                                 methodDisplayNames.push(`${methodBase} - Spring 🌱`);
                                 methodDisplayNames.push(`${methodBase} - Summer ☀️`);
                                 methodDisplayNames.push(`${methodBase} - Autumn 🍂`);
@@ -584,9 +630,7 @@ export async function getEncounters(versionName, locationName, options = {}) {
                                 if (hasAutumn) methodDisplayNames.push(`${methodBase} - Autumn 🍂`);
                                 if (hasWinter) methodDisplayNames.push(`${methodBase} - Winter ❄️`);
                             }
-                        } else if (methodNameRaw === 'walk') {
-                            // Only filter conditional walk encounters when a UI option is not selected.
-                            // This prevents unrelated games (e.g., XY) from losing valid area data.
+                        } else {
                             const hasRadar = conditionValues.includes('radar-on');
                             const hasSwarm = conditionValues.includes('swarm-yes');
                             const slot2Cond = conditionValues.find(c => c.startsWith('slot2-') && c !== 'slot2-none');
@@ -620,16 +664,47 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             const hasMorning = conditionValues.includes('time-morning');
                             const hasDay = conditionValues.includes('time-day');
                             const hasNight = conditionValues.includes('time-night');
+                            const hasTimeCond = hasMorning || hasDay || hasNight;
+                            const hasTimeInAreaForMethod = Boolean(areaTimeConditionsByMethod[methodNameRaw]);
+                            const methodBase = methodNameRaw === 'walk' ? 'Walk' : methodNameFormatted;
 
-                            if (!hasMorning && !hasDay && !hasNight) {
-                                methodDisplayNames.push('Walk');
+                            if (options.time) {
+                                const matchesSelectedTime =
+                                    (!hasTimeCond) ||
+                                    (options.time === 'time-morning' && hasMorning) ||
+                                    (options.time === 'time-day' && hasDay) ||
+                                    (options.time === 'time-night' && hasNight);
+
+                                if (!matchesSelectedTime) continue;
+
+                                if (options.time === 'time-morning') {
+                                    methodDisplayNames.push(`${methodBase} - 🌅`);
+                                } else if (options.time === 'time-day') {
+                                    methodDisplayNames.push(`${methodBase} - ☀️`);
+                                } else if (options.time === 'time-night') {
+                                    methodDisplayNames.push(`${methodBase} - 🌙`);
+                                } else {
+                                    methodDisplayNames.push(methodBase);
+                                }
+                            } else if (hasTimeInAreaForMethod) {
+                                if (!hasTimeCond) {
+                                    methodDisplayNames.push(`${methodBase} - 🌅`);
+                                    methodDisplayNames.push(`${methodBase} - ☀️`);
+                                    methodDisplayNames.push(`${methodBase} - 🌙`);
+                                } else {
+                                    if (hasMorning) methodDisplayNames.push(`${methodBase} - 🌅`);
+                                    if (hasDay) methodDisplayNames.push(`${methodBase} - ☀️`);
+                                    if (hasNight) methodDisplayNames.push(`${methodBase} - 🌙`);
+                                }
                             } else {
-                                if (hasMorning) methodDisplayNames.push('Walk - 🌅');
-                                if (hasDay) methodDisplayNames.push('Walk - ☀️');
-                                if (hasNight) methodDisplayNames.push('Walk - 🌙');
+                                if (!hasTimeCond) {
+                                    methodDisplayNames.push(methodBase);
+                                } else {
+                                    if (hasMorning) methodDisplayNames.push(`${methodBase} - 🌅`);
+                                    if (hasDay) methodDisplayNames.push(`${methodBase} - ☀️`);
+                                    if (hasNight) methodDisplayNames.push(`${methodBase} - 🌙`);
+                                }
                             }
-                        } else {
-                            methodDisplayNames.push(methodNameFormatted);
                         }
 
                         const conditionLabels = formatEncounterConditionLabels(conditionValueRefs, methodNameRaw, conditionValueDetails);
@@ -640,13 +715,24 @@ export async function getEncounters(versionName, locationName, options = {}) {
                             }
                             const pokemonName = encounter.pokemon.name;
                             const chance = detail.chance;
+                            const minLevel = typeof detail.min_level === 'number' ? detail.min_level : null;
+                            const maxLevel = typeof detail.max_level === 'number' ? detail.max_level : null;
+
                             if (encountersByArea[areaNameDisplay][methodKey].has(pokemonName)) {
                                 const entry = encountersByArea[areaNameDisplay][methodKey].get(pokemonName);
                                 entry.sumChance += chance;
                                 conditionLabels.forEach(label => entry.conditions.add(label));
+                                if (minLevel !== null) {
+                                    entry.minLevel = entry.minLevel !== null ? Math.min(entry.minLevel, minLevel) : minLevel;
+                                }
+                                if (maxLevel !== null) {
+                                    entry.maxLevel = entry.maxLevel !== null ? Math.max(entry.maxLevel, maxLevel) : maxLevel;
+                                }
                             } else {
                                 encountersByArea[areaNameDisplay][methodKey].set(pokemonName, {
                                     sumChance: chance,
+                                    minLevel: minLevel,
+                                    maxLevel: maxLevel,
                                     conditions: new Set(conditionLabels),
                                     sprite: null
                                 });
@@ -687,8 +773,9 @@ export async function getEncounters(versionName, locationName, options = {}) {
             const areaName = areaEntry.name;
             const methods = encountersByArea[areaName];
             if (methods && Object.keys(methods).length > 0) {
-                // Pre-process methodOrderByArea to ensure all 4 seasons exist for any base method if one does
+                // Pre-process methodOrderByArea to ensure all 4 seasons / time periods exist in order
                 const orderedMethods = [...methodOrderByArea[areaName]];
+                const TIME_ICONS = ['🌅', '☀️', '🌙'];
 
                 // Find all base methods that have a season
                 const baseMethodsWithSeasons = new Set();
@@ -700,45 +787,149 @@ export async function getEncounters(versionName, locationName, options = {}) {
                     }
                 }
 
-                // Inject missing seasons
-                const finalOrder = [];
-                const seenMethods = new Set();
-                for (const method of orderedMethods) {
-                    let handled = false;
-                    for (const season of SEASONS) {
-                        if (method.endsWith(` - ${season}`)) {
-                            const base = method.replace(` - ${season}`, '');
-                            // If we encounter a seasonal method, emit ALL 4 seasons right then (if not already done)
-                            if (!seenMethods.has(`${base} - Spring 🌱`)) {
-                                SEASONS.forEach(s => {
-                                    const m = `${base} - ${s}`;
-                                    finalOrder.push(m);
-                                    seenMethods.add(m);
-                                    if (!methods[m]) methods[m] = new Map();
-                                });
-                            }
-                            handled = true;
-                            break;
+                // Combine identical seasons for any base method
+                const seasonKeyMapping = new Map();
+                for (const base of baseMethodsWithSeasons) {
+                    // Ensure all 4 season maps exist before comparison
+                    SEASONS.forEach(s => {
+                        const m = `${base} - ${s}`;
+                        if (!methods[m]) methods[m] = new Map();
+                    });
+
+                    const seasonsWithMaps = [
+                        { name: 'Spring', icon: '🌱', key: `${base} - Spring 🌱`, map: methods[`${base} - Spring 🌱`] },
+                        { name: 'Summer', icon: '☀️', key: `${base} - Summer ☀️`, map: methods[`${base} - Summer ☀️`] },
+                        { name: 'Autumn', icon: '🍂', key: `${base} - Autumn 🍂`, map: methods[`${base} - Autumn 🍂`] },
+                        { name: 'Winter', icon: '❄️', key: `${base} - Winter ❄️`, map: methods[`${base} - Winter ❄️`] }
+                    ];
+
+                    const groups = [];
+                    for (const s of seasonsWithMaps) {
+                        const existingGroup = groups.find(g => areEncounterMapsEqual(g.map, s.map));
+                        if (existingGroup) {
+                            existingGroup.seasons.push(s);
+                        } else {
+                            groups.push({ seasons: [s], map: s.map });
                         }
                     }
-                    if (!handled) {
-                        finalOrder.push(method);
-                        seenMethods.add(method);
+
+                    // Create merged keys and map old keys
+                    for (const group of groups) {
+                        let newKey;
+                        if (group.seasons.length === 4) {
+                            newKey = base;
+                        } else if (group.seasons.length > 1) {
+                            newKey = `${base} - ${group.seasons.map(s => s.name).join(', ')} ${group.seasons.map(s => s.icon).join('')}`;
+                        } else {
+                            newKey = group.seasons[0].key;
+                        }
+
+                        methods[newKey] = group.map;
+                        for (const s of group.seasons) {
+                            seasonKeyMapping.set(s.key, newKey);
+                            if (s.key !== newKey) {
+                                delete methods[s.key];
+                            }
+                        }
+                    }
+                }
+
+                // Group methods by their base encounter type (Walk, Surf, Super Rod, etc.)
+                const baseMethodOrder = [];
+                const methodsByBase = new Map();
+
+                for (let method of orderedMethods) {
+                    if (seasonKeyMapping.has(method)) {
+                        method = seasonKeyMapping.get(method);
+                    }
+                    if (!methods[method] || methods[method].size === 0) continue;
+
+                    const baseMethod = method.split(' - ')[0];
+                    if (!methodsByBase.has(baseMethod)) {
+                        methodsByBase.set(baseMethod, []);
+                        baseMethodOrder.push(baseMethod);
+                    }
+                    const list = methodsByBase.get(baseMethod);
+                    if (!list.includes(method)) {
+                        list.push(method);
+                    }
+                }
+
+                // Also check if any season-grouped keys were created that haven't been added yet
+                for (const newKey of seasonKeyMapping.values()) {
+                    if (methods[newKey] && methods[newKey].size > 0) {
+                        const baseMethod = newKey.split(' - ')[0];
+                        if (!methodsByBase.has(baseMethod)) {
+                            methodsByBase.set(baseMethod, []);
+                            baseMethodOrder.push(baseMethod);
+                        }
+                        const list = methodsByBase.get(baseMethod);
+                        if (!list.includes(newKey)) {
+                            list.push(newKey);
+                        }
+                    }
+                }
+
+                // Within each base method, sort sub-methods logically:
+                // 1. Seasons in chronological order (Spring, Summer, Autumn, Winter)
+                // 2. Time of day in chronological order (Morning 🌅, Day ☀️, Night 🌙)
+                const finalOrder = [];
+                const SEASONS_ORDER = ['Spring', 'Summer', 'Autumn', 'Winter'];
+                const TIMES_ORDER = ['🌅', '☀️', '🌙'];
+
+                for (const base of baseMethodOrder) {
+                    const subMethods = methodsByBase.get(base) || [];
+
+                    subMethods.sort((a, b) => {
+                        const timeIndexA = TIMES_ORDER.findIndex(t => a.includes(t));
+                        const timeIndexB = TIMES_ORDER.findIndex(t => b.includes(t));
+                        if (timeIndexA !== -1 && timeIndexB !== -1) {
+                            return timeIndexA - timeIndexB;
+                        }
+
+                        const seasonIndexA = SEASONS_ORDER.findIndex(s => a.includes(s));
+                        const seasonIndexB = SEASONS_ORDER.findIndex(s => b.includes(s));
+                        if (seasonIndexA !== -1 && seasonIndexB !== -1) {
+                            return seasonIndexA - seasonIndexB;
+                        }
+
+                        return 0;
+                    });
+
+                    for (const m of subMethods) {
+                        finalOrder.push(m);
                     }
                 }
 
                 finalGrouped[areaName] = {};
                 for (const method of finalOrder) {
                     const map = methods[method];
-                    finalGrouped[areaName][method] = Array.from(map.entries()).map(([name, data]) => ({
-                        name: name,
-                        displayName: name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-                        sprite: spriteMap.get(name).normal,
-                        shinySprite: spriteMap.get(name).shiny,
-                        rate: data.sumChance,
-                        conditionTexts: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions) : [],
-                        conditionText: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions).join(', ') : null
-                    })).sort((a, b) => b.rate - a.rate);
+                    if (!map || map.size === 0) continue;
+                    finalGrouped[areaName][method] = Array.from(map.entries()).map(([name, data]) => {
+                        let levelText = null;
+                        if (data.minLevel !== null && data.maxLevel !== null) {
+                            levelText = data.minLevel === data.maxLevel
+                                ? `Lv. ${data.minLevel}`
+                                : `Lv. ${data.minLevel} - ${data.maxLevel}`;
+                        } else if (data.minLevel !== null) {
+                            levelText = `Lv. ${data.minLevel}`;
+                        } else if (data.maxLevel !== null) {
+                            levelText = `Lv. ${data.maxLevel}`;
+                        }
+
+                        return {
+                            name: name,
+                            displayName: name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+                            sprite: spriteMap.get(name).normal,
+                            shinySprite: spriteMap.get(name).shiny,
+                            rate: data.sumChance,
+                            minLevel: data.minLevel,
+                            maxLevel: data.maxLevel,
+                            levelText: levelText,
+                            conditionTexts: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions) : [],
+                            conditionText: data.conditions && data.conditions.size > 0 ? Array.from(data.conditions).join(', ') : null
+                        };
+                    }).sort((a, b) => b.rate - a.rate);
                 }
             }
         }

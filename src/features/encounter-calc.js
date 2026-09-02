@@ -4,6 +4,16 @@ import { getVersions, getLocationsForVersion, getEncounters } from '../utils/pok
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
 import { ENCOUNTER_CALC_INSTRUCTIONS } from '../utils/instruction-content.js';
 
+function escapeHtml(unsafe) {
+  if (!unsafe) return '';
+  return String(unsafe)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 /**
  * Initializes the Encounter Calculator page.
  * @param {HTMLElement} appContainer - The container to render the page into.
@@ -431,13 +441,57 @@ export async function initEncounterCalc(appContainer) {
     // Render grouped encounters (Area -> Method -> List)
     // groupedEncounters is now: { "1F": { "Walk": [...] }, "B1F": { ... } }
 
+    const SEASONS = ['Spring 🌱', 'Summer ☀️', 'Autumn 🍂', 'Winter ❄️'];
+    const TIME_ICONS = ['🌅', '☀️', '🌙'];
+
     const areaSections = Object.entries(groupedEncounters).map(([areaName, methods], index) => {
       // Determine if this detail should be open (first one is open)
       const isOpen = index === 0 ? 'open' : '';
 
-      const methodHtml = Object.entries(methods).map(([method, pokemon]) => `
-        <div class="method-section w-full max-w-4xl mb-8 last:mb-0">
-          <h3 class="text-xl font-bold mb-4 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2 text-left ml-4">${method}</h3>
+      const seenSeasonBases = new Set();
+      const seenTimeBases = new Set();
+
+      const methodHtml = Object.entries(methods).map(([method, pokemon]) => {
+        let isMethodOpen = true;
+
+        const isSeason = (method.includes('🌱') || method.includes('☀️') || method.includes('🍂') || method.includes('❄️')) &&
+          (method.includes('Spring') || method.includes('Summer') || method.includes('Autumn') || method.includes('Winter'));
+        if (isSeason) {
+          const base = method.split(' - ')[0];
+          if (seenSeasonBases.has(base)) {
+            isMethodOpen = false;
+          } else {
+            seenSeasonBases.add(base);
+            isMethodOpen = true;
+          }
+        } else {
+          const timeMatch = TIME_ICONS.find(t => method.endsWith(` - ${t}`));
+          if (timeMatch) {
+            const base = method.replace(` - ${timeMatch}`, '');
+            if (seenTimeBases.has(base)) {
+              isMethodOpen = false;
+            } else {
+              seenTimeBases.add(base);
+              isMethodOpen = true;
+            }
+          }
+        }
+
+        return `
+        <details class="group/method method-section w-full max-w-4xl mb-5 last:mb-0 bg-white/70 dark:bg-gray-800/70 rounded-xl border border-gray-200/80 dark:border-gray-700/80 overflow-hidden shadow-sm" ${isMethodOpen ? 'open' : ''}>
+          <summary class="cursor-pointer list-none px-4 sm:px-5 py-3.5 flex items-center justify-between bg-white/90 dark:bg-gray-800/90 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors select-none [&::-webkit-details-marker]:hidden border-b border-transparent group-open/method:border-gray-200/80 dark:group-open/method:border-gray-700/80">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-1.5 h-4 bg-yellow-500 rounded-full shrink-0"></span>
+              <h3 class="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-100 truncate">${method}</h3>
+              <span class="text-xs font-mono text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700/60 px-2 py-0.5 rounded-full shrink-0 font-medium">${pokemon.length} species</span>
+            </div>
+            <span class="text-gray-400 transform transition-transform duration-200 group-open/method:rotate-180 shrink-0 ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <div class="p-4 sm:p-6 bg-gray-50/40 dark:bg-gray-900/20">
              <div class="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto">
                ${pokemon.length > 0 ? pokemon.map(p => `
                  <div class="pokemon-card relative flex flex-col items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 w-40 sm:w-52 transition-transform hover:scale-105 cursor-pointer select-none">
@@ -448,11 +502,14 @@ export async function initEncounterCalc(appContainer) {
                      alt="${p.displayName}" 
                      class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-2 transition-opacity duration-200" 
                    />
-                   <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">${p.displayName}</span>
-                   <span class="text-xs font-mono px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-100 rounded-full">${p.rate}%</span>
+                   <span class="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1.5 text-center">${p.displayName}</span>
+                   <div class="flex items-center gap-1.5 flex-wrap justify-center mb-1">
+                     <span class="text-xs font-mono font-bold px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-100 rounded-full">${p.rate}%</span>
+                     ${p.levelText ? `<span class="text-xs font-mono font-semibold px-2 py-0.5 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 rounded-full">${p.levelText}</span>` : ''}
+                   </div>
                    ${Array.isArray(p.conditionTexts) && p.conditionTexts.length > 0 ? `
                      <ul class="mt-2 w-full list-disc list-outside pl-4 space-y-1 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
-                       ${p.conditionTexts.map(conditionText => `<li>${conditionText}</li>`).join('')}
+                       ${p.conditionTexts.map(conditionText => `<li>${escapeHtml(conditionText)}</li>`).join('')}
                      </ul>
                    ` : p.conditionText ? `
                      <ul class="mt-2 w-full list-disc list-outside pl-4 text-left text-[11px] leading-snug italic text-gray-500 dark:text-gray-400">
@@ -467,8 +524,9 @@ export async function initEncounterCalc(appContainer) {
                `}
              </div>
           </div>
-        </div>
-      `).join('');
+        </details>
+      `;
+      }).join('');
 
       return `
         <details class="group w-full max-w-5xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6" ${isOpen}>
