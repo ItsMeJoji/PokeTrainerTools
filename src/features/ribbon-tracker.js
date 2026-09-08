@@ -137,6 +137,8 @@ const OPTIONAL_EXTRA_RIBBONS = Object.keys(ribbonImageMap)
   }));
 
 const getPokemonStateFromEntry = (entry) => ({
+  speciesId: entry.speciesId,
+  speciesName: entry.speciesName,
   originGameId: entry.originGameId,
   gen: parseInt(entry.originGen),
   isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',

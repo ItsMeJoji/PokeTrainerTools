@@ -166,6 +166,10 @@ export function isGen34BattleRibbon(ribbon) {
   return GEN3_4_BATTLE_RIBBON_IDS.has(ribbon.id);
 }
 
+export function isGen4ContestRibbon(ribbon) {
+  return ribbon.gen === 4 && ribbon.name.includes('Super Contest');
+}
+
 /**
  * Checks if a Pokemon can obtain a specific ribbon based on its origin and the ribbon's gen.
  */
@@ -191,6 +195,12 @@ export function isEligible(pokemonState, ribbon) {
   }
 
   if ((pokemonState.isMythical || pokemonState.isLegendary) && isGen34BattleRibbon(ribbon)) {
+    return false;
+  }
+
+  // Ditto cannot perform in Gen 4 (DPPT) Super Contests because it only knows Transform
+  const isDitto = Number(pokemonState.speciesId) === 132 || (pokemonState.speciesName && pokemonState.speciesName.toLowerCase() === 'ditto');
+  if (isDitto && isGen4ContestRibbon(ribbon)) {
     return false;
   }
 
