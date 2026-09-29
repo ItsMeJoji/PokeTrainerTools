@@ -175,6 +175,8 @@ const getPokemonStateFromEntry = (entry) => {
     : (Array.isArray(entry.collectedRibbons) && entry.collectedRibbons.includes('gen8_master_rank'));
 
   return {
+    speciesId: entry.speciesId,
+    speciesName: entry.speciesName,
     originGameId: entry.originGameId,
     gen: parseInt(entry.originGen),
     isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
