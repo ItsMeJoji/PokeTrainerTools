@@ -77,7 +77,9 @@ export async function getPokemonUpToGeneration(genNumber) {
 const availabilityCache = {};
 const speciesFlagsCache = {};
 const RESTRICTED_MYTHICAL_POKEMON_IDS = new Set([
-    151, 251, 385, 386, 489, 490, 491, 492, 493
+    151, 251, 385, 386, 489, 490, 491, 492, 493,
+    494, 647, 648, 649, 719, 720, 721, 801, 802,
+    807, 808, 809, 893, 1025
 ]);
 const RESTRICTED_LEGENDARY_POKEMON_IDS = new Set([
     150, 249, 250, 382, 383, 384, 483, 484, 487

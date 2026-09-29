@@ -69,7 +69,7 @@ export const RIBBONS = [
   { id: 'gen3_earth', name: 'Earth Ribbon', game: RIBBON_GAMES.COLO_XD, description: 'Full Mt. Battle clear.', gen: 3 },
 
   // --- Generation 4 ---
-  { id: 'gen4_champion', name: 'Sinnoh Champion Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Defeat the Sinnoh Champion.', gen: 4 },
+  { id: 'gen4_champion', name: 'Sinnoh Champion Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Defeat the Sinnoh Champion in DP/Pt or BD/SP.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'brilliant-diamond-shining-pearl'] },
   { id: 'gen4_cool_super_normal', name: 'Cool Super Contest (Normal)', game: RIBBON_GAMES.DP_PT, description: 'Win Normal Rank Cool Super Contest.', gen: 4 },
   { id: 'gen4_cool_super_great', name: 'Cool Super Contest (Great)', game: RIBBON_GAMES.DP_PT, description: 'Win Great Rank Cool Super Contest.', gen: 4 },
   { id: 'gen4_cool_super_ultra', name: 'Cool Super Contest (Ultra)', game: RIBBON_GAMES.DP_PT, description: 'Win Ultra Rank Cool Super Contest.', gen: 4 },
@@ -122,12 +122,12 @@ export const RIBBONS = [
   { id: 'gen6_hoenn_champion', name: 'Hoenn Champion Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Defeat the Hoenn Champion in ORAS.', gen: 6 },
   { id: 'gen6_contest_memory', name: 'Contest Memory Ribbon', game: RIBBON_GAMES.XY, description: 'A Ribbon awarded to a Pokémon that has overcome many challenges in Contests in the distant past.', gen: 6, isAutomated: true },
   { id: 'gen6_battle_memory', name: 'Battle Memory Ribbon', game: RIBBON_GAMES.XY, description: 'A Ribbon awarded to a Pokémon that has overcome many challenges in Battle Towers in the distant past.', gen: 6, isAutomated: true },
-  { id: 'gen6_coolness_master', name: 'Coolness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Coolness Contest.', gen: 6 },
-  { id: 'gen6_beauty_master', name: 'Beauty Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Beauty Contest.', gen: 6 },
-  { id: 'gen6_cuteness_master', name: 'Cuteness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Cuteness Contest.', gen: 6 },
-  { id: 'gen6_smartness_master', name: 'Smartness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Smartness Contest.', gen: 6 },
-  { id: 'gen6_toughness_master', name: 'Toughness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Toughness Contest.', gen: 6 },
-  { id: 'gen6_contest_star', name: 'Contest Star Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win all 5 Master Rank Contests in ORAS.', gen: 6 },
+  { id: 'gen6_coolness_master', name: 'Coolness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Coolness Contest.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen6_beauty_master', name: 'Beauty Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Beauty Contest.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen6_cuteness_master', name: 'Cuteness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Cuteness Contest.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen6_smartness_master', name: 'Smartness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Smartness Contest.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen6_toughness_master', name: 'Toughness Master Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win Master Rank Toughness Contest.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
+  { id: 'gen6_contest_star', name: 'Contest Star Ribbon', game: RIBBON_GAMES.OR_AS, description: 'Win all 5 Master Rank Contests in ORAS or BD/SP.', gen: 6, isRecurring: true, versionGroups: ['omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
 
   // --- Generation 7 ---
   { id: 'gen7_alola_champion', name: 'Alola Champion Ribbon', game: RIBBON_GAMES.SM_USUM, description: 'Defeat the Alola Champion.', gen: 7 },
@@ -166,6 +166,125 @@ export function isGen34BattleRibbon(ribbon) {
   return GEN3_4_BATTLE_RIBBON_IDS.has(ribbon.id);
 }
 
+export const RECURRING_RIBBON_APPEARANCES = {
+  gen3_effort: [
+    { gen: 3, game: RIBBON_GAMES.RS_E, versionGroups: ['ruby-sapphire', 'emerald', 'firered-leafgreen', 'colosseum', 'xd'] },
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 7, game: RIBBON_GAMES.SM_USUM, versionGroups: ['sun-moon', 'ultra-sun-ultra-moon'] },
+    { gen: 8, game: RIBBON_GAMES.SW_SH, versionGroups: ['sword-shield', 'brilliant-diamond-shining-pearl'] },
+    { gen: 9, game: RIBBON_GAMES.SV, versionGroups: ['scarlet-violet'] }
+  ],
+  gen4_champion: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_footprint: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 7, game: RIBBON_GAMES.SM_USUM, versionGroups: ['sun-moon', 'ultra-sun-ultra-moon'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_gorgeous: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_royal: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_gorgeous_royal: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_alert: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_shock: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_downcast: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_careless: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_relax: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_snooze: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen4_smile: [
+    { gen: 4, game: RIBBON_GAMES.DP_PT, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver'] },
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_best_friends: [
+    { gen: 6, game: RIBBON_GAMES.XY, versionGroups: ['x-y', 'omega-ruby-alpha-sapphire'] },
+    { gen: 7, game: RIBBON_GAMES.SM_USUM, versionGroups: ['sun-moon', 'ultra-sun-ultra-moon'] },
+    { gen: 8, game: RIBBON_GAMES.SW_SH, versionGroups: ['sword-shield', 'brilliant-diamond-shining-pearl'] },
+    { gen: 9, game: RIBBON_GAMES.SV, versionGroups: ['scarlet-violet'] }
+  ],
+  gen6_coolness_master: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_beauty_master: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_cuteness_master: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_smartness_master: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_toughness_master: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen6_contest_star: [
+    { gen: 6, game: RIBBON_GAMES.OR_AS, versionGroups: ['omega-ruby-alpha-sapphire'] },
+    { gen: 8, game: RIBBON_GAMES.BD_SP, versionGroups: ['brilliant-diamond-shining-pearl'] }
+  ],
+  gen8_master_rank: [
+    { gen: 8, game: RIBBON_GAMES.SW_SH, versionGroups: ['sword-shield'] },
+    { gen: 9, game: RIBBON_GAMES.SV, versionGroups: ['scarlet-violet'] }
+  ]
+};
+
+export function getRecurringRibbonAppearances(ribbon, pokemonState) {
+  const appearances = RECURRING_RIBBON_APPEARANCES[ribbon.id];
+  if (!appearances) {
+    return [{ gen: ribbon.gen, game: ribbon.game }];
+  }
+  return appearances.filter(app => {
+    if (app.gen < pokemonState.gen) return false;
+    if (app.versionGroups && pokemonState.availableGames && pokemonState.availableGames.size > 0) {
+      return app.versionGroups.some(vg => pokemonState.availableGames.has(vg));
+    }
+    return true;
+  });
+}
+
 /**
  * Checks if a Pokemon can obtain a specific ribbon based on its origin and the ribbon's gen.
  */
@@ -191,6 +310,14 @@ export function isEligible(pokemonState, ribbon) {
   }
 
   if ((pokemonState.isMythical || pokemonState.isLegendary) && isGen34BattleRibbon(ribbon)) {
+    return false;
+  }
+
+  // Master Rank Ribbon for Mythicals (normally prohibited in Ranked Battles, except limited regulation windows)
+  if (pokemonState.isMythical && ribbon.id === 'gen8_master_rank' && !pokemonState.allowMythicalRanked) {
+    if (pokemonState.collectedRibbons && pokemonState.collectedRibbons.includes('gen8_master_rank')) {
+      return true;
+    }
     return false;
   }
 

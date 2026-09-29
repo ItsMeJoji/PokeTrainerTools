@@ -1,6 +1,6 @@
 import { getPokemonListUpToGeneration, getPokemonGameAvailability, getPokemonSpeciesFlags, isKnownMythicalPokemonId, isKnownLegendaryPokemonId } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
-import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon } from '../utils/ribbon-data.js';
+import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, getRecurringRibbonAppearances } from '../utils/ribbon-data.js';
 import { initGoogleAuth, signIn, signOut, isSignedIn, signInRedirect } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
 import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
@@ -136,14 +136,58 @@ const OPTIONAL_EXTRA_RIBBONS = Object.keys(ribbonImageMap)
     isOptionalExtra: true
   }));
 
-const getPokemonStateFromEntry = (entry) => ({
-  originGameId: entry.originGameId,
-  gen: parseInt(entry.originGen),
-  isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
-  isMythical: Boolean(entry.isMythical) || isKnownMythicalPokemonId(entry.speciesId),
-  isLegendary: Boolean(entry.isLegendary) || isKnownLegendaryPokemonId(entry.speciesId),
-  availableGames: Array.isArray(entry.availableGames) ? new Set(entry.availableGames) : new Set()
-});
+// Maps originGameId to the PokeAPI version-group slug(s) for that game.
+// This ensures a Pokemon is always considered available in its own origin game,
+// even if PokeAPI move data is incomplete (e.g. event-exclusive mythicals).
+const ORIGIN_GAME_VERSION_GROUPS = {
+  rse: ['ruby-sapphire', 'emerald'],
+  frlg: ['firered-leafgreen'],
+  colo: ['colosseum'],
+  xd: ['xd'],
+  dppt: ['diamond-pearl', 'platinum'],
+  hgss: ['heartgold-soulsilver'],
+  bw_b2w2: ['black-white', 'black-2-white-2'],
+  xy: ['x-y'],
+  oras: ['omega-ruby-alpha-sapphire'],
+  sm_usum: ['sun-moon', 'ultra-sun-ultra-moon'],
+  lgpe: ['lets-go-pikachu-lets-go-eevee'],
+  swsh: ['sword-shield'],
+  bdsp: ['brilliant-diamond-shining-pearl'],
+  pla: ['legends-arceus'],
+  sv: ['scarlet-violet'],
+};
+
+/**
+ * Merges PokeAPI availability with the origin game's guaranteed version groups.
+ * A Pokemon must always be considered present in the game it originated from.
+ */
+const mergeAvailableGames = (apiGames, originGameId) => {
+  const merged = new Set(apiGames);
+  const originGroups = ORIGIN_GAME_VERSION_GROUPS[originGameId] || [];
+  originGroups.forEach(vg => merged.add(vg));
+  return merged;
+};
+
+const getPokemonStateFromEntry = (entry) => {
+  const isMythical = Boolean(entry.isMythical) || isKnownMythicalPokemonId(entry.speciesId);
+  const allowMythicalRanked = typeof entry.allowMythicalRanked === 'boolean'
+    ? entry.allowMythicalRanked
+    : (Array.isArray(entry.collectedRibbons) && entry.collectedRibbons.includes('gen8_master_rank'));
+
+  return {
+    originGameId: entry.originGameId,
+    gen: parseInt(entry.originGen),
+    isShadow: entry.originGameId === 'colo' || entry.originGameId === 'xd',
+    isMythical,
+    isLegendary: Boolean(entry.isLegendary) || isKnownLegendaryPokemonId(entry.speciesId),
+    allowMythicalRanked,
+    collectedRibbons: Array.isArray(entry.collectedRibbons) ? entry.collectedRibbons : [],
+    availableGames: mergeAvailableGames(
+      Array.isArray(entry.availableGames) ? entry.availableGames : [],
+      entry.originGameId
+    )
+  };
+};
 
 const getEligibleStandardRibbons = (pokemonState) => (
   RIBBONS.filter(ribbon => isEligible(pokemonState, ribbon) && !ribbon.isAutomated)
@@ -322,10 +366,10 @@ export async function initRibbonTracker(appContainer) {
   const updateSyncStatus = (status) => {
     const icon = document.getElementById('cloud-icon');
     const tooltip = document.getElementById('sync-status-tooltip');
-    
+
     icon.className = 'fas text-2xl transition-all duration-300 ';
-    
-    switch(status) {
+
+    switch (status) {
       case 'syncing':
         icon.classList.add('fa-sync-alt', 'fa-spin', 'text-yellow-400');
         tooltip.innerText = 'Syncing with Google Drive...';
@@ -351,7 +395,7 @@ export async function initRibbonTracker(appContainer) {
       const entry = entries.find(e => e.id === updatedEntryId);
       if (entry) entry.lastUpdated = new Date().toISOString();
     }
-    
+
     localStorage.setItem('ribbon_entries', JSON.stringify(entries));
 
     if (isSignedIn()) {
@@ -414,7 +458,7 @@ export async function initRibbonTracker(appContainer) {
     // Check for automated ribbons (Contest Memory)
     const contestRibbonIds = RIBBONS.filter(r => (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')).map(r => r.id);
     const collectedContestCount = entry.collectedRibbons.filter(id => contestRibbonIds.includes(id)).length;
-    
+
     if (collectedContestCount > 0) {
       eligibleCount++; // Contest Memory is eligible
       collectedCount++; // Contest Memory is earned
@@ -616,6 +660,11 @@ export async function initRibbonTracker(appContainer) {
     // Gen 9 is currently the latest mainline generation with nowhere to move up to yet
     if (genNum >= 9) return '';
 
+    const isGen3 = genCategory === 'Generation 3';
+    const hasWinningRibbon = isGen3 && entry.collectedRibbons.includes('gen3_winning');
+    const isGen4 = genCategory === 'Generation 4';
+    const hasFootprintRibbon = entry.collectedRibbons.includes('gen4_footprint');
+
     if (isCompleted) {
       return `
         <div class="generation-warning-box bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300 rounded-xl p-2.5 mb-3 text-xs flex items-center gap-2">
@@ -625,8 +674,43 @@ export async function initRibbonTracker(appContainer) {
       `;
     }
 
-    const isGen3 = genCategory === 'Generation 3';
-    const hasWinningRibbon = isGen3 && entry.collectedRibbons.includes('gen3_winning');
+    const pokemonState = getPokemonStateFromEntry(entry);
+    const eligibleInGen = RIBBONS.filter(r => {
+      if (!isEligible(pokemonState, r) || r.isAutomated) return false;
+      if (r.game === 'Marks') return false;
+      if (r.game === 'Colosseum / XD') return genNum === 3;
+      return r.gen === genNum;
+    });
+
+    const missableRibbons = eligibleInGen.filter(r => {
+      if (!r.isRecurring) return true;
+      const appearances = getRecurringRibbonAppearances(r, pokemonState);
+      return !appearances.some(app => app.gen > genNum);
+    });
+    const allMissableCollected = missableRibbons.length === 0 || missableRibbons.every(r => entry.collectedRibbons.includes(r.id));
+
+    if (allMissableCollected) {
+      return `
+        <div class="generation-warning-box bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 text-blue-800 dark:text-blue-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
+          <div class="flex items-start gap-2">
+            <i class="fas fa-info-circle text-blue-500 dark:text-blue-400 shrink-0 mt-0.5"></i>
+            <div>
+              <strong>Transfer Notice:</strong> Safe to transfer forward! All generation-exclusive ribbons in this section are collected. Any remaining uncollected ribbons (such as Royal, Daily ribbons, etc.) can be obtained in later generation games—just make sure to get them in those later games.
+            </div>
+          </div>
+          ${isGen4 ? `
+            <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-800 dark:text-amber-300'}">
+              <i class="fas ${hasFootprintRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-amber-500'} shrink-0 mt-0.5"></i>
+              <div>
+                ${hasFootprintRibbon
+            ? `<strong>Footprint Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 70.`
+            : `<strong>Footprint Ribbon Warning:</strong> It is easiest to get the <strong>Footprint Ribbon</strong> in Gen 4 with Max Friendship. In later generations, most Pokémon must gain <strong>30 levels</strong> from their met level to receive it, making any Pokémon transferred above <strong>Lv. 70</strong> unable to obtain it!`}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
 
     return `
       <div class="generation-warning-box bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
@@ -640,9 +724,19 @@ export async function initRibbonTracker(appContainer) {
           <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasWinningRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
             <i class="fas ${hasWinningRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-red-500'} shrink-0 mt-0.5"></i>
             <div>
-              ${hasWinningRibbon 
-                ? `<strong>Winning Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 50.`
-                : `<strong>Battle Tower Lv. 50 Warning:</strong> Do not level this Pokémon past <strong>Lv. 50</strong> until you obtain the <strong>Winning Ribbon</strong>! Pokémon above Lv. 50 are permanently barred from entering the Battle Tower Level 50 Challenge in Gen 3.`}
+              ${hasWinningRibbon
+          ? `<strong>Winning Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 50.`
+          : `<strong>Battle Tower Lv. 50 Warning:</strong> Do not level this Pokémon past <strong>Lv. 50</strong> until you obtain the <strong>Winning Ribbon</strong>! Pokémon above Lv. 50 are permanently barred from entering the Battle Tower Level 50 Challenge in Gen 3.`}
+            </div>
+          </div>
+        ` : ''}
+        ${isGen4 ? `
+          <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
+            <i class="fas ${hasFootprintRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-red-500'} shrink-0 mt-0.5"></i>
+            <div>
+              ${hasFootprintRibbon
+          ? `<strong>Footprint Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 70.`
+          : `<strong>Footprint Ribbon Warning:</strong> It is easiest to get the <strong>Footprint Ribbon</strong> in Gen 4 with Max Friendship. In later generations, most Pokémon must gain <strong>30 levels</strong> from their met level to receive it, making any Pokémon transferred above <strong>Lv. 70</strong> unable to obtain it!`}
             </div>
           </div>
         ` : ''}
@@ -654,19 +748,19 @@ export async function initRibbonTracker(appContainer) {
     // Chronological order of mainline game version groups (oldest to newest).
     // Used to find the LAST game in a ribbon's versionGroups that this Pokémon can access.
     const GAME_ORDER = [
-      { key: 'diamond-pearl',              label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
-      { key: 'platinum',                   label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
-      { key: 'heartgold-soulsilver',       label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
-      { key: 'black-white',               label: 'Black / White' },
-      { key: 'black-2-white-2',           label: 'Black 2 / White 2' },
-      { key: 'x-y',                       label: 'X / Y' },
+      { key: 'diamond-pearl', label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'platinum', label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'heartgold-soulsilver', label: 'Brilliant Diamond / Shining Pearl (or DP/Pt/HGSS)' },
+      { key: 'black-white', label: 'Black / White' },
+      { key: 'black-2-white-2', label: 'Black 2 / White 2' },
+      { key: 'x-y', label: 'X / Y' },
       { key: 'omega-ruby-alpha-sapphire', label: 'Omega Ruby / Alpha Sapphire' },
-      { key: 'sun-moon',                  label: 'Sun / Moon' },
-      { key: 'ultra-sun-ultra-moon',      label: 'Ultra Sun / Ultra Moon' },
-      { key: 'sword-shield',              label: 'Sword / Shield' },
+      { key: 'sun-moon', label: 'Sun / Moon' },
+      { key: 'ultra-sun-ultra-moon', label: 'Ultra Sun / Ultra Moon' },
+      { key: 'sword-shield', label: 'Sword / Shield' },
       { key: 'brilliant-diamond-shining-pearl', label: 'Brilliant Diamond / Shining Pearl' },
-      { key: 'legends-arceus',            label: 'Legends: Arceus' },
-      { key: 'scarlet-violet',            label: 'Scarlet / Violet' },
+      { key: 'legends-arceus', label: 'Legends: Arceus' },
+      { key: 'scarlet-violet', label: 'Scarlet / Violet' },
     ];
 
     // Ribbons that have a deadline (not available in Sword/Shield or Scarlet/Violet)
@@ -850,35 +944,47 @@ export async function initRibbonTracker(appContainer) {
       }
     }
 
-    const grouped = RIBBONS.reduce((acc, ribbon) => {
-      if (!isEligible(pokemonState, ribbon) && !ribbon.isAutomated) return acc;
-      
-      // Skip the base automated ribbon in the normal loop, we'll inject it manually
-      if (ribbon.isAutomated) return acc;
+    const grouped = {};
 
-      let genLabel = `Generation ${ribbon.gen}`;
-      let gameLabel = ribbon.game;
+    RIBBONS.forEach(ribbon => {
+      if (!isEligible(pokemonState, ribbon) && !ribbon.isAutomated) return;
+      if (ribbon.isAutomated) return;
 
-      if (ribbon.isRecurring && ribbon.gen < pokemonState.gen) {
-        genLabel = 'Recurring Ribbons';
-        gameLabel = 'Recurring'; // Use a special label to flatten
-      } else if (ribbon.game === 'Colosseum / XD') {
-        genLabel = 'Generation 3';
-      } else if (ribbon.game === 'Marks') {
-        genLabel = 'Marks';
+      if (!ribbon.isRecurring) {
+        let genLabel = `Generation ${ribbon.gen}`;
+        let gameLabel = ribbon.game;
+
+        if (ribbon.game === 'Colosseum / XD') {
+          genLabel = 'Generation 3';
+        }
+
+        if (!grouped[genLabel]) grouped[genLabel] = {};
+        if (!grouped[genLabel][gameLabel]) grouped[genLabel][gameLabel] = [];
+        grouped[genLabel][gameLabel].push(ribbon);
+      } else {
+        const appearances = getRecurringRibbonAppearances(ribbon, pokemonState);
+        if (appearances.length === 0) return;
+
+        const isCollected = entry.collectedRibbons.includes(ribbon.id);
+        const earnedGen = entry.ribbonEarnedInGen?.[ribbon.id];
+        const matchedApp = appearances.find(app => app.gen === earnedGen) || appearances[0];
+
+        appearances.forEach(app => {
+          const genLabel = `Generation ${app.gen}`;
+          const gameLabel = app.game;
+          const isHidden = isCollected && app.gen !== matchedApp.gen;
+
+          if (!grouped[genLabel]) grouped[genLabel] = {};
+          if (!grouped[genLabel][gameLabel]) grouped[genLabel][gameLabel] = [];
+          grouped[genLabel][gameLabel].push({
+            ...ribbon,
+            gen: app.gen,
+            game: app.game,
+            isHidden
+          });
+        });
       }
-
-      if (!acc[genLabel]) {
-        acc[genLabel] = {};
-      }
-
-      if (!acc[genLabel][gameLabel]) {
-        acc[genLabel][gameLabel] = [];
-      }
-
-      acc[genLabel][gameLabel].push(ribbon);
-      return acc;
-    }, {});
+    });
 
     // Inject automated ribbons into their respective generations
     automatedRibbons.forEach(ar => {
@@ -923,10 +1029,10 @@ export async function initRibbonTracker(appContainer) {
       const supportsBulkToggle = isGenerationCategory || isMarksCategory || isRecurring;
       const ribbonsInCategory = Object.values(gamesObj).flat();
       const selectableStandardRibbonIds = ribbonsInCategory
-        .filter(ribbon => !ribbon.isAutomated && !ribbon.isOptionalExtra)
+        .filter(ribbon => !ribbon.isAutomated && !ribbon.isOptionalExtra && !ribbon.isHidden)
         .map(ribbon => ribbon.id);
       const selectableOptionalRibbonIds = ribbonsInCategory
-        .filter(ribbon => ribbon.isOptionalExtra)
+        .filter(ribbon => ribbon.isOptionalExtra && !ribbon.isHidden)
         .map(ribbon => ribbon.id);
       const totalSelectableInCategory = selectableStandardRibbonIds.length + selectableOptionalRibbonIds.length;
       const selectedStandardInCategory = selectableStandardRibbonIds.filter(id => entry.collectedRibbons.includes(id)).length;
@@ -947,8 +1053,9 @@ export async function initRibbonTracker(appContainer) {
       if (!isOptionalExtras) {
         Object.values(gamesObj).forEach(ribbons => {
           ribbons.forEach(r => {
+            if (r.isHidden) return;
             if (r.isAutomated) {
-              if (r.isEarned && !r.isHidden) {
+              if (r.isEarned) {
                 totalInGen++;
                 earnedInGen++;
               }
@@ -962,9 +1069,22 @@ export async function initRibbonTracker(appContainer) {
         });
       }
 
-      const isCompleted = isOptionalExtras
+      const isGen3 = genCategory === 'Generation 3';
+      const genNum = parseInt(genCategory.replace('Generation ', ''), 10);
+      const missableRibbons = ribbonsInCategory.filter(r => {
+        if (r.isAutomated || r.isOptionalExtra || r.isHidden) return false;
+        if (!r.isRecurring) return true;
+        const appearances = getRecurringRibbonAppearances(r, pokemonState);
+        return !appearances.some(app => app.gen > genNum);
+      });
+      const allMissableCollected = missableRibbons.length === 0 || missableRibbons.every(r => entry.collectedRibbons.includes(r.id));
+      const canMarkDone = isGenerationCategory && !isGen3 && allMissableCollected;
+
+      const isManualDone = canMarkDone && Array.isArray(entry.manualCompletedGens) && entry.manualCompletedGens.includes(genCategory);
+      const isNaturallyCompleted = isOptionalExtras
         ? (totalSelectableInCategory > 0 && allSelectableEarned)
         : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+      const isCompleted = isNaturallyCompleted || isManualDone;
 
       // Check previous collapse/open state from existing DOM details element if still on same entry
       const prevDetails = !isDifferentEntry && window.CSS && CSS.escape
@@ -997,17 +1117,20 @@ export async function initRibbonTracker(appContainer) {
               <span class="category-completed-check shrink-0 ${isCompleted && !isOptionalExtras ? '' : 'hidden'}"><i class="fas fa-check-circle text-green-500 text-[11px]" title="Section Completed"></i></span>
             </div>
             <div class="flex items-center gap-2 shrink-0">
+              <div class="category-manual-done-container shrink-0">
+                ${canMarkDone && !isNaturallyCompleted ? getManualDoneButtonHtml(idx, genCategory, isManualDone) : ''}
+              </div>
               ${supportsBulkToggle && totalSelectableInCategory > 0
-                ? `<button
+          ? `<button
                   data-bulk-category="${genCategory.replace(/"/g, '&quot;')}"
                   onclick="event.stopPropagation(); window.toggleCategoryRibbons(${idx}, '${genCategory.replace(/'/g, "\\'")}')"
                   class="category-bulk-btn inline-flex items-center px-2 py-0.5 h-[18px] leading-none text-[9px] font-black whitespace-nowrap rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors cursor-pointer"
                 >${allSelectableEarned ? 'Deselect All' : 'Select All'}</button>`
-                : ''}
+          : ''}
               ${isOptionalExtras
-                ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
-                : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
-                <span class="category-earned-count text-[9px] font-black ${earnedInGen === totalInGen ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
+          ? `<div class="text-[9px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">Not counted</div>`
+          : `<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700/50">
+                <span class="category-earned-count text-[9px] font-black ${isCompleted ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}">${earnedInGen}</span>
                 <span class="text-[9px] font-black text-gray-300 dark:text-gray-600">/</span>
                 <span class="category-total-count text-[9px] font-black text-gray-500 dark:text-gray-400">${totalInGen}</span>
               </div>`}
@@ -1018,41 +1141,58 @@ export async function initRibbonTracker(appContainer) {
             ${getGenerationWarningHtml(genCategory, entry, isCompleted)}
             ${isRecurring ? getRecurringRibbonsWarningHtml(entry, ribbonsInCategory, isCompleted) : ''}
             ${Object.entries(gamesObj).map(([gameCategory, eligibleRibbons]) => {
-        return `
+            const isSV = gameCategory === 'Scarlet / Violet';
+            const showMythicalRankedToggle = isSV && pokemonState.isMythical;
+            return `
+            ${showMythicalRankedToggle ? `
+              <div class="mb-3.5 p-3 rounded-xl bg-purple-50/80 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/40 text-left flex items-start gap-2.5">
+                <input 
+                  type="checkbox" 
+                  id="entry-mythical-ranked-checkbox-${idx}"
+                  ${pokemonState.allowMythicalRanked ? 'checked' : ''}
+                  onchange="window.toggleMythicalRanked(${idx}, this.checked)"
+                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 cursor-pointer shrink-0"
+                >
+                <label for="entry-mythical-ranked-checkbox-${idx}" class="cursor-pointer select-none text-xs text-gray-700 dark:text-gray-300">
+                  <span class="font-bold text-gray-900 dark:text-white">Allow Mythicals in Ranked Battles?</span>
+                  <p class="text-[10px] text-gray-500 dark:text-gray-400 leading-tight mt-0.5">Mythical Pok&eacute;mon are normally banned from Ranked Battles, but were permitted during a certain time period. Check this if you obtained the <strong>Master Rank Ribbon</strong> during that time period.</p>
+                </label>
+              </div>
+            ` : ''}
             <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-yellow-200 dark:border-yellow-800'}">
               ${isRecurring ? '' : `<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 break-words pr-1">${gameCategory}</h4>`}
               <div class="grid grid-cols-[repeat(auto-fit,minmax(2.25rem,2.25rem))] sm:grid-cols-[repeat(auto-fit,minmax(2.5rem,2.5rem))] justify-start gap-2 sm:gap-3 pb-2 min-w-0 max-w-full overflow-x-hidden">
                 ${eligibleRibbons.map(ribbon => {
-          const isEarned = ribbon.isOptionalExtra
-            ? entry.optionalRibbons.includes(ribbon.id)
-            : ribbon.isAutomated
-              ? ribbon.isEarned
-              : entry.collectedRibbons.includes(ribbon.id);
-          const isMemoryRibbon = ribbon.id === 'gen6_contest_memory' || ribbon.id === 'gen6_battle_memory';
-          const iconClass = isMemoryRibbon && ribbon.isGold ? 'fa-award text-yellow-500 animate-pulse' : 'fa-ribbon';
-          const ribbonImageUrl = ribbon.isOptionalExtra ? ribbonImageMap[ribbon.imageKey] : getRibbonImageUrl(ribbon);
-          return `
+              const isEarned = ribbon.isOptionalExtra
+                ? entry.optionalRibbons.includes(ribbon.id)
+                : ribbon.isAutomated
+                  ? ribbon.isEarned
+                  : entry.collectedRibbons.includes(ribbon.id);
+              const isMemoryRibbon = ribbon.id === 'gen6_contest_memory' || ribbon.id === 'gen6_battle_memory';
+              const iconClass = isMemoryRibbon && ribbon.isGold ? 'fa-award text-yellow-500 animate-pulse' : 'fa-ribbon';
+              const ribbonImageUrl = ribbon.isOptionalExtra ? ribbonImageMap[ribbon.imageKey] : getRibbonImageUrl(ribbon);
+              return `
                     <div 
                       data-ribbon-id="${ribbon.id}"
                       data-category="${genCategory.replace(/"/g, '&quot;')}"
                       ${ribbon.isAutomated ? 'data-automated="true"' : ''}
                       ${ribbon.isOptionalExtra ? 'data-optional="true"' : ''}
-                      ${ribbon.isAutomated ? '' : ribbon.isOptionalExtra ? `onclick="window.toggleOptionalRibbon(${idx}, '${ribbon.id}')"` : `onclick="window.toggleRibbon(${idx}, '${ribbon.id}')"`}
+                      ${ribbon.isAutomated ? '' : ribbon.isOptionalExtra ? `onclick="window.toggleOptionalRibbon(${idx}, '${ribbon.id}')"` : `onclick="window.toggleRibbon(${idx}, '${ribbon.id}', '${genCategory.replace(/'/g, "\\'")}')"`}
                       ontouchstart="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}', true)"
                       onmouseenter="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}')"
                       onmouseleave="window.hideRibbonTooltip()"
                       class="ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'} ${ribbon.isHidden ? 'hidden' : ''}"
                     >
                       ${ribbonImageUrl
-              ? `<img src="${ribbonImageUrl}" alt="${ribbon.name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain ${isEarned ? '' : 'grayscale'}">`
-              : `<i class="fas ${iconClass} ${isEarned ? 'text-[#ef4444] dark:text-red-300 drop-shadow-sm' : 'text-gray-400 dark:text-gray-500'}"></i>`}
+                  ? `<img src="${ribbonImageUrl}" alt="${ribbon.name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain ${isEarned ? '' : 'grayscale'}">`
+                  : `<i class="fas ${iconClass} ${isEarned ? 'text-[#ef4444] dark:text-red-300 drop-shadow-sm' : 'text-gray-400 dark:text-gray-500'}"></i>`}
                     </div>
                   `;
-        }).join('')}
+            }).join('')}
               </div>
             </div>
             `;
-      }).join('')}
+          }).join('')}
           </div>
         </details>
       `;
@@ -1106,21 +1246,34 @@ export async function initRibbonTracker(appContainer) {
     }
   };
 
-  const updateCategoryHeaderState = (entryIdx, genCategory) => {
-    const gridContainer = document.getElementById('ribbon-grid-container');
-    if (!gridContainer) return;
-    const categoryEl = gridContainer.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
-    if (!categoryEl) return;
+  const getManualDoneButtonHtml = (entryIdx, genCategory, isManualDone) => `
+    <button
+      onclick="event.stopPropagation(); window.toggleManualCategoryComplete(${entryIdx}, '${genCategory.replace(/'/g, "\\'")}')"
+      class="category-manual-done-btn inline-flex items-center gap-1 px-2 py-0.5 h-[18px] leading-none text-[9px] font-black whitespace-nowrap rounded-full ${isManualDone ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-900/70' : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:bg-gray-700'} transition-colors cursor-pointer"
+      title="${isManualDone ? 'Click to unmark manual completion' : 'Manually mark this generation as completed (all generation-exclusive ribbons collected)'}"
+    >
+      <i class="fas ${isManualDone ? 'fa-check-circle text-emerald-500' : 'fa-check'} text-[8px]"></i>
+      ${isManualDone ? 'Done' : 'Mark Done'}
+    </button>
+  `;
 
+  const getCategoryCompletionState = (entryIdx, genCategory) => {
     const entry = entries[entryIdx];
-    if (!entry) return;
+    if (!entry) return null;
+    const pokemonState = getPokemonStateFromEntry(entry);
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const categoryEl = gridContainer?.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
+    if (!categoryEl) return null;
 
     const isOptionalExtras = genCategory === 'Optional Extras';
+    const isGenerationCategory = genCategory.startsWith('Generation ');
+    const isGen3 = genCategory === 'Generation 3';
+    const genNum = isGenerationCategory ? parseInt(genCategory.replace('Generation ', ''), 10) : null;
+
     const bulkData = categoryBulkSelectionByEntry?.[entryIdx]?.[genCategory];
     const standardIds = bulkData?.standardRibbonIds || [];
     const optionalIds = bulkData?.optionalRibbonIds || [];
     const totalSelectable = standardIds.length + optionalIds.length;
-
     const earnedStandard = standardIds.filter(id => entry.collectedRibbons.includes(id)).length;
     const earnedOptional = optionalIds.filter(id => (entry.optionalRibbons || []).includes(id)).length;
     const allSelectableEarned = totalSelectable > 0 && (earnedStandard + earnedOptional) === totalSelectable;
@@ -1128,6 +1281,8 @@ export async function initRibbonTracker(appContainer) {
     const ribbonItems = categoryEl.querySelectorAll('.ribbon-card-item');
     let totalInGen = 0;
     let earnedInGen = 0;
+    const uncollectedMissableIds = [];
+
     ribbonItems.forEach(item => {
       const id = item.dataset.ribbonId;
       const isAutomated = item.dataset.automated === 'true';
@@ -1138,17 +1293,58 @@ export async function initRibbonTracker(appContainer) {
 
       if (!isOpt) {
         totalInGen++;
+        const isCollected = entry.collectedRibbons.includes(id);
         if (isAutomated) {
           earnedInGen++;
-        } else if (entry.collectedRibbons.includes(id)) {
+        } else if (isCollected) {
           earnedInGen++;
+        }
+
+        if (!isAutomated && isGenerationCategory) {
+          const r = RIBBONS.find(rb => rb.id === id);
+          if (r) {
+            let isMissable = true;
+            if (r.isRecurring) {
+              const appearances = getRecurringRibbonAppearances(r, pokemonState);
+              isMissable = !appearances.some(app => app.gen > genNum);
+            }
+            if (isMissable && !isCollected) {
+              uncollectedMissableIds.push(id);
+            }
+          }
         }
       }
     });
 
-    const isCompleted = isOptionalExtras
+    const isNaturallyCompleted = isOptionalExtras
       ? (totalSelectable > 0 && allSelectableEarned)
       : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+
+    const allMissableCollected = isGenerationCategory && uncollectedMissableIds.length === 0;
+    const canMarkDone = isGenerationCategory && !isGen3 && allMissableCollected;
+    const isManualDone = canMarkDone && Array.isArray(entry.manualCompletedGens) && entry.manualCompletedGens.includes(genCategory);
+    const isCompleted = isNaturallyCompleted || isManualDone;
+
+    return {
+      categoryEl,
+      isOptionalExtras,
+      isGenerationCategory,
+      totalInGen,
+      earnedInGen,
+      totalSelectable,
+      allSelectableEarned,
+      isNaturallyCompleted,
+      canMarkDone,
+      isManualDone,
+      isCompleted
+    };
+  };
+
+  const updateCategoryHeaderState = (entryIdx, genCategory) => {
+    const state = getCategoryCompletionState(entryIdx, genCategory);
+    if (!state) return;
+    const { categoryEl, isOptionalExtras, totalInGen, earnedInGen, allSelectableEarned, isCompleted, canMarkDone, isNaturallyCompleted, isManualDone } = state;
+    const entry = entries[entryIdx];
 
     const wasCompleted = categoryEl.dataset.completed === 'true';
     categoryEl.dataset.completed = isCompleted ? 'true' : 'false';
@@ -1181,6 +1377,15 @@ export async function initRibbonTracker(appContainer) {
         checkEl.classList.remove('hidden');
       } else {
         checkEl.classList.add('hidden');
+      }
+    }
+
+    const manualDoneContainer = categoryEl.querySelector('.category-manual-done-container');
+    if (manualDoneContainer) {
+      if (canMarkDone && !isNaturallyCompleted) {
+        manualDoneContainer.innerHTML = getManualDoneButtonHtml(entryIdx, genCategory, isManualDone);
+      } else {
+        manualDoneContainer.innerHTML = '';
       }
     }
 
@@ -1339,32 +1544,77 @@ export async function initRibbonTracker(appContainer) {
     }, 220);
   };
 
-  window.toggleRibbon = (entryIdx, ribbonId) => {
+  window.toggleRibbon = (entryIdx, ribbonId, genCategoryOrNum) => {
     window.hideRibbonTooltip();
     const entry = entries[entryIdx];
     if (!entry) return;
 
+    if (!Array.isArray(entry.collectedRibbons)) {
+      entry.collectedRibbons = [];
+    }
+    if (!entry.ribbonEarnedInGen || typeof entry.ribbonEarnedInGen !== 'object') {
+      entry.ribbonEarnedInGen = {};
+    }
+
     const rbIdx = entry.collectedRibbons.indexOf(ribbonId);
     const isNowEarned = rbIdx === -1;
+    let earnedGen = null;
     if (isNowEarned) {
       entry.collectedRibbons.push(ribbonId);
+      if (genCategoryOrNum) {
+        earnedGen = typeof genCategoryOrNum === 'number'
+          ? genCategoryOrNum
+          : parseInt(String(genCategoryOrNum).replace(/\D/g, ''), 10);
+        if (earnedGen) {
+          entry.ribbonEarnedInGen[ribbonId] = earnedGen;
+        }
+      }
     } else {
       entry.collectedRibbons.splice(rbIdx, 1);
+      delete entry.ribbonEarnedInGen[ribbonId];
     }
     saveEntries(entry.id);
 
+    // Targeted update — find all instances of this ribbon in DOM
     const gridContainer = document.getElementById('ribbon-grid-container');
-    const ribbonEl = gridContainer?.querySelector(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`);
-    if (ribbonEl) {
-      updateSingleRibbonElement(ribbonEl, isNowEarned);
-      const category = ribbonEl.dataset.category;
-      if (category) {
-        updateCategoryHeaderState(entryIdx, category);
-      }
-    }
+    const ribbonCards = gridContainer ? gridContainer.querySelectorAll(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`) : [];
+    const touchedCategories = new Set();
 
+    ribbonCards.forEach(card => {
+      const cardCat = card.dataset.category;
+      if (cardCat) touchedCategories.add(cardCat);
+
+      const isSameCategory = genCategoryOrNum && (
+        cardCat === genCategoryOrNum ||
+        (typeof genCategoryOrNum === 'number' && cardCat === `Generation ${genCategoryOrNum}`)
+      );
+
+      if (isNowEarned) {
+        if (isSameCategory || ribbonCards.length === 1) {
+          updateSingleRibbonElement(card, true);
+          card.classList.remove('hidden');
+        } else {
+          updateSingleRibbonElement(card, false);
+          card.classList.add('hidden');
+        }
+      } else {
+        updateSingleRibbonElement(card, false);
+        card.classList.remove('hidden');
+      }
+    });
+
+    const primaryCat = typeof genCategoryOrNum === 'string' && genCategoryOrNum.startsWith('Generation ')
+      ? genCategoryOrNum
+      : (typeof genCategoryOrNum === 'string' && (genCategoryOrNum === 'Marks' || genCategoryOrNum === 'Optional Extras' || genCategoryOrNum === 'Recurring Ribbons')
+        ? genCategoryOrNum
+        : (genCategoryOrNum ? `Generation ${typeof genCategoryOrNum === 'number' ? genCategoryOrNum : parseInt(String(genCategoryOrNum).replace(/\D/g, ''), 10)}` : null));
+    if (primaryCat) touchedCategories.add(primaryCat);
+
+    touchedCategories.forEach(cat => updateCategoryHeaderState(entryIdx, cat));
+
+    // Update memory ribbons ONLY if a Gen 3/4 contest or battle ribbon changed
     const r = RIBBONS.find(rb => rb.id === ribbonId);
-    if ((r && (r.gen === 3 || r.gen === 4) && r.name.includes('Contest')) || isGen34BattleRibbon(ribbonId)) {
+    if (r && (((r.gen === 3 || r.gen === 4) && r.name.includes('Contest')) || isGen34BattleRibbon(r))) {
       updateAutomatedGen6Ribbons(entryIdx);
     }
 
@@ -1382,8 +1632,14 @@ export async function initRibbonTracker(appContainer) {
     const standardRibbonIds = Array.isArray(selection.standardRibbonIds) ? selection.standardRibbonIds : [];
     const optionalRibbonIds = Array.isArray(selection.optionalRibbonIds) ? selection.optionalRibbonIds : [];
 
+    if (!Array.isArray(entry.collectedRibbons)) {
+      entry.collectedRibbons = [];
+    }
     if (!Array.isArray(entry.optionalRibbons)) {
       entry.optionalRibbons = [];
+    }
+    if (!entry.ribbonEarnedInGen || typeof entry.ribbonEarnedInGen !== 'object') {
+      entry.ribbonEarnedInGen = {};
     }
 
     const hasAllStandard = standardRibbonIds.every(id => entry.collectedRibbons.includes(id));
@@ -1392,25 +1648,16 @@ export async function initRibbonTracker(appContainer) {
       && hasAllStandard
       && hasAllOptional;
 
-    const gridContainer = document.getElementById('ribbon-grid-container');
-    const categoryEl = gridContainer?.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
+    const genNum = parseInt(String(genCategory).replace(/\D/g, ''), 10);
 
     if (hasAllSelected) {
       const standardRibbonIdSet = new Set(standardRibbonIds);
       const optionalRibbonIdSet = new Set(optionalRibbonIds);
       entry.collectedRibbons = entry.collectedRibbons.filter(id => !standardRibbonIdSet.has(id));
       entry.optionalRibbons = entry.optionalRibbons.filter(id => !optionalRibbonIdSet.has(id));
-
-      if (categoryEl) {
-        standardRibbonIds.forEach(id => {
-          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
-          if (el) updateSingleRibbonElement(el, false);
-        });
-        optionalRibbonIds.forEach(id => {
-          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
-          if (el) updateSingleRibbonElement(el, false);
-        });
-      }
+      standardRibbonIds.forEach(id => {
+        delete entry.ribbonEarnedInGen[id];
+      });
     } else {
       const collectedRibbonSet = new Set(entry.collectedRibbons);
       const optionalRibbonSet = new Set(entry.optionalRibbons);
@@ -1420,9 +1667,8 @@ export async function initRibbonTracker(appContainer) {
           entry.collectedRibbons.push(id);
           collectedRibbonSet.add(id);
         }
-        if (categoryEl) {
-          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
-          if (el) updateSingleRibbonElement(el, true);
+        if (genNum) {
+          entry.ribbonEarnedInGen[id] = genNum;
         }
       });
 
@@ -1431,20 +1677,44 @@ export async function initRibbonTracker(appContainer) {
           entry.optionalRibbons.push(id);
           optionalRibbonSet.add(id);
         }
-        if (categoryEl) {
-          const el = categoryEl.querySelector(`[data-ribbon-id="${CSS.escape(id)}"]`);
-          if (el) updateSingleRibbonElement(el, true);
-        }
       });
     }
 
     saveEntries(entry.id);
-    updateCategoryHeaderState(entryIdx, genCategory);
+
+    // Targeted update for bulk toggle — update each affected ribbon element across all appearances
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const touchedCategories = new Set([genCategory]);
+
+    [...standardRibbonIds, ...optionalRibbonIds].forEach(id => {
+      const cards = gridContainer ? gridContainer.querySelectorAll(`[data-ribbon-id="${CSS.escape(id)}"]`) : [];
+      const isOpt = cards[0]?.dataset.optional === 'true';
+      const isNowEarned = isOpt ? entry.optionalRibbons.includes(id) : entry.collectedRibbons.includes(id);
+
+      cards.forEach(card => {
+        const cardCat = card.dataset.category;
+        if (cardCat) touchedCategories.add(cardCat);
+
+        if (isNowEarned) {
+          if (cardCat === genCategory || cards.length === 1) {
+            updateSingleRibbonElement(card, true);
+            card.classList.remove('hidden');
+          } else {
+            updateSingleRibbonElement(card, false);
+            card.classList.add('hidden');
+          }
+        } else {
+          updateSingleRibbonElement(card, false);
+          card.classList.remove('hidden');
+        }
+      });
+    });
+
+    touchedCategories.forEach(cat => updateCategoryHeaderState(entryIdx, cat));
 
     if (genCategory === 'Generation 3' || genCategory === 'Generation 4') {
       updateAutomatedGen6Ribbons(entryIdx);
     }
-
     updateBackgroundCardProgress(entryIdx);
   };
 
@@ -1463,24 +1733,63 @@ export async function initRibbonTracker(appContainer) {
     } else {
       entry.optionalRibbons.splice(ribbonIndex, 1);
     }
-
     saveEntries(entry.id);
 
+    // Targeted update — no full re-render
     const gridContainer = document.getElementById('ribbon-grid-container');
-    const ribbonEl = gridContainer?.querySelector(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`);
-    if (ribbonEl) {
-      updateSingleRibbonElement(ribbonEl, isNowEarned);
-      const category = ribbonEl.dataset.category || 'Optional Extras';
-      updateCategoryHeaderState(entryIdx, category);
+    const ribbonCards = gridContainer ? gridContainer.querySelectorAll(`[data-ribbon-id="${CSS.escape(ribbonId)}"]`) : [];
+    ribbonCards.forEach(card => {
+      updateSingleRibbonElement(card, isNowEarned);
+      const cat = card.dataset.category;
+      if (cat) updateCategoryHeaderState(entryIdx, cat);
+    });
+  };
+
+  window.toggleManualCategoryComplete = (entryIdx, genCategory) => {
+    window.hideRibbonTooltip();
+    const entry = entries[entryIdx];
+    if (!entry) return;
+
+    if (!Array.isArray(entry.manualCompletedGens)) {
+      entry.manualCompletedGens = [];
     }
 
-    updateBackgroundCardProgress(entryIdx);
+    const idxInArray = entry.manualCompletedGens.indexOf(genCategory);
+    const gridContainer = document.getElementById('ribbon-grid-container');
+    const detailsEl = gridContainer?.querySelector(`details[data-category="${CSS.escape(genCategory)}"]`);
+
+    if (idxInArray > -1) {
+      entry.manualCompletedGens.splice(idxInArray, 1);
+      if (detailsEl) {
+        detailsEl.dataset.completed = 'false';
+        detailsEl.open = true;
+      }
+    } else {
+      entry.manualCompletedGens.push(genCategory);
+      if (detailsEl) {
+        detailsEl.dataset.completed = 'true';
+        detailsEl.open = false;
+      }
+    }
+
+    saveEntries(entry.id);
+    updateCategoryHeaderState(entryIdx, genCategory);
   };
 
   window.toggleEntryShiny = (idx) => {
     entries[idx].isShiny = !entries[idx].isShiny;
     saveEntries(entries[idx].id);
     window.openRibbonDetail(idx);
+    renderEntriesList();
+  };
+
+  window.toggleMythicalRanked = (entryIdx, isAllowed) => {
+    const entry = entries[entryIdx];
+    if (!entry) return;
+
+    entry.allowMythicalRanked = Boolean(isAllowed);
+    saveEntries(entry.id);
+    openRibbonDetail(entryIdx);
     renderEntriesList();
   };
 
@@ -1501,7 +1810,7 @@ export async function initRibbonTracker(appContainer) {
     const entry = entries[idx];
     const nameContainer = document.getElementById('detail-name-container');
     const pokemonList = await getPokemonListUpToGeneration(9);
-    
+
     // Save current original content to restore on cancel/blur
     const originalContent = nameContainer.innerHTML;
 
@@ -1595,18 +1904,19 @@ export async function initRibbonTracker(appContainer) {
       entry.speciesName = tempSelectedSpecies.displayName;
       entry.isMythical = isKnownMythicalPokemonId(entry.speciesId);
       entry.isLegendary = isKnownLegendaryPokemonId(entry.speciesId);
-      
+
       // If nickname was the old species name, update it to the new one
       if (entry.nickname === oldSpeciesName) {
         entry.nickname = entry.speciesName;
       }
-      
+
       // Re-fetch availability for the new species
       const [availability, speciesFlags] = await Promise.all([
         getPokemonGameAvailability(entry.speciesId),
         getPokemonSpeciesFlags(entry.speciesId)
       ]);
-      entry.availableGames = [...availability]; // Convert Set to Array for serialization
+      // Ensure origin game's version groups are always included, regardless of PokeAPI data
+      entry.availableGames = [...mergeAvailableGames(availability, entry.originGameId)];
       entry.isMythical = speciesFlags.isMythical;
       entry.isLegendary = speciesFlags.isLegendary;
 
@@ -1734,9 +2044,10 @@ export async function initRibbonTracker(appContainer) {
         originGen: ORIGIN_GAMES.find(g => g.id === selectedOriginId)?.gen || 1,
         isMythical: speciesFlags.isMythical,
         isLegendary: speciesFlags.isLegendary,
+        allowMythicalRanked: false,
         collectedRibbons: [],
         optionalRibbons: [],
-        availableGames: [...availableGames], // Store as array for localStorage
+        availableGames: [...mergeAvailableGames(availableGames, selectedOriginId)], // Always include origin game
         lastUpdated: new Date().toISOString()
       };
 
