@@ -314,6 +314,19 @@ export async function initEncounterCalc(appContainer) {
       return;
     }
 
+    const isHgss = ['heartgold', 'soulsilver'].includes(selectedVersion);
+    const usesDpptFilter = ['diamond', 'pearl', 'platinum', 'black', 'white', 'black-2', 'white-2', 'x', 'y'].includes(selectedVersion);
+
+    if (isHgss) {
+      hgssFilterWrapper.classList.remove('hidden');
+      void hgssFilterWrapper.offsetWidth;
+      hgssFilterWrapper.classList.remove('opacity-0');
+    } else if (usesDpptFilter) {
+      dpptFilterWrapper.classList.remove('hidden');
+      void dpptFilterWrapper.offsetWidth;
+      dpptFilterWrapper.classList.remove('opacity-0');
+    }
+
     locationWrapper.classList.remove('hidden');
     void locationWrapper.offsetWidth;
     locationWrapper.classList.remove('opacity-0');
