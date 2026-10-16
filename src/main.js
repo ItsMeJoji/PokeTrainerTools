@@ -10,6 +10,7 @@ import { initPokemonLookup } from './features/pokemon-lookup.js'
 import { initSosMoveTracker } from './features/sos-move-tracker.js'
 import { initMmoPermutations } from './features/mmo-permutations.js'
 import { initRibbonTracker } from './features/ribbon-tracker.js'
+import { initRibbonPopout } from './features/ribbon-popout.js'
 import { initShinyBingo } from './features/shiny-bingo.js'
 import { initOtherCreatorsTools } from './features/other-creators-tools.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
@@ -254,6 +255,17 @@ const renderPage = () => {
   const path = normalizeRoutePath(window.location.pathname);
   const app = document.querySelector('#app');
   const isRibbonTrackerPage = path === '/ribbon-tracker';
+  const isPopoutPage = path === '/ribbon-popout';
+  const navbar = document.querySelector('#navbar');
+  if (isPopoutPage) {
+    if (navbar) navbar.classList.add('hidden');
+    app.className = 'w-full h-screen p-0 m-0 overflow-hidden';
+    app.innerHTML = '<div id="ribbon-popout-container" class="w-full h-full"></div>';
+    initRibbonPopout(document.querySelector('#ribbon-popout-container'));
+    return;
+  }
+  if (navbar) navbar.classList.remove('hidden');
+  app.className = '';
 
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 

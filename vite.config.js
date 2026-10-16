@@ -15,6 +15,7 @@ const spaRoutes = [
     '/sos-tracker',
     '/mmo-permutations',
     '/ribbon-tracker',
+    '/ribbon-popout',
     '/shiny-bingo',
     '/info/shiny-hunting',
     '/info/sos-hunting',
@@ -61,6 +62,11 @@ const routeSeo = {
         title: 'Ribbon Tracker | PokeTrainer Tools',
         description: 'Track ribbons and marks for your Pokemon across games and generations.',
         heading: 'Ribbon Tracker',
+    },
+    '/ribbon-popout': {
+        title: 'Ribbon Tracker Popout | PokeTrainer Tools',
+        description: 'Mini pop-out stream overlay and tracker for Pokemon ribbons and marks.',
+        heading: 'Ribbon Tracker Popout',
     },
     '/shiny-bingo': {
         title: 'Shiny Bingo Generator | PokeTrainer Tools',

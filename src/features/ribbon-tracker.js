@@ -4,6 +4,7 @@ import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, g
 import { initGoogleAuth, signIn, signOut, isSignedIn, signInRedirect } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
 import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
+import { calculateEntryGenerations, getCurrentGenerationForEntry } from '../utils/ribbon-progress.js';
 
 const ribbonImageModules = import.meta.glob('../assets/images/ribbons-and-marks/*.png', { eager: true, import: 'default' });
 const ribbonImageMap = Object.fromEntries(
@@ -399,6 +400,13 @@ export async function initRibbonTracker(appContainer) {
     }
 
     localStorage.setItem('ribbon_entries', JSON.stringify(entries));
+    try {
+      const syncChan = new BroadcastChannel('ribbon_tracker_sync');
+      syncChan.postMessage({ type: 'ENTRIES_UPDATED', entryId: updatedEntryId });
+      syncChan.close();
+    } catch {
+      // BroadcastChannel fallback
+    }
 
     if (isSignedIn()) {
       updateSyncStatus('syncing');
@@ -886,6 +894,16 @@ export async function initRibbonTracker(appContainer) {
                 >
               </div>
             </div>
+            <button
+              id="detail-popout-btn"
+              type="button"
+              onclick="window.openRibbonPopout('${entry.id}')"
+              class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-red-50 dark:bg-red-950/30 hover:bg-[#ef4444] text-[#ef4444] hover:text-white dark:text-red-400 dark:hover:text-white border border-red-200 dark:border-red-900/40 shadow-sm transition-all cursor-pointer shrink-0 group active:scale-95"
+              title="Open Pop-out Window (Sprite & Ribbon Count for OBS / desktop)"
+              aria-label="Open Pop-out Window"
+            >
+              <i class="fas fa-external-link-alt text-xs group-hover:scale-110 transition-transform"></i>
+            </button>
             
           </div>
           
@@ -1778,6 +1796,30 @@ export async function initRibbonTracker(appContainer) {
     updateCategoryHeaderState(entryIdx, genCategory);
   };
 
+  window.openRibbonPopout = (entryId) => {
+    const width = 450;
+    const height = 350;
+    const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
+    const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
+    const url = `/ribbon-popout?id=${encodeURIComponent(entryId)}`;
+    const win = window.open(
+      url,
+      `ribbon_popout_${entryId}`,
+      `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=no`
+    );
+    if (win) {
+      win.focus();
+    }
+  };
+
+  window.updateEntryCurrentGen = (idx, value) => {
+    const entry = entries[idx];
+    if (!entry) return;
+    entry.currentGen = value === 'auto' ? null : parseInt(value, 10);
+    saveEntries(entry.id);
+    window.openRibbonDetail(idx);
+  };
+
   window.toggleEntryShiny = (idx) => {
     entries[idx].isShiny = !entries[idx].isShiny;
     saveEntries(entries[idx].id);
@@ -2047,6 +2089,7 @@ export async function initRibbonTracker(appContainer) {
         isMythical: speciesFlags.isMythical,
         isLegendary: speciesFlags.isLegendary,
         allowMythicalRanked: false,
+        currentGen: null,
         collectedRibbons: [],
         optionalRibbons: [],
         availableGames: [...mergeAvailableGames(availableGames, selectedOriginId)], // Always include origin game
