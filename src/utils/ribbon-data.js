@@ -95,7 +95,7 @@ export const RIBBONS = [
   { id: 'gen4_double_ability', name: 'Double Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: '50 streak in Battle Tower Double Challenge.', gen: 4 },
   { id: 'gen4_multi_ability', name: 'Multi Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: '50 streak in Battle Tower Multi Challenge.', gen: 4 },
   { id: 'gen4_pair_ability', name: 'Pair Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: '50 streak in Battle Tower Link Multi Challenge.', gen: 4 },
-  { id: 'gen4_world_ability', name: 'World Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Reach Rank 5 in Wi-Fi Battle Tower.', gen: 4 },
+  { id: 'gen4_world_ability', name: 'World Ability Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Reach Rank 5 in Wi-Fi Battle Tower. (Optional for Ribbon Master status.)', gen: 4, isCommunityOptional: true },
   { id: 'gen4_footprint', name: 'Footprint Ribbon', game: RIBBON_GAMES.DP_PT, description: 'High friendship.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'heartgold-soulsilver', 'x-y', 'omega-ruby-alpha-sapphire', 'sun-moon', 'ultra-sun-ultra-moon', 'brilliant-diamond-shining-pearl'] },
   { id: 'gen4_gorgeous', name: 'Gorgeous Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 10,000 Poké Dollars.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
   { id: 'gen4_royal', name: 'Royal Ribbon', game: RIBBON_GAMES.DP_PT, description: 'Purchased at the Ribbon Syndicate for 100,000 Poké Dollars.', gen: 4, isRecurring: true, versionGroups: ['diamond-pearl', 'platinum', 'omega-ruby-alpha-sapphire', 'brilliant-diamond-shining-pearl'] },
@@ -164,6 +164,11 @@ export const GEN3_4_BATTLE_RIBBON_IDS = new Set([
 
 export function isGen34BattleRibbon(ribbon) {
   return GEN3_4_BATTLE_RIBBON_IDS.has(ribbon.id);
+}
+
+export function isCommunityOptionalRibbon(ribbonOrId) {
+  const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+  return id === 'gen4_world_ability';
 }
 
 export const RECURRING_RIBBON_APPEARANCES = {

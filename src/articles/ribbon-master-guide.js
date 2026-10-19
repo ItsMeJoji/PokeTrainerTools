@@ -109,7 +109,7 @@ export function initRibbonMasterGuide(container) {
             <div class="relative pl-8 border-l-2 brand-timeline">
               <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full brand-marker-yellow border-4 border-white dark:border-gray-800"></div>
               <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Generation 3 & 4: The Tower & Contest Era</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">This is usually the longest phase. You need 20 contests in Hoenn and 20 Super Contests in Sinnoh. You will also need to complete the Battle Towers in each of these Generations, consisting of 2 Ribons in Generation 3 and 6 Ribbons in Generation 4. In Gen 6, these consolidate into the <span class="font-bold italic">Contest Memory Ribbon</span> and <span class="font-bold italic">Battle Memory Ribbon</span>.</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">This is usually the longest phase. You need 20 contests in Hoenn and 20 Super Contests in Sinnoh. You will also need to complete the Battle Towers in each of these Generations, consisting of 2 Ribbons in Generation 3 and up to 6 Ribbons in Generation 4 (note that the World Ability Ribbon is optional according to the Ribbon Master community due to Nintendo WFC being shut down). In Gen 6, these consolidate into the <span class="font-bold italic">Contest Memory Ribbon</span> and <span class="font-bold italic">Battle Memory Ribbon</span>.</p>
             </div>
 
             <div class="relative pl-8 border-l-2 brand-timeline">

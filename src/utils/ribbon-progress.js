@@ -1,4 +1,4 @@
-import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, getRecurringRibbonAppearances } from './ribbon-data.js';
+import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, getRecurringRibbonAppearances, isCommunityOptionalRibbon } from './ribbon-data.js';
 import { isKnownMythicalPokemonId, isKnownLegendaryPokemonId } from './pokemon-data.js';
 
 // Maps originGameId to the PokeAPI version-group slug(s) for that game.
@@ -182,7 +182,7 @@ export function calculateEntryGenerations(entry) {
     const isGen3 = genCategory === 'Generation 3';
     const genNum = parseInt(genCategory.replace('Generation ', ''), 10);
     const missableRibbons = ribbonsInCategory.filter(r => {
-      if (r.isAutomated || r.isOptionalExtra || r.isHidden) return false;
+      if (r.isAutomated || r.isOptionalExtra || r.isHidden || r.isCommunityOptional || isCommunityOptionalRibbon(r)) return false;
       if (!r.isRecurring) return true;
       const appearances = getRecurringRibbonAppearances(r, pokemonState);
       return !appearances.some(app => app.gen > genNum);

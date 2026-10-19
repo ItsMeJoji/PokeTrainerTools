@@ -1,6 +1,6 @@
 import { getPokemonListUpToGeneration, getPokemonGameAvailability, getPokemonSpeciesFlags, isKnownMythicalPokemonId, isKnownLegendaryPokemonId } from '../utils/pokemon-data.js';
 import { setupSearchableDropdown, updateDropdownLoading, getSearchableDropdownHtml } from '../utils/ui-utils.js';
-import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, getRecurringRibbonAppearances } from '../utils/ribbon-data.js';
+import { RIBBONS, ORIGIN_GAMES, isEligible, RIBBON_GAMES, isGen34BattleRibbon, getRecurringRibbonAppearances, isCommunityOptionalRibbon } from '../utils/ribbon-data.js';
 import { initGoogleAuth, signIn, signOut, isSignedIn, signInRedirect } from '../auth/google-auth.js';
 import { SyncManager } from '../auth/sync-manager.js';
 import { RIBBON_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
@@ -674,6 +674,7 @@ export async function initRibbonTracker(appContainer) {
     const hasWinningRibbon = isGen3 && entry.collectedRibbons.includes('gen3_winning');
     const isGen4 = genCategory === 'Generation 4';
     const hasFootprintRibbon = entry.collectedRibbons.includes('gen4_footprint');
+    const hasWorldAbilityRibbon = entry.collectedRibbons.includes('gen4_world_ability');
 
     if (isCompleted) {
       return `
@@ -692,7 +693,10 @@ export async function initRibbonTracker(appContainer) {
       return r.gen === genNum;
     });
 
+    const isEligibleForWorldAbility = isGen4 && eligibleInGen.some(r => r.id === 'gen4_world_ability');
+
     const missableRibbons = eligibleInGen.filter(r => {
+      if (r.isCommunityOptional || isCommunityOptionalRibbon(r)) return false;
       if (!r.isRecurring) return true;
       const appearances = getRecurringRibbonAppearances(r, pokemonState);
       return !appearances.some(app => app.gen > genNum);
@@ -717,6 +721,16 @@ export async function initRibbonTracker(appContainer) {
             : `<strong>Footprint Ribbon Warning:</strong> It is easiest to get the <strong>Footprint Ribbon</strong> in Gen 4 with Max Friendship. In later generations, most Pokémon must gain <strong>30 levels</strong> from their met level to receive it, making any Pokémon transferred above <strong>Lv. 70</strong> unable to obtain it!`}
               </div>
             </div>
+            ${isEligibleForWorldAbility ? `
+              <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasWorldAbilityRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-blue-700 dark:text-blue-300'}">
+                <i class="fas ${hasWorldAbilityRibbon ? 'fa-check-circle text-emerald-500' : 'fa-info-circle text-blue-500 dark:text-blue-400'} shrink-0 mt-0.5"></i>
+                <div>
+                  ${hasWorldAbilityRibbon
+              ? `<strong>World Ability Ribbon Collected!`
+              : `<strong>World Ability Ribbon Notice:</strong> The World Ability Ribbon (Wi-Fi Battle Tower) is not required for Ribbon Master status. You can safely transfer forward without it.`}
+                </div>
+              </div>
+            ` : ''}
           ` : ''}
         </div>
       `;
@@ -727,7 +741,7 @@ export async function initRibbonTracker(appContainer) {
         <div class="flex items-start gap-2">
           <i class="fas fa-exclamation-triangle text-amber-500 dark:text-amber-400 shrink-0 mt-0.5"></i>
           <div>
-            <strong>Transfer Warning:</strong> Do not transfer this Pokémon to the next generation until all ribbons in this section are collected. Inter-generation transfers are permanent and one-way!
+            <strong>Transfer Warning:</strong> Do not transfer this Pokémon to the next generation until all ribbons in this section are collected${isGen4 ? ' (World Ability Ribbon is optional)' : ''}. Inter-generation transfers are permanent and one-way!
           </div>
         </div>
         ${isGen3 ? `
@@ -749,6 +763,16 @@ export async function initRibbonTracker(appContainer) {
           : `<strong>Footprint Ribbon Warning:</strong> It is easiest to get the <strong>Footprint Ribbon</strong> in Gen 4 with Max Friendship. In later generations, most Pokémon must gain <strong>30 levels</strong> from their met level to receive it, making any Pokémon transferred above <strong>Lv. 70</strong> unable to obtain it!`}
             </div>
           </div>
+          ${isEligibleForWorldAbility ? `
+            <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasWorldAbilityRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-800 dark:text-amber-300'}">
+              <i class="fas ${hasWorldAbilityRibbon ? 'fa-check-circle text-emerald-500' : 'fa-info-circle text-amber-500 dark:text-amber-400'} shrink-0 mt-0.5"></i>
+              <div>
+                ${hasWorldAbilityRibbon
+            ? `<strong>World Ability Ribbon Collected:</strong> Optional Wi-Fi Battle Tower ribbon obtained!`
+            : `<strong>World Ability Ribbon Notice:</strong> The <strong>World Ability Ribbon</strong> (Wi-Fi Battle Tower) is not required for Ribbon Master status. It is optional before transferring.`}
+              </div>
+            </div>
+          ` : ''}
         ` : ''}
       </div>
     `;
@@ -1092,7 +1116,7 @@ export async function initRibbonTracker(appContainer) {
       const isGen3 = genCategory === 'Generation 3';
       const genNum = parseInt(genCategory.replace('Generation ', ''), 10);
       const missableRibbons = ribbonsInCategory.filter(r => {
-        if (r.isAutomated || r.isOptionalExtra || r.isHidden) return false;
+        if (r.isAutomated || r.isOptionalExtra || r.isHidden || r.isCommunityOptional || isCommunityOptionalRibbon(r)) return false;
         if (!r.isRecurring) return true;
         const appearances = getRecurringRibbonAppearances(r, pokemonState);
         return !appearances.some(app => app.gen > genNum);
@@ -1323,7 +1347,7 @@ export async function initRibbonTracker(appContainer) {
         if (!isAutomated && isGenerationCategory) {
           const r = RIBBONS.find(rb => rb.id === id);
           if (r) {
-            let isMissable = true;
+            let isMissable = !r.isCommunityOptional && !isCommunityOptionalRibbon(r);
             if (r.isRecurring) {
               const appearances = getRecurringRibbonAppearances(r, pokemonState);
               isMissable = !appearances.some(app => app.gen > genNum);
