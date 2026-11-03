@@ -486,8 +486,9 @@ export async function initRibbonTracker(appContainer) {
       collectedCount++; // Battle Memory is earned
     }
 
-    const isMaster = collectedCount > 0 && collectedCount === eligibleCount;
-    const progressRatio = eligibleCount > 0 ? collectedCount / eligibleCount : 0;
+    const requiredEligible = eligibleBase.filter(r => !r.isCommunityOptional && !isCommunityOptionalRibbon(r));
+    const isMaster = requiredEligible.length > 0 && requiredEligible.every(r => entry.collectedRibbons.includes(r.id));
+    const progressRatio = isMaster ? 1 : (eligibleCount > 0 ? collectedCount / eligibleCount : 0);
 
     return {
       eligibleCount,
@@ -520,15 +521,17 @@ export async function initRibbonTracker(appContainer) {
         <div class="flex items-center gap-6">
           <div class="text-right flex flex-col items-end">
             <div class="flex items-center gap-1.5 sm:gap-2">
-              ${isMaster ? `
-                <div class="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
-                  <i class="fas fa-crown text-[8px]"></i>
-                  <span class="hidden sm:inline">MASTER</span>
-                </div>
-              ` : ''}
+              <div class="ribbon-card-master-badge-container">
+                ${isMaster ? `
+                  <div class="ribbon-card-master-badge flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                    <i class="fas fa-crown text-[8px]"></i>
+                    <span class="hidden sm:inline">MASTER</span>
+                  </div>
+                ` : ''}
+              </div>
               <div class="ribbon-card-count text-sm font-bold whitespace-nowrap ${isMaster ? 'text-amber-600 dark:text-amber-400' : 'text-[#ef4444] dark:text-red-300'}">${collectedCount} / ${eligibleCount}</div>
             </div>
-            <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
+            <div class="ribbon-card-status text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-0 whitespace-nowrap">${isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons'}</div>
           </div>
           <button onclick="event.stopPropagation(); window.deleteEntry(${originalIdx})" class="p-2 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -1132,9 +1135,11 @@ export async function initRibbonTracker(appContainer) {
       const canMarkDone = isGenerationCategory && !isGen3 && allMissableCollected;
 
       const isManualDone = canMarkDone && Array.isArray(entry.manualCompletedGens) && entry.manualCompletedGens.includes(genCategory);
+      const requiredRibbonsInGen = ribbonsInCategory.filter(r => !r.isHidden && !r.isAutomated && !r.isOptionalExtra && !r.isCommunityOptional && !isCommunityOptionalRibbon(r));
+      const allRequiredInGenEarned = requiredRibbonsInGen.length > 0 && requiredRibbonsInGen.every(r => entry.collectedRibbons.includes(r.id));
       const isNaturallyCompleted = isOptionalExtras
         ? (totalSelectableInCategory > 0 && allSelectableEarned)
-        : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+        : (totalInGen > 0 && earnedInGen > 0 && (earnedInGen === totalInGen || allRequiredInGenEarned));
       const isCompleted = isNaturallyCompleted || isManualDone;
 
       // Check previous collapse/open state from existing DOM details element if still on same entry
@@ -1367,9 +1372,11 @@ export async function initRibbonTracker(appContainer) {
       }
     });
 
+    const requiredRibbonsInGen = ribbonsInCategory.filter(r => !r.isHidden && !r.isAutomated && !r.isOptionalExtra && !r.isCommunityOptional && !isCommunityOptionalRibbon(r));
+    const allRequiredInGenEarned = requiredRibbonsInGen.length > 0 && requiredRibbonsInGen.every(r => entry.collectedRibbons.includes(r.id));
     const isNaturallyCompleted = isOptionalExtras
       ? (totalSelectable > 0 && allSelectableEarned)
-      : (totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen);
+      : (totalInGen > 0 && earnedInGen > 0 && (earnedInGen === totalInGen || allRequiredInGenEarned));
 
     const allMissableCollected = isGenerationCategory && uncollectedMissableIds.length === 0;
     const canMarkDone = isGenerationCategory && !isGen3 && allMissableCollected;
@@ -1481,6 +1488,19 @@ export async function initRibbonTracker(appContainer) {
         } else {
           countEl.className = 'ribbon-card-count text-sm font-bold whitespace-nowrap text-[#ef4444] dark:text-red-300';
         }
+      }
+      const badgeContainer = card.querySelector('.ribbon-card-master-badge-container');
+      if (badgeContainer) {
+        badgeContainer.innerHTML = stats.isMaster ? `
+          <div class="ribbon-card-master-badge flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-600 text-white text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+            <i class="fas fa-crown text-[8px]"></i>
+            <span class="hidden sm:inline">MASTER</span>
+          </div>
+        ` : '';
+      }
+      const statusEl = card.querySelector('.ribbon-card-status');
+      if (statusEl) {
+        statusEl.innerHTML = stats.isMaster ? '<span class="hidden sm:inline">Collection </span>Complete' : 'Ribbons';
       }
     }
   };

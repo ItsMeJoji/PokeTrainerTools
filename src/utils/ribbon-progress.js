@@ -190,7 +190,9 @@ export function calculateEntryGenerations(entry) {
     const allMissableCollected = missableRibbons.length === 0 || missableRibbons.every(r => collectedRibbons.includes(r.id));
     const canMarkDone = !isGen3 && allMissableCollected;
     const isManualDone = canMarkDone && Array.isArray(entry.manualCompletedGens) && entry.manualCompletedGens.includes(genCategory);
-    const isNaturallyCompleted = totalInGen > 0 && earnedInGen > 0 && earnedInGen === totalInGen;
+    const requiredRibbonsInGen = ribbonsInCategory.filter(r => !r.isHidden && !r.isAutomated && !r.isOptionalExtra && !r.isCommunityOptional && !isCommunityOptionalRibbon(r));
+    const allRequiredInGenEarned = requiredRibbonsInGen.length > 0 && requiredRibbonsInGen.every(r => collectedRibbons.includes(r.id));
+    const isNaturallyCompleted = totalInGen > 0 && earnedInGen > 0 && (earnedInGen === totalInGen || allRequiredInGenEarned);
     const isCompleted = isNaturallyCompleted || isManualDone;
 
     return {
