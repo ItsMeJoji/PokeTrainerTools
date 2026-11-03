@@ -411,7 +411,10 @@ export async function initRibbonTracker(appContainer) {
     if (isSignedIn()) {
       updateSyncStatus('syncing');
       try {
-        await SyncManager.push();
+        const syncedEntries = await SyncManager.push();
+        if (syncedEntries) {
+          entries = syncedEntries;
+        }
         updateSyncStatus('synced');
       } catch (err) {
         console.error('Cloud Push Error:', err);
@@ -651,11 +654,15 @@ export async function initRibbonTracker(appContainer) {
     });
   };
 
-  window.deleteEntry = (idx) => {
+  window.deleteEntry = async (idx) => {
     if (confirm('Are you sure you want to end this journey? Progress will be lost.')) {
+      const deletedEntry = entries[idx];
+      if (deletedEntry && deletedEntry.id) {
+        SyncManager.recordDeletion(deletedEntry.id);
+      }
       entries.splice(idx, 1);
-      saveEntries(); // Entire list changed
       renderEntriesList();
+      await saveEntries(); // Entire list changed
     }
   };
 
