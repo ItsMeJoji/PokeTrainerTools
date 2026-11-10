@@ -13,6 +13,7 @@ import { initRibbonTracker } from './features/ribbon-tracker.js'
 import { initRibbonPopout } from './features/ribbon-popout.js'
 import { initShinyBingo } from './features/shiny-bingo.js'
 import { initOtherCreatorsTools } from './features/other-creators-tools.js'
+import { initContestAccessories } from './features/contest-accessories.js'
 import { initRibbonMasterGuide } from './articles/ribbon-master-guide.js'
 import grassSprite from './assets/images/grass-sprite.png'
 import pokeballSprite from './assets/images/pokeball.png'
@@ -115,6 +116,7 @@ const renderNavbar = () => {
             <a href="/mmo-permutations" class="dropdown-item">MMO Permutations</a>
             <a href="/ribbon-tracker" class="dropdown-item">Ribbon Tracker</a>
             <a href="/shiny-bingo" class="dropdown-item">Shiny Bingo Generator</a>
+            <a href="/contest-accessories" class="dropdown-item">Contest Accessories</a>
             <a href="/other-tools" class="dropdown-item">Other Creator's Tools</a>
             ${isAprilFools ? '<a href="/rng-version" class="dropdown-item">Pokemon: RNG Version</a>' : ''}
           </div>
@@ -389,6 +391,18 @@ const renderPage = () => {
               </div>
             </a>
 
+            <!-- Contest Accessories -->
+            <a href="/contest-accessories" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.75s">
+              <div class="tool-image bg-contest">
+                <div class="tool-overlay flex items-center justify-center">
+                  <i class="fas fa-hat-wizard text-white text-5xl opacity-80 drop-shadow-md"></i>
+                </div>
+              </div>
+              <div class="tool-content">
+                <h3>Contest Accessories</h3>
+              </div>
+            </a>
+
             <!-- Other Creator's Tools -->
             <a href="/other-tools" class="tool-card anim-fade-in shadow-2xl" style="animation-delay: 0.8s">
               <div class="tool-image bg-other-tools">
@@ -558,6 +572,8 @@ const renderPage = () => {
       return `<div id="ribbon-master-guide-container"></div>`;
     } else if (path === '/other-tools') {
       return `<div id="other-tools-container"></div>`;
+    } else if (path === '/contest-accessories' || path === '/gen4-contests') {
+      return `<div id="contest-accessories-container"></div>`;
     } else if (path === '/rng-version') {
       const today = new Date();
       if (today.getMonth() === 3 && today.getDate() === 1) {
@@ -720,6 +736,8 @@ const renderPage = () => {
     initRibbonMasterGuide(document.querySelector('#ribbon-master-guide-container'));
   } else if (path === '/other-tools') {
     initOtherCreatorsTools(document.querySelector('#other-tools-container'));
+  } else if (path === '/contest-accessories' || path === '/gen4-contests') {
+    initContestAccessories(document.querySelector('#contest-accessories-container'));
   } else if (path === '/rng-version') {
     const today = new Date();
     if (today.getMonth() === 3 && today.getDate() === 1) {

@@ -17,6 +17,7 @@ const spaRoutes = [
     '/ribbon-tracker',
     '/ribbon-popout',
     '/shiny-bingo',
+    '/contest-accessories',
     '/info/shiny-hunting',
     '/info/sos-hunting',
     '/info/mmo-guide',
@@ -72,6 +73,11 @@ const routeSeo = {
         title: 'Shiny Bingo Generator | PokeTrainer Tools',
         description: 'Generate and export shiny hunting bingo boards for your next challenge.',
         heading: 'Shiny Bingo Generator',
+    },
+    '/contest-accessories': {
+        title: 'Gen 4 Contest Accessories | PokeTrainer Tools',
+        description: 'Choose accessories and configure category ratings across the 12 themes for Gen 4 Pokemon Super Contests.',
+        heading: 'Contest Accessories',
     },
     '/info/shiny-hunting': {
         title: 'Shiny Hunting Guide | PokeTrainer Tools',

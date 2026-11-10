@@ -1213,6 +1213,10 @@ details summary::-webkit-details-marker {
   background: linear-gradient(135deg, #10b981 0%, #047857 100%);
 }
 
+.bg-contest {
+  background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+}
+
 /* Event Calendar Section */
 .calendar-section {
   width: 100%;
