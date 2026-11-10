@@ -33,36 +33,27 @@ export function initContestAccessories(container) {
       
       <!-- Header -->
       <div class="text-center space-y-3">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-100 dark:bg-pink-950/60 border border-pink-300 dark:border-pink-800 text-pink-700 dark:text-pink-300 text-xs sm:text-sm font-bold tracking-wide">
-          <i class="fas fa-sparkles text-pink-500"></i> Gen 4 Contests • Visual Competition
-        </div>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-          Contest Visual <span class="text-pink-500">Helper</span>
+          Visual Competition Accessory Helper
         </h1>
         <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-          Choose the best accessories for the visual part of the contest to maximize pink hearts in Pokémon Diamond, Pearl, and Platinum.
+          Choose the best accessories for the visual part of the contest to maximize score in Pokémon Diamond, Pearl, and Platinum.
         </p>
       </div>
 
       <!-- Category Dropdown Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6 md:p-8 space-y-4">
-        <div>
-          <label for="theme-select" class="block text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400 mb-2">
-            Select Category (${CONTEST_CATEGORIES.length} Categories)
-          </label>
-          <div class="relative">
-            <select id="theme-select" class="w-full pl-4 pr-10 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white font-extrabold text-base sm:text-lg focus:ring-2 focus:ring-pink-500 focus:outline-none transition-all cursor-pointer shadow-sm">
-              ${CONTEST_CATEGORIES.map(cat => `
-                <option value="${cat.id}" ${cat.id === selectedThemeId ? 'selected' : ''}>
-                  ${cat.name}
-                </option>
-              `).join('')}
-            </select>
-          </div>
-        </div>
-
-        <!-- Category Criteria -->
-        <div id="category-criteria" class="pt-3 border-t border-gray-100 dark:border-gray-700/60">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6">
+        <label for="theme-select" class="block text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400 mb-2">
+          Select Category
+        </label>
+        <div class="relative">
+          <select id="theme-select" class="w-full pl-4 pr-10 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white font-extrabold text-base sm:text-lg focus:ring-2 focus:ring-pink-500 focus:outline-none transition-all cursor-pointer shadow-sm">
+            ${CONTEST_CATEGORIES.map(cat => `
+              <option value="${cat.id}" ${cat.id === selectedThemeId ? 'selected' : ''}>
+                ${cat.name}
+              </option>
+            `).join('')}
+          </select>
         </div>
       </div>
 
@@ -74,8 +65,17 @@ export function initContestAccessories(container) {
   `;
 
   const themeSelect = container.querySelector('#theme-select');
-  const criteriaContainer = container.querySelector('#category-criteria');
   const accessoriesSection = container.querySelector('#accessories-section');
+
+  // Sort accessories in numerical order by page (1, 2, 3...), then alphabetically by name
+  function compareByPageOrder(a, b) {
+    const pageA = a.page != null ? a.page : 999;
+    const pageB = b.page != null ? b.page : 999;
+    if (pageA !== pageB) {
+      return pageA - pageB;
+    }
+    return a.name.localeCompare(b.name);
+  }
 
   function renderAccessoryCard(item, score) {
     const imgUrl = imageMap[item.file] || '';
@@ -94,12 +94,19 @@ export function initContestAccessories(container) {
             />
           ` : `<i class="fas fa-image text-gray-400"></i>`}
         </div>
-        <span class="text-xs font-extrabold text-gray-900 dark:text-white line-clamp-1 group-hover:text-pink-600 dark:group-hover:text-pink-400">
+        <span class="text-xs font-extrabold text-gray-900 dark:text-white line-clamp-1 group-hover:text-pink-600 dark:group-hover:text-pink-400" title="${item.name}">
           ${item.name}
         </span>
-        <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 mt-0.5">
-          ${score === 2 ? '+2 pts' : score === 1 ? '+1 pt' : '0 pts'}
-        </span>
+        <div class="mt-1 flex flex-col items-center gap-1">
+          <span class="text-[11px] font-extrabold ${score === 2 ? 'text-emerald-600 dark:text-emerald-400' : score === 1 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}">
+            ${score === 2 ? '+2 pts' : score === 1 ? '+1 pt' : '0 pts'}
+          </span>
+          ${item.page != null ? `
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-50 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 border border-pink-200 dark:border-pink-800">
+              Page ${item.page}
+            </span>
+          ` : ''}
+        </div>
       </div>
     `;
   }
@@ -107,19 +114,19 @@ export function initContestAccessories(container) {
   function updateAccessories() {
     const currentTheme = CONTEST_CATEGORIES.find(c => c.id === selectedThemeId) || CONTEST_CATEGORIES[0];
 
-    // Update criteria description in place
-    if (criteriaContainer) {
-      criteriaContainer.innerHTML = `
-        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-          <strong class="text-gray-900 dark:text-white">${currentTheme.name} Category:</strong> ${currentTheme.description}
-        </p>
-      `;
-    }
-
     // Group accessories based on compatibility with the selected category (2 = High, 1 = Good, 0 = Low)
-    const highItems = CONTEST_ACCESSORIES.filter(a => a.categories[selectedThemeId] === 2 || a.categories[selectedThemeId] === 'High');
-    const goodItems = CONTEST_ACCESSORIES.filter(a => a.categories[selectedThemeId] === 1 || a.categories[selectedThemeId] === 'Good');
-    const lowItems = CONTEST_ACCESSORIES.filter(a => a.categories[selectedThemeId] === 0 || a.categories[selectedThemeId] === 'Low');
+    // Organized in numerical order by page (1, 2, 3...)
+    const highItems = CONTEST_ACCESSORIES
+      .filter(a => a.categories[selectedThemeId] === 2 || a.categories[selectedThemeId] === 'High')
+      .sort(compareByPageOrder);
+
+    const goodItems = CONTEST_ACCESSORIES
+      .filter(a => a.categories[selectedThemeId] === 1 || a.categories[selectedThemeId] === 'Good')
+      .sort(compareByPageOrder);
+
+    const lowItems = CONTEST_ACCESSORIES
+      .filter(a => a.categories[selectedThemeId] === 0 || a.categories[selectedThemeId] === 'Low')
+      .sort(compareByPageOrder);
 
     if (accessoriesSection) {
       accessoriesSection.innerHTML = `
