@@ -213,7 +213,6 @@ export async function initEncounterCalc(appContainer) {
   const encounterResults = document.getElementById('encounter-results');
   const sprites = document.querySelectorAll('.grass-sprite');
 
-  // Disable start button until location is selected
   startBtn.disabled = true;
 
   // Array to exclude specific games from the dropdown.
@@ -443,7 +442,7 @@ export async function initEncounterCalc(appContainer) {
       sprite.classList.add('anim-rustle');
     });
 
-    // Fetch encounters while animating (WITH FILTER OPTIONS)
+    // Fetch encounters while animating
     let groupedEncounters = {};
     try {
       groupedEncounters = await getEncounters(version, location, filterOptions);
@@ -451,14 +450,11 @@ export async function initEncounterCalc(appContainer) {
       console.error('Error in encounter fetch:', error);
     }
 
-    // Render grouped encounters (Area -> Method -> List)
-    // groupedEncounters is now: { "1F": { "Walk": [...] }, "B1F": { ... } }
 
     const SEASONS = ['Spring 🌱', 'Summer ☀️', 'Autumn 🍂', 'Winter ❄️'];
     const TIME_ICONS = ['🌅', '☀️', '🌙'];
 
     const areaSections = Object.entries(groupedEncounters).map(([areaName, methods], index) => {
-      // Determine if this detail should be open (first one is open)
       const isOpen = index === 0 ? 'open' : '';
 
       const seenSeasonBases = new Set();
@@ -564,18 +560,18 @@ export async function initEncounterCalc(appContainer) {
     encounterResults.innerHTML = areaSections;
 
     // Set and Show Results Header
-    // Get display name from selected dropdown item text
+
     const locationNameDisplay = locationDropdown.querySelector('.selected-item span').textContent;
     resultsHeader.textContent = locationNameDisplay;
 
-    // Delay showing header until grass parts (1s) to be smooth
+
     setTimeout(() => {
       resultsHeader.classList.remove('hidden');
       resultsHeader.classList.remove('opacity-0');
       resultsHeader.classList.add('opacity-100');
     }, 1100);
 
-    // After rustling, trigger Parting
+
     setTimeout(() => {
       sprites.forEach(sprite => {
         sprite.classList.remove('anim-rustle');
@@ -586,13 +582,13 @@ export async function initEncounterCalc(appContainer) {
         }
       });
 
-      // Show encounters behind the parting grass
+
       encounterResults.classList.remove('opacity-0');
       encounterResults.classList.add('opacity-100');
-      encounterResults.style.pointerEvents = 'auto'; // Re-enable pointer events for shiny toggle
+      encounterResults.style.pointerEvents = 'auto';
     }, 1100);
 
-    // Show Reset button after 2 seconds (faster)
+
     setTimeout(() => {
       resetBtn.classList.remove('hidden');
       resetBtn.classList.add('anim-fade-in');

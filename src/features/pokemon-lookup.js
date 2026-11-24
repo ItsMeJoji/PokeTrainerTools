@@ -102,13 +102,13 @@ function gameOrderIndex(version) {
 }
 
 function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe.toString()
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
+  if (!unsafe) return '';
+  return unsafe.toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 /**
@@ -195,11 +195,10 @@ export async function initPokemonLookup(appContainer) {
 
   let selectedPokemon = null;
   let pokemonEncounterData = null;
-  let pokemonSprites = {};      // { versionName: normalSpriteUrl | null }
-  let pokemonShinySprites = {}; // { versionName: shinySpriteUrl | null }
+  let pokemonSprites = {};
+  let pokemonShinySprites = {};
 
   // --- Data Loading ---
-  // Show loading state in the Pokemon dropdown
   updateDropdownLoading(pokemonDropdown, "Loading Pokémon");
 
   const pokemonList = await getPokemonListUpToGeneration(9);
@@ -219,7 +218,7 @@ export async function initPokemonLookup(appContainer) {
     const img = e.target.closest('.version-sprite');
     if (!img) return;
 
-    e.stopPropagation(); // Prevents event from reaching <summary> and toggling the collapsible
+    e.stopPropagation();
 
     const normalSrc = img.dataset.normal;
     const shinySrc = img.dataset.shiny;
@@ -232,7 +231,7 @@ export async function initPokemonLookup(appContainer) {
     // Sparkle flash
     img.classList.add('anim-sparkle');
     img.addEventListener('animationend', () => img.classList.remove('anim-sparkle'), { once: true });
-  }, true); // capture: true — fires before summary sees the click
+  }, true);
 
   // --- Event Listeners ---
   selectGameBtn.onclick = async () => {
@@ -248,7 +247,6 @@ export async function initPokemonLookup(appContainer) {
   };
 
   showEverythingBtn.onclick = async () => {
-    // Hide choice buttons, show standalone Go Back
     choiceContainer.classList.add('hidden', 'opacity-0');
     everythingBackContainer.classList.remove('hidden');
     setTimeout(() => everythingBackContainer.classList.remove('opacity-0'), 10);
@@ -274,12 +272,6 @@ export async function initPokemonLookup(appContainer) {
     setTimeout(() => choiceContainer.classList.remove('opacity-0'), 10);
   };
 
-  // gameSelect.onchange = () => {
-  //   if (gameSelect.value) {
-  //     renderResults(gameSelect.value);
-  //   }
-  // };
-
   async function fetchEncounterData() {
     try {
       const apiName = POKEMON_API_NAME_OVERRIDES[selectedPokemon.name] || selectedPokemon.name;
@@ -295,7 +287,6 @@ export async function initPokemonLookup(appContainer) {
         pokemonShinySprites[versionName] = spriteVersions[gen]?.[group]?.front_shiny || null;
       }
 
-      // groupedByVersion: { version: { area: { methodKey: { method, chance, minLevel, maxLevel } } } }
       const groupedByVersion = {};
 
       for (const encounter of encounterDetails) {
@@ -420,7 +411,7 @@ export async function initPokemonLookup(appContainer) {
                       <td class="px-3 py-1.5 font-medium text-gray-800 dark:text-gray-200">${e.method}</td>
                       <td class="px-3 py-1.5">
                         ${e.chance === 0 ? '<span class="text-gray-400 dark:text-gray-500 italic">No Encounters</span>' :
-                          Array.isArray(e.conditionTexts) && e.conditionTexts.length > 0 ? `
+            Array.isArray(e.conditionTexts) && e.conditionTexts.length > 0 ? `
                           <ul class="list-disc list-outside pl-4 space-y-1 text-[11px] leading-snug italic">
                             ${e.conditionTexts.map(conditionText => `<li>${escapeHtml(conditionText)}</li>`).join('')}
                           </ul>

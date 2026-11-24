@@ -236,8 +236,8 @@ export async function initCatchRateCalc(appContainer) {
     // Manage Global Inputs for Gen 5, 6, 7, 8, 9
     if (gen >= 5) {
       globalContextInputs.classList.remove('hidden');
-      globalContextInputs.classList.remove('grid', 'grid-cols-1'); // Remove old grid classes
-      globalContextInputs.classList.add('flex', 'flex-col', 'items-center', 'space-y-6'); // Center everything
+      globalContextInputs.classList.remove('grid', 'grid-cols-1');
+      globalContextInputs.classList.add('flex', 'flex-col', 'items-center', 'space-y-6');
 
       let powerLabel = gen === 5 ? "Capture Power" : (gen === 6 ? "Capture O-Power" : (gen === 7 ? "Roto Catch" : "Capture Power"));
       let maxPokedex = gen === 5 ? 649 : (gen === 6 ? 721 : (gen === 7 ? 807 : (gen === 8 ? 898 : 1025)));
@@ -456,7 +456,6 @@ export async function initCatchRateCalc(appContainer) {
             ...p,
             captureRate: species.capture_rate,
             id: details.id,
-            // Add any other needed data...
           };
 
           // Restore display
@@ -699,7 +698,7 @@ export async function initCatchRateCalc(appContainer) {
     const nest = parseInt(document.getElementById('nest-level')?.value || 0);
     // Safari Ball
     const safari = document.getElementById('safari-indicator')?.checked || false;
-    // Heavy/Fast/Net Ball - Info pulled from PokeAPI
+    // Heavy/Fast/Net Ball
     let pokemonWeight = 0;
     let baseSpeed = 0;
     let typeMatch = 0;

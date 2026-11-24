@@ -319,7 +319,7 @@ export async function initShinyOddsCalc(appContainer) {
                     });
                     inputHtml += `</div>`;
                 } else if (m.hasInput) {
-                    // Legacy support for single input type if needed, but we've migrated.
+                    // Legacy support for single input type if needed, but we've migrated. Leaving this in case I change my mind
                 }
 
                 return `
@@ -358,7 +358,6 @@ export async function initShinyOddsCalc(appContainer) {
             }).join('');
     };
 
-    // gameSelect.addEventListener('change', updateUI); // Removed in favor of setupSearchableDropdown callback
     charmToggle.addEventListener('change', updateUI);
     luckyPowerToggle.addEventListener('change', updateUI);
     sparklingSelect.addEventListener('change', updateUI);
@@ -401,7 +400,7 @@ export async function initShinyOddsCalc(appContainer) {
             });
 
             // Special case for legacy single input SOS/Radar if they were still used, 
-            // but we migrated everything to the new structure.
+            // but we migrated everything to the new structure. Leaving it in case I change my mind lol
             if (e.target.id === `input-${methodId}`) {
                 extraParams['chain'] = parseInt(e.target.value) || 0;
             }

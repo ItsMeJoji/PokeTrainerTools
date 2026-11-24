@@ -39,12 +39,11 @@ export function initRibbonPopout(appContainer) {
     try {
       const saved = JSON.parse(localStorage.getItem('ribbon_popout_selected_ids') || '[]');
       if (Array.isArray(saved) && saved.length > 0) {
-        // Keep only IDs that still exist in entries
         const valid = saved.filter(id => entries.some(e => String(e.id) === String(id)));
         if (valid.length > 0) return valid;
       }
     } catch {
-      // fallback
+      // TODO fallback (someday)
     }
     // Default to the requested entry ID if provided, or the first entry
     if (initialEntryId && entries.some(e => String(e.id) === String(initialEntryId))) {
@@ -161,11 +160,10 @@ export function initRibbonPopout(appContainer) {
         <span>${genLabel}</span>
         ${isCompleted ? '<i class="fas fa-check-circle text-[9px] text-emerald-400"></i>' : ''}
       `;
-      genBadgeEl.className = `inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1 rounded-full text-[10px] font-black tracking-widest uppercase transition-all ${
-        isCompleted 
-          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
-          : 'bg-white/10 text-gray-300 border border-white/10'
-      }`;
+      genBadgeEl.className = `inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1 rounded-full text-[10px] font-black tracking-widest uppercase transition-all ${isCompleted
+        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+        : 'bg-white/10 text-gray-300 border border-white/10'
+        }`;
     }
     if (countEarnedEl) {
       countEarnedEl.textContent = earned;
@@ -267,8 +265,8 @@ export function initRibbonPopout(appContainer) {
               <!-- List of Pokemon Checkboxes -->
               <div class="space-y-1 max-h-40 overflow-y-auto pr-1">
                 ${entries.map(e => {
-                  const isChecked = selectedIds.includes(String(e.id));
-                  return `
+      const isChecked = selectedIds.includes(String(e.id));
+      return `
                     <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer transition-colors text-xs text-white select-none">
                       <input 
                         type="checkbox" 
@@ -283,7 +281,7 @@ export function initRibbonPopout(appContainer) {
                       </div>
                     </label>
                   `;
-                }).join('')}
+    }).join('')}
               </div>
 
               <!-- Cycle Speed Setting -->
@@ -296,11 +294,10 @@ export function initRibbonPopout(appContainer) {
                     <button 
                       type="button" 
                       data-speed="${speed}" 
-                      class="popout-speed-btn px-1.5 py-0.5 rounded text-[9px] font-black cursor-pointer transition-colors ${
-                        cycleIntervalMs === speed 
-                          ? 'bg-[#ef4444] text-white shadow-sm' 
-                          : 'bg-gray-800 text-gray-400 hover:text-white'
-                      }"
+                      class="popout-speed-btn px-1.5 py-0.5 rounded text-[9px] font-black cursor-pointer transition-colors ${cycleIntervalMs === speed
+        ? 'bg-[#ef4444] text-white shadow-sm'
+        : 'bg-gray-800 text-gray-400 hover:text-white'
+      }"
                     >
                       ${speed / 1000}s
                     </button>
@@ -350,11 +347,10 @@ export function initRibbonPopout(appContainer) {
           <!-- Generation Indicator Badge -->
           <div 
             id="popout-gen-badge"
-            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1 rounded-full text-[10px] font-black tracking-widest uppercase transition-all ${
-              isCompleted 
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
-                : 'bg-white/10 text-gray-300 border border-white/10'
-            }" 
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1 rounded-full text-[10px] font-black tracking-widest uppercase transition-all ${isCompleted
+        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+        : 'bg-white/10 text-gray-300 border border-white/10'
+      }" 
             style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);"
           >
             <span>${genLabel}</span>
@@ -447,13 +443,13 @@ export function initRibbonPopout(appContainer) {
       cb.addEventListener('change', () => {
         const checkedValues = Array.from(appContainer.querySelectorAll('.popout-entry-checkbox:checked')).map(el => el.value);
         if (checkedValues.length === 0) {
-          // Keep at least the current one selected
+
           cb.checked = true;
           return;
         }
         selectedIds = checkedValues;
         localStorage.setItem('ribbon_popout_selected_ids', JSON.stringify(selectedIds));
-        
+
         const label = document.getElementById('popout-pokemon-btn-label');
         if (label) label.textContent = `Pokémon (${selectedIds.length})`;
 

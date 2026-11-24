@@ -1,15 +1,11 @@
-// rng-version.js
-
 export async function initRNGPage(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+  const container = document.getElementById(containerId);
+  if (!container) return;
 
-    // Set up initial state
-    let currentNumber = 1;
-    let isShiny = false;
+  let currentNumber = 1;
+  let isShiny = false;
 
-    // Create UI with Tailwind classes
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white font-sans p-4">
       <h1 class="text-4xl md:text-6xl font-bold mb-8 text-yellow-400 text-center uppercase tracking-widest">
         Pokemon: RNG Version
@@ -29,38 +25,38 @@ export async function initRNGPage(containerId) {
     </div>
   `;
 
-    const display = document.getElementById('number-display');
-    const btn = document.getElementById('reroll-btn');
-    const message = document.getElementById('shiny-message');
+  const display = document.getElementById('number-display');
+  const btn = document.getElementById('reroll-btn');
+  const message = document.getElementById('shiny-message');
 
-    const roll = () => {
-        // 1 in 20 chance (5%) to hit the joke "Shiny"
-        const hitSuccess = Math.floor(Math.random() * 20) === 0;
+  const roll = () => {
+    // 1 in 20 chance (5%) to hit the joke "Shiny"
+    const hitSuccess = Math.floor(Math.random() * 20) === 0;
 
-        if (hitSuccess) {
-            currentNumber = 8192;
-            isShiny = true;
-        } else {
-            // Pick a random "losing" number between 2 and 8192
-            currentNumber = Math.floor(Math.random() * 8191) + 2;
-            isShiny = false;
-        }
+    if (hitSuccess) {
+      currentNumber = 8192;
+      isShiny = true;
+    } else {
+      // Pick a random "losing" number between 2 and 8192
+      currentNumber = Math.floor(Math.random() * 8191) + 2;
+      isShiny = false;
+    }
 
-        // Update Display
-        display.innerText = currentNumber;
+    // Update Display
+    display.innerText = currentNumber;
 
-        // Apply "Shiny" effects
-        if (isShiny) {
-            display.classList.add('text-red-500', 'scale-110', 'animate-bounce');
-            message.classList.remove('opacity-0');
-            message.classList.add('animate-pulse');
-        } else {
-            display.classList.remove('text-red-500', 'scale-110', 'animate-bounce');
-            display.classList.add('text-white');
-            message.classList.add('opacity-0');
-            message.classList.remove('animate-pulse');
-        }
-    };
+    // Apply "Shiny" effects
+    if (isShiny) {
+      display.classList.add('text-red-500', 'scale-110', 'animate-bounce');
+      message.classList.remove('opacity-0');
+      message.classList.add('animate-pulse');
+    } else {
+      display.classList.remove('text-red-500', 'scale-110', 'animate-bounce');
+      display.classList.add('text-white');
+      message.classList.add('opacity-0');
+      message.classList.remove('animate-pulse');
+    }
+  };
 
-    btn.addEventListener('click', roll);
+  btn.addEventListener('click', roll);
 }

@@ -43,7 +43,7 @@ export function initContestAccessories(container) {
 
       <!-- Category Dropdown Card -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6">
-        <label for="theme-select" class="block text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400 mb-2">
+        <label for="theme-select" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-white-400 mb-2">
           Select Category
         </label>
         <div class="relative">
@@ -57,7 +57,7 @@ export function initContestAccessories(container) {
         </div>
       </div>
 
-      <!-- Accessories Section (only this reloads on category change) -->
+      <!-- Accessories Section -->
       <div id="accessories-section" class="space-y-8">
       </div>
 
@@ -197,7 +197,7 @@ export function initContestAccessories(container) {
     }
   }
 
-  // Bind change event on persistent dropdown
+
   if (themeSelect) {
     themeSelect.addEventListener('change', (e) => {
       selectedThemeId = e.target.value;
@@ -205,6 +205,6 @@ export function initContestAccessories(container) {
     });
   }
 
-  // Initial populate of accessories
+
   updateAccessories();
 }

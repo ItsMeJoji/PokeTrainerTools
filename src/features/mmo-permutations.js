@@ -8,7 +8,7 @@ function generatePermutations(totalSpawns) {
 
   function search(seq, reserve, onField) {
     if (reserve === 0) {
-      // All reserve spawns are out. Now catch the remaining on-field Pokémon.
+
       const finalSeq = [...seq];
       for (let i = 0; i < onField; i++) {
         finalSeq.push('C');
@@ -17,18 +17,17 @@ function generatePermutations(totalSpawns) {
       return;
     }
 
-    // Action: Catch 1 (replaces 1 from reserve)
+    // Catch 1
     search([...seq, 'C'], reserve - 1, onField);
 
-    // Actions: Multi-KO 2, 3, or 4
+    // Multi-KO 2, 3, or 4
     for (let k = 2; k <= onField; k++) {
       let replenished = Math.min(k, reserve);
       search([...seq, `KO${k}`], reserve - replenished, onField - k + replenished);
     }
   }
 
-  // Initially we have 4 on field, the rest are in reserve.
-  // E.g., for 8 spawns: 4 on field, 4 in reserve.
+
   search([], totalSpawns - 4, 4);
   return results;
 }

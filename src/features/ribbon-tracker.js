@@ -301,7 +301,7 @@ export async function initRibbonTracker(appContainer) {
       <!-- Detail View (Modal-like or separate section) -->
       <div id="ribbon-detail-view" class="ribbon-detail-overlay hidden fixed inset-0 z-[1000] items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="ribbon-detail-panel w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col min-w-0 max-h-[92dvh] sm:max-h-[90vh]">
-          <div class="relative rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-5 pr-14 border-b border-gray-100 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
+          <div class="relative rounded-t-2xl sm:rounded-t-3xl p-4 sm:p-5 pr-14 border-b border-blue-100/70 dark:border-gray-700 bg-blue-50/60 dark:bg-blue-950/20">
             <h3 id="detail-pokemon-name" class="text-left text-lg sm:text-xl font-black text-gray-900 dark:text-white"></h3>
             <button id="close-detail" class="absolute top-2 right-2 inline-flex items-center justify-center w-6 h-6 !p-0 text-xs leading-none rounded-sm bg-black/5 dark:bg-white/5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
               X
@@ -723,8 +723,8 @@ export async function initRibbonTracker(appContainer) {
             </div>
           </div>
           ${isGen4 ? `
-            <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-800 dark:text-amber-300'}">
-              <i class="fas ${hasFootprintRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-amber-500'} shrink-0 mt-0.5"></i>
+            <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-blue-800 dark:text-blue-300'}">
+              <i class="fas ${hasFootprintRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-blue-500'} shrink-0 mt-0.5"></i>
               <div>
                 ${hasFootprintRibbon
             ? `<strong>Footprint Ribbon Collected:</strong> Safe to level this Pokémon past Lv. 70.`
@@ -747,15 +747,15 @@ export async function initRibbonTracker(appContainer) {
     }
 
     return `
-      <div class="generation-warning-box bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
+      <div class="generation-warning-box bg-blue-50/80 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 text-blue-900 dark:text-blue-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
         <div class="flex items-start gap-2">
-          <i class="fas fa-exclamation-triangle text-amber-500 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <i class="fas fa-exclamation-triangle text-blue-500 dark:text-blue-400 shrink-0 mt-0.5"></i>
           <div>
             <strong>Transfer Warning:</strong> Do not transfer this Pokémon to the next generation until all ribbons in this section are collected${isGen4 ? ' (World Ability Ribbon is optional)' : ''}. Inter-generation transfers are permanent and one-way!
           </div>
         </div>
         ${isGen3 ? `
-          <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasWinningRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
+          <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasWinningRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
             <i class="fas ${hasWinningRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-red-500'} shrink-0 mt-0.5"></i>
             <div>
               ${hasWinningRibbon
@@ -765,7 +765,7 @@ export async function initRibbonTracker(appContainer) {
           </div>
         ` : ''}
         ${isGen4 ? `
-          <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
+          <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasFootprintRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-300'}">
             <i class="fas ${hasFootprintRibbon ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-red-500'} shrink-0 mt-0.5"></i>
             <div>
               ${hasFootprintRibbon
@@ -774,8 +774,8 @@ export async function initRibbonTracker(appContainer) {
             </div>
           </div>
           ${isEligibleForWorldAbility ? `
-            <div class="mt-2.5 pt-2.5 border-t border-amber-200/70 dark:border-amber-800/50 flex items-start gap-2 ${hasWorldAbilityRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-800 dark:text-amber-300'}">
-              <i class="fas ${hasWorldAbilityRibbon ? 'fa-check-circle text-emerald-500' : 'fa-info-circle text-amber-500 dark:text-amber-400'} shrink-0 mt-0.5"></i>
+            <div class="mt-2.5 pt-2.5 border-t border-blue-200/70 dark:border-blue-800/50 flex items-start gap-2 ${hasWorldAbilityRibbon ? 'text-emerald-700 dark:text-emerald-400' : 'text-blue-800 dark:text-blue-300'}">
+              <i class="fas ${hasWorldAbilityRibbon ? 'fa-check-circle text-emerald-500' : 'fa-info-circle text-blue-500 dark:text-blue-400'} shrink-0 mt-0.5"></i>
               <div>
                 ${hasWorldAbilityRibbon
             ? `<strong>World Ability Ribbon Collected:</strong> Optional Wi-Fi Battle Tower ribbon obtained!`
@@ -869,8 +869,8 @@ export async function initRibbonTracker(appContainer) {
       }).join('');
 
       return `
-        <div class="mt-2 pt-2 border-t border-amber-200/70 dark:border-amber-800/50 first:mt-0 first:pt-0 first:border-t-0">
-          <div class="font-semibold text-[10px] uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-1.5">
+        <div class="mt-2 pt-2 border-t border-blue-200/70 dark:border-blue-800/50 first:mt-0 first:pt-0 first:border-t-0">
+          <div class="font-semibold text-[10px] uppercase tracking-wide text-blue-600 dark:text-blue-400 mb-1.5">
             <i class="fas fa-hourglass-half mr-1 text-[9px]"></i>Last chance: <strong>${gameLabel}</strong>
           </div>
           <div class="flex flex-wrap gap-1.5">${pills}</div>
@@ -879,9 +879,9 @@ export async function initRibbonTracker(appContainer) {
     }).join('');
 
     return `
-      <div class="recurring-warning-box bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
+      <div class="recurring-warning-box bg-blue-50/80 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 text-blue-900 dark:text-blue-300 rounded-xl p-3 mb-3 text-xs leading-relaxed">
         <div class="flex items-start gap-2 mb-2">
-          <i class="fas fa-exclamation-triangle text-amber-500 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <i class="fas fa-exclamation-triangle text-blue-500 dark:text-blue-400 shrink-0 mt-0.5"></i>
           <div>
             <strong>Transfer Deadline Warning:</strong> The following ribbons cannot be obtained in Sword / Shield or Scarlet / Violet. Collect them before transferring past the listed game!
           </div>
@@ -907,7 +907,7 @@ export async function initRibbonTracker(appContainer) {
         <div 
           id="detail-species-sprite-wrap"
           onclick="window.openSpeciesEdit(${idx})"
-          class="group relative w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900/50' : 'border-gray-100 dark:border-gray-700'} shadow-sm shrink-0 cursor-pointer overflow-hidden transition-all hover:border-yellow-400 dark:hover:border-yellow-500"
+          class="group relative w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center border-2 ${entry.isShiny ? 'border-yellow-200 dark:border-yellow-900/50' : 'border-gray-100 dark:border-gray-700'} shadow-sm shrink-0 cursor-pointer overflow-hidden transition-all hover:border-blue-400 dark:hover:border-blue-500"
         >
           <img id="detail-species-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.isShiny ? 'shiny/' : ''}${entry.speciesId}.png" class="w-14 h-14 object-contain transition-transform group-hover:scale-110">
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -1215,7 +1215,7 @@ export async function initRibbonTracker(appContainer) {
                 </label>
               </div>
             ` : ''}
-            <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-yellow-200 dark:border-yellow-800'}">
+            <div class="mb-3 min-w-0 ${isRecurring || isOptionalExtras ? '' : 'pl-3 sm:pl-4 border-l-2 border-blue-200 dark:border-blue-800'}">
               ${isRecurring ? '' : `<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 break-words pr-1">${gameCategory}</h4>`}
               <div class="grid grid-cols-[repeat(auto-fit,minmax(2.25rem,2.25rem))] sm:grid-cols-[repeat(auto-fit,minmax(2.5rem,2.5rem))] justify-start gap-2 sm:gap-3 pb-2 min-w-0 max-w-full overflow-x-hidden">
                 ${eligibleRibbons.map(ribbon => {
@@ -1237,7 +1237,7 @@ export async function initRibbonTracker(appContainer) {
                       ontouchstart="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}', true)"
                       onmouseenter="window.showRibbonTooltip(this, '${ribbon.name.replace(/'/g, "\\'")}', '${ribbon.description.replace(/'/g, "\\'")}')"
                       onmouseleave="window.hideRibbonTooltip()"
-                      class="ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'} ${ribbon.isHidden ? 'hidden' : ''}"
+                      class="ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border ${isEarned ? 'border-blue-400 bg-blue-50 dark:border-blue-500/50 dark:bg-blue-900/30' : 'border-gray-200 bg-white opacity-50 hover:opacity-80 dark:border-gray-700 dark:bg-gray-800 dark:opacity-40'} flex items-center justify-center transition-all ${ribbon.isAutomated ? 'cursor-default' : 'cursor-pointer'} ${ribbon.isHidden ? 'hidden' : ''}"
                     >
                       ${ribbonImageUrl
                   ? `<img src="${ribbonImageUrl}" alt="${ribbon.name}" class="w-7 h-7 sm:w-8 sm:h-8 object-contain ${isEarned ? '' : 'grayscale'}">`
@@ -1270,7 +1270,7 @@ export async function initRibbonTracker(appContainer) {
 
   const updateSingleRibbonElement = (ribbonEl, isEarned) => {
     if (!ribbonEl) return;
-    const earnedClasses = ['border-yellow-400', 'bg-yellow-50', 'dark:border-yellow-500/50', 'dark:bg-yellow-900/30'];
+    const earnedClasses = ['border-blue-400', 'bg-blue-50', 'dark:border-blue-500/50', 'dark:bg-blue-900/30'];
     const unearnedClasses = ['border-gray-200', 'bg-white', 'opacity-50', 'hover:opacity-80', 'dark:border-gray-700', 'dark:bg-gray-800', 'dark:opacity-40'];
 
     if (isEarned) {
@@ -1543,7 +1543,7 @@ export async function initRibbonTracker(appContainer) {
         const firstGrid = gen6El.querySelector('.grid');
         if (firstGrid) {
           const div = document.createElement('div');
-          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30 flex items-center justify-center transition-all cursor-default';
+          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-blue-400 bg-blue-50 dark:border-blue-500/50 dark:bg-blue-900/30 flex items-center justify-center transition-all cursor-default';
           div.setAttribute('data-ribbon-id', 'gen6_contest_memory');
           div.setAttribute('data-category', 'Generation 6');
           div.setAttribute('data-automated', 'true');
@@ -1578,7 +1578,7 @@ export async function initRibbonTracker(appContainer) {
         const firstGrid = gen6El.querySelector('.grid');
         if (firstGrid) {
           const div = document.createElement('div');
-          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-yellow-400 bg-yellow-50 dark:border-yellow-500/50 dark:bg-yellow-900/30 flex items-center justify-center transition-all cursor-default';
+          div.className = 'ribbon-card-item relative w-9 h-9 sm:w-10 sm:h-10 rounded shadow-sm border border-blue-400 bg-blue-50 dark:border-blue-500/50 dark:bg-blue-900/30 flex items-center justify-center transition-all cursor-default';
           div.setAttribute('data-ribbon-id', 'gen6_battle_memory');
           div.setAttribute('data-category', 'Generation 6');
           div.setAttribute('data-automated', 'true');
@@ -2101,7 +2101,6 @@ export async function initRibbonTracker(appContainer) {
     addButton.disabled = !selectedSpecies || !originGameSelect.value;
   };
 
-  // No need to re-initialize here, we'll use the variable from above
   originGameSelect.addEventListener('change', () => {
     validateForm();
   });

@@ -2,7 +2,6 @@ import { getPokemonMovesGen7, getMoveDetails } from '../utils/pokeapi.js';
 import { SOS_MOVE_TRACKER_INSTRUCTIONS } from '../utils/instruction-content.js';
 
 // Hardcoded list of all Pokemon that can appear in SOS Battles (non-zero call rate)
-// Source: https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_call_rate
 const SOS_POKEMON = [
   { id: 10, name: 'caterpie', displayName: 'Caterpie' },
   { id: 11, name: 'metapod', displayName: 'Metapod' },
@@ -770,9 +769,6 @@ function checkStruggle() {
 function setupTransformedButton() {
   const btn = document.getElementById('btn-transformed');
   btn.addEventListener('click', () => {
-    // Transform specifically sets all 4 moves to 5/5 PP of the copied moves.
-    // Instead of forcing them to re-select moves first, if they have moves selected, we override them to 5/5.
-    // If they don't have moves selected, we just set them to 5/5 anyway as 'overridden' type.
     moveSlots.forEach((slot, index) => {
       if (!slot.move) {
         slot.move = { type: 'transformed' };
